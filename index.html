@@ -158,18 +158,19 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .regwrap{display:flex;flex-direction:column;gap:14px}
 .regrow{display:flex;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh-1);transition:.18s}
 .regrow:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
-.regthumb{width:92px;height:92px;border-radius:16px;flex:0 0 auto;background:var(--tile);border:1px solid var(--tile-line);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.regthumb{width:120px;height:120px;border-radius:18px;flex:0 0 auto;background:var(--tile);border:1px solid var(--tile-line);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .regthumb img{width:100%;height:100%;object-fit:contain;padding:10px;mix-blend-mode:multiply}.regthumb .ph{font-size:36px;opacity:.3}
 .reginfo{flex:1;min-width:0}
 .reginfo .ri-item{font-weight:560;font-size:13px;color:var(--faint)}
 .reginfo .ri-brand{font-weight:660;font-size:17px;letter-spacing:-0.015em;margin-top:2px}
 .reginfo .ri-cat{font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+.reginfo .ri-pick{font-size:14px;color:var(--muted);margin-top:4px}
 .regmeta{display:flex;align-items:center;gap:16px;flex-shrink:0}
 .regqty{font-size:13px;font-weight:620;background:var(--opt-soft);border-radius:980px;padding:5px 12px;color:var(--ink)}
 .regprice{font-size:15px;font-weight:650;min-width:78px;text-align:right}
 .reglinks{display:flex;gap:7px}
 @media(max-width:620px){.grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:13px}.imgwrap img{padding:13px}.mhead{flex-direction:column}.mhead .mimg{width:100%;height:180px}
- .regrow{flex-wrap:wrap;gap:14px}.regthumb{width:72px;height:72px}.regmeta{width:100%;justify-content:space-between;margin-top:2px}}
+ .regrow{flex-wrap:wrap;gap:14px}.regthumb{width:96px;height:96px}.regmeta{width:100%;justify-content:space-between;margin-top:2px}}
 
 /* sections + forms + notif */
 .sect{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:12px 0;box-shadow:var(--sh-1)}.sect h3{margin:0 0 8px;font-size:16px;font-weight:660;letter-spacing:-0.01em}
@@ -236,4 +237,4 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><span class="minibtn" id="m_cancel">Cancel</span><span class="bestbtn" style="flex:0;padding:9px 18px" id="m_save">Save</span></div>
 </div></div></div>
 
-<script src="app.js?v=8" defer></script></body></html>
+<script src="app.js?v=9" defer></script></body></html>

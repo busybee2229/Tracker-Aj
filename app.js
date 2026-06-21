@@ -182,7 +182,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
   w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' pick'+(rows.length>1?'s':'')+' chosen'+(tot?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
     const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
-    return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-item">${esc(p.item)}</div><div class="ri-brand">${esc(o.name)}</div><div class="ri-cat">${esc(p.category)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
+    return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-brand">${esc(p.item)}</div><div class="ri-pick">${esc(o.name)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Last updated "+UPDATED):"No price data yet.";
   const rows=[]; allItems().forEach(p=>{ (PRICES[p.id]||[]).forEach(x=>rows.push({item:p.item,...x})); }); rows.sort((a,b)=>b.date-a.date);
