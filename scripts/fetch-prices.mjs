@@ -1,78 +1,47 @@
-// Free, dependency-free price + image fetcher for the Baby Deal Tracker.
-// Runs in GitHub Actions (Node 20+). Reads products.json, tries to capture a
-// current price (-> INR) and the product image for each Buy/Confirm item's
-// BEST option, and appends to prices.json. Resilient: skips what it can't read.
+// Free, accurate price reader. Reads EXACT prices from product pages that expose
+// machine-readable data: Shopify (product URL + ".json"), JSON-LD Product offers,
+// or product:price meta tags. Only items in products.json with a "producturl" are
+// priced (those are brand-accurate matches). Amazon is intentionally not used.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 
-// Price fetching from retailer SEARCH pages is unreliable (wrong numbers), so it is
-// disabled until a real price API is configured. Set the PRICE_API_KEY secret to enable,
-// and implement the API call where extractPrice is used. This prevents inaccurate prices.
-if(!process.env.PRICE_API_KEY){
-  console.log("No PRICE_API_KEY set — skipping price fetch to avoid inaccurate data. Images are curated in products.json.");
-  process.exit(0);
-}
+const today = new Date().toISOString().slice(0,10);
+const products = JSON.parse(readFileSync("products.json","utf8"));
+const out = existsSync("prices.json") ? JSON.parse(readFileSync("prices.json","utf8")) : {items:{}};
+out.items ||= {}; out.images ||= {};
+const FX = { INR:1, GBP:108, CAD:62, USD:85 };
 
-const FX = { GBP: 108, CAD: 62, USD: 85, INR: 1 };           // fallback rates
-const today = new Date().toISOString().slice(0, 10);
-const products = JSON.parse(readFileSync("products.json", "utf8"));
-const out = existsSync("prices.json")
-  ? JSON.parse(readFileSync("prices.json", "utf8")) : { items: {}, images: {} };
-out.items ||= {}; out.images ||= {}; 
-const bestRegion = (b="") => {
-  b = b.toLowerCase();
-  if (b.includes("india")) return "india";
-  if (/uk|m&s|next|boots/.test(b)) return "uk";
-  if (/ca|canada|costco|carter/.test(b)) return "canada";
-  return "india";
-};
-const cur = { india:"INR", uk:"GBP", canada:"CAD" };
+async function getFX(){ try{ const r=await fetch("https://open.er-api.com/v6/latest/INR"); const j=await r.json();
+  if(j&&j.rates){ if(j.rates.GBP)FX.GBP=1/j.rates.GBP; if(j.rates.CAD)FX.CAD=1/j.rates.CAD; if(j.rates.USD)FX.USD=1/j.rates.USD; } }catch{} }
+const toINR=(p,c)=>Math.round(p*(FX[(c||"INR").toUpperCase()]||1));
+async function getText(u){ try{ const r=await fetch(u,{headers:{"user-agent":"Mozilla/5.0 (compatible; BabyTrackerBot/1.0)"},redirect:"follow"}); if(!r.ok)return""; return await r.text(); }catch{ return ""; } }
 
-async function getRates(){
-  try{ const r=await fetch("https://api.exchangerate.host/latest?base=GBP&symbols=INR");
-    const j=await r.json(); if(j?.rates?.INR) FX.GBP=Math.round(j.rates.INR);}catch{}
-  try{ const r=await fetch("https://api.exchangerate.host/latest?base=CAD&symbols=INR");
-    const j=await r.json(); if(j?.rates?.INR) FX.CAD=Math.round(j.rates.INR);}catch{}
-}
-async function fetchHtml(url){
-  try{ const r=await fetch(url,{headers:{"user-agent":"Mozilla/5.0 (compatible; BabyTrackerBot/1.0)"},redirect:"follow"});
-    if(!r.ok) return ""; return await r.text(); }catch{ return ""; }
-}
-function extractImage(html){
-  const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
-        || html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i);
-  return m ? m[1] : "";
-}
-function extractPrice(html, currency){
-  // very best-effort: look for a currency-tagged number
-  const sym = currency==="INR" ? "₹|Rs\\.?|INR" : currency==="GBP" ? "£|GBP" : "\\$|CAD|C\\$";
-  const re = new RegExp(`(?:${sym})\\s?([0-9][0-9,]{1,7}(?:\\.[0-9]{1,2})?)`, "i");
-  const m = html.match(re);
-  if(!m) return null;
-  const n = parseFloat(m[1].replace(/,/g,""));
-  return isFinite(n) && n>0 ? n : null;
-}
+function fromShopify(txt){ try{ const j=JSON.parse(txt); const v=j.product&&j.product.variants&&j.product.variants[0];
+  if(v&&v.price) return {price:parseFloat(v.price), currency:v.price_currency||"INR"}; }catch{} return null; }
+function fromJsonLd(html){ const blocks=[...html.matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)];
+  for(const b of blocks){ try{ const d=JSON.parse(b[1].trim()); const arr=Array.isArray(d)?d:(d["@graph"]||[d]);
+    for(const node of arr){ let off=node.offers; if(Array.isArray(off))off=off[0];
+      if(off&&off.price) return {price:parseFloat(off.price), currency:off.priceCurrency||"INR"}; } }catch{} } return null; }
+function fromMeta(html){ const p=html.match(/<meta[^>]+(?:property|name)=["'](?:product:price:amount|og:price:amount)["'][^>]+content=["']([\d.,]+)["']/i);
+  const c=html.match(/<meta[^>]+(?:property|name)=["'](?:product:price:currency|og:price:currency|priceCurrency)["'][^>]+content=["']([A-Za-z]{3})["']/i);
+  if(p) return {price:parseFloat(p[1].replace(/,/g,"")), currency:c?c[1].toUpperCase():"INR"}; return null; }
 
-const targets = products.filter(p => (p.status==="Buy"||p.status==="Confirm") && p.options?.length);
-console.log(`Pricing ${targets.length} items…`);
-
-await getRates();
-for (const p of targets){
-  const best = p.options[0]; const region = bestRegion(p.best);
-  const url = best[region] || best.india || best.uk || best.canada;
-  if(!url) continue;
-  const html = await fetchHtml(url);
-  if(!html) { console.log(`skip ${p.id} ${p.item} (no html)`); continue; }
-  const local = extractPrice(html, cur[region]);
-  if(local && local>=1){
-    const inr = Math.round(local * (FX[cur[region]]||1));
-    (out.items[p.id] ||= []).push({date:today, inr, region, local, currency:cur[region]});
+const targets = products.filter(p=>p.producturl && (p.status==="Buy"||p.status==="Confirm"));
+console.log(`Reading ${targets.length} product pages…`);
+await getFX();
+let n=0;
+for(const p of targets){
+  const url=p.producturl, region=p.producturl_region||"india";
+  let res=null;
+  if(/\/products\//.test(url)){ const j=await getText(url.split("?")[0].replace(/\/$/,"")+".json"); if(j) res=fromShopify(j); }
+  if(!res){ const html=await getText(url); if(html) res=fromJsonLd(html)||fromMeta(html); }
+  if(res && res.price>0){
+    const inr=toINR(res.price,res.currency);
+    (out.items[p.id] ||= []).push({date:today,inr,region,local:res.price,currency:res.currency});
     if(out.items[p.id].length>120) out.items[p.id]=out.items[p.id].slice(-120);
-    console.log(`ok   ${p.id} ${p.item}: ${cur[region]} ${local} -> ₹${inr}`);
-  } else {
-    console.log(`img  ${p.id} ${p.item}: image=${img?"yes":"no"}, price=none`);
-  }
-  await new Promise(r=>setTimeout(r,400)); // be polite
+    n++; console.log(`ok   ${p.id} ${p.item}: ${res.currency} ${res.price} -> ₹${inr}`);
+  } else console.log(`skip ${p.id} ${p.item} (no readable price)`);
+  await new Promise(r=>setTimeout(r,350));
 }
-out.updated = new Date().toISOString().slice(0,16).replace("T"," ");
+out.updated=new Date().toISOString().slice(0,16).replace("T"," ");
 writeFileSync("prices.json", JSON.stringify(out));
-console.log("Wrote prices.json @", out.updated);
+console.log(`done — ${n} priced`);
