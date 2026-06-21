@@ -36,7 +36,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 const allItems=()=>PRODUCTS.filter(p=>!HIDDEN[p.id]).concat(USER.filter(p=>!HIDDEN[p.id]));
 const itemById=id=>allItems().find(p=>String(p.id)===String(id));
 const state={q:"",stat:"",deal:false,tracked:false};
-let NOTIFS=[], sparks=[];
+let NOTIFS=[], sparks=[], _lastSig="";
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
@@ -48,14 +48,15 @@ function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[
 function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
 function pushState(){ if(!SUPA.url)return; clearTimeout(_pt); _pt=setTimeout(async()=>{
-  const merged=mergeState(await getRemote(), localState()); applyShared(merged);
+  const merged=mergeState(await getRemote(), localState()); applyShared(merged); _lastSig=JSON.stringify(merged);
   fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data:merged})}).catch(()=>{});
   try{ stats(); renderDash(); renderPending(); }catch(e){}
 },700); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
   const map={track:v=>TRACK=v,hidden:v=>HIDDEN=v,useritems:v=>USER=v,pins:v=>PINS=v,statusovr:v=>STATUSOVR=v,useropts:v=>USEROPTS=v,userqty:v=>USERQTY=v};
   Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); normPins(); }
-async function syncPull(){ if(!SUPA.url)return; const remote=await getRemote(); applyShared(mergeState(remote, localState())); }
+async function syncPull(){ if(!SUPA.url)return; const remote=await getRemote(); _lastSig=JSON.stringify(remote); applyShared(mergeState(remote, localState())); }
+async function pullAndRender(){ if(!SUPA.url)return; const remote=await getRemote(); const sig=JSON.stringify(remote); if(sig===_lastSig)return; _lastSig=sig; applyShared(mergeState(remote, localState())); try{ stats(); renderDash(); renderPending(); buildNotifs(); }catch(e){} }
 const save=(k,v)=>{ localStorage.setItem(k,JSON.stringify(v)); pushState(); };
 
 /* ---------- prices ---------- */
@@ -281,7 +282,7 @@ document.addEventListener("keydown",e=>{ if(e.key!=="Tab")return; const ov=docum
   if(!f.length)return; const first=f[0],last=f[f.length-1];
   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();} });
-document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ syncPull().then(()=>{ stats(); renderDash(); renderPending(); buildNotifs(); }); } });
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden)pullAndRender(); });
 function focusModal(id){ setTimeout(()=>{ const ov=document.getElementById(id); const b=ov&&ov.querySelector("button,a,input,select"); if(b)b.focus(); },30); }
 
 /* ---------- admin gate (friends = read-only registry) ---------- */
@@ -307,4 +308,7 @@ function applyAdminUI(){
   await Promise.all([getFX(),loadPrices()]); await syncPull(); pushState();
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+  // instant cross-device sync: Supabase Realtime (push) + 5s poll fallback
+  try{ if(window.supabase){ const sb=window.supabase.createClient(SUPA.url,SUPA.key); sb.channel("ts").on("postgres_changes",{event:"*",schema:"public",table:"tracker_state"},()=>pullAndRender()).subscribe(); } }catch(e){}
+  setInterval(()=>{ if(!document.hidden)pullAndRender(); }, 5000);
 })();
