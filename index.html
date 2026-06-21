@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Baby Deal Tracker</title>
+<title>Naina's Baby Registry</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{--bg:#f6f1ec;--card:#fff;--ink:#2b2b33;--muted:#80808c;--line:#e9e3dd;--accent:#6b8caf;--accent-d:#4f7193;
@@ -98,10 +98,16 @@ th{background:var(--soft);font-size:11.5px;text-transform:uppercase;letter-spaci
 .formrow label{display:block;font-size:12px;color:var(--muted);margin:9px 0 3px}
 .formrow input,.formrow select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
 @media(max-width:560px){.grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.mhead{flex-direction:column}.mhead .mimg{width:100%;height:160px}}
+.qtyrow{font-size:13px;display:flex;align-items:center;gap:8px;margin-top:6px}
+.qbtn{width:26px;height:26px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;font-size:15px}
+.qbtn:hover{border-color:var(--accent)}
+.qchip{position:absolute;bottom:6px;right:6px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:7px;padding:2px 6px}
+.addopt{margin-top:8px;border:1px dashed var(--accent);background:var(--soft);color:var(--accent-d);border-radius:9px;padding:10px 12px;font-size:13px;font-weight:650;cursor:pointer;width:100%}
+.addopt:hover{background:#e3edf6}
 </style></head><body>
 <header>
-  <div class="htop"><h1>👶 Baby Deal Tracker</h1>
-    <div class="bell" id="bell" onclick="openNotifs()">🔔<span class="bdg" id="bdg" style="display:none">0</span></div></div>
+  <div class="htop"><h1>👶 Naina's Baby Registry</h1>
+    <button class="bell" id="adminBtn">🔒 Admin</button><div class="bell" id="bell">🔔<span class="bdg" id="bdg" style="display:none">0</span></div></div>
   <div class="sub">India · UK · Canada — cheapest in ₹ &nbsp;|&nbsp; <span id="updated"></span></div>
   <nav class="nav" id="nav">
     <button data-v="dash" class="on">Dashboard</button>

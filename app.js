@@ -102,6 +102,7 @@ function renderDash(){
   const items=allItems(); let shown=0;
   CATS.forEach(cat=>{
     const list=items.filter(p=>p.category===cat&&passFilter(p));
+    list.sort((a,b)=>(PINS[b.id]!=null?1:0)-(PINS[a.id]!=null?1:0));
     if(!list.length&&(state.q||state.deal||state.tracked||state.stat))return;
     shown+=list.length;
     const open=OPEN[cat]!==false||!!(state.q||state.stat||state.deal);
@@ -248,12 +249,29 @@ document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);
 document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);save("accopen",OPEN);renderDash();};
 document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
 document.getElementById("m_save").onclick=saveAdd;
+/* ---------- admin gate (friends = read-only registry) ---------- */
+const ADMIN_HASH="7f16e218c99525506299fd686b568decc0b6b305659f9d3a543bd45acbb920be";
+let isAdmin=localStorage.getItem("admin")==="1";
+async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+function applyAdminUI(){
+  document.body.classList.toggle("admin",isAdmin);
+  document.querySelectorAll("#nav button").forEach(b=>{ b.style.display=(isAdmin||b.dataset.v==="pending")?"":"none"; });
+  const bell=document.getElementById("bell"); if(bell)bell.style.display=isAdmin?"":"none";
+  const ab=document.getElementById("adminBtn"); if(ab)ab.textContent=isAdmin?"🔓 Log out":"🔒 Admin";
+  if(!isAdmin)showView("pending");
+}
+(function(){ const ab=document.getElementById("adminBtn"); if(!ab)return;
+  ab.onclick=async()=>{ if(isAdmin){localStorage.removeItem("admin");isAdmin=false;applyAdminUI();return;}
+    const pw=prompt("Admin password:"); if(pw==null)return;
+    if(await sha(pw)===ADMIN_HASH){localStorage.setItem("admin","1");isAdmin=true;applyAdminUI();}
+    else alert("Wrong password."); }; })();
+
 
 /* ---------- boot ---------- */
 (async()=>{
   document.getElementById("updated").textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
   await Promise.all([getFX(),loadPrices()]); await syncPull();
-  stats(); renderDash(); buildNotifs();
+  stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)document.getElementById("updated").textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
 })();
