@@ -4,13 +4,20 @@
 // BEST option, and appends to prices.json. Resilient: skips what it can't read.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 
+// Price fetching from retailer SEARCH pages is unreliable (wrong numbers), so it is
+// disabled until a real price API is configured. Set the PRICE_API_KEY secret to enable,
+// and implement the API call where extractPrice is used. This prevents inaccurate prices.
+if(!process.env.PRICE_API_KEY){
+  console.log("No PRICE_API_KEY set — skipping price fetch to avoid inaccurate data. Images are curated in products.json.");
+  process.exit(0);
+}
+
 const FX = { GBP: 108, CAD: 62, USD: 85, INR: 1 };           // fallback rates
 const today = new Date().toISOString().slice(0, 10);
 const products = JSON.parse(readFileSync("products.json", "utf8"));
 const out = existsSync("prices.json")
   ? JSON.parse(readFileSync("prices.json", "utf8")) : { items: {}, images: {} };
-out.items ||= {}; out.images ||= {};
-
+out.items ||= {}; out.images ||= {}; 
 const bestRegion = (b="") => {
   b = b.toLowerCase();
   if (b.includes("india")) return "india";
@@ -55,10 +62,8 @@ for (const p of targets){
   if(!url) continue;
   const html = await fetchHtml(url);
   if(!html) { console.log(`skip ${p.id} ${p.item} (no html)`); continue; }
-  const img = extractImage(html);
-  if(img && !out.images[p.id]) out.images[p.id] = img;     // keep first good image
   const local = extractPrice(html, cur[region]);
-  if(local){
+  if(local && local>=1){
     const inr = Math.round(local * (FX[cur[region]]||1));
     (out.items[p.id] ||= []).push({date:today, inr, region, local, currency:cur[region]});
     if(out.items[p.id].length>120) out.items[p.id]=out.items[p.id].slice(-120);
