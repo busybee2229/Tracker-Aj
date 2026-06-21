@@ -161,7 +161,7 @@ let PRICES={}, UPDATED="";
 const LS=(k,d)=>JSON.parse(localStorage.getItem(k)||d);
 let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OPEN=LS("accopen","null"),PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"";
 let STATUSOVR=LS("statusovr","{}");
-const effStatus=p=>STATUSOVR[p.id]||effStatus(p);
+const effStatus=p=>STATUSOVR[p.id]||p.status;
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
 let _pt=null;
 function pushState(){if(!SUPA.url)return;clearTimeout(_pt);_pt=setTimeout(()=>{fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data:{track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR}})}).catch(()=>{});},600);}
