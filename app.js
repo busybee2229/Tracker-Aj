@@ -18,6 +18,7 @@ let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OP
     PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"",
     STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}");
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
+normPins();
 
 const isTracked=id=>TRACK[id]!==false;
 const inr=n=>"₹"+(+n||0).toLocaleString("en-IN");
@@ -26,6 +27,10 @@ const effOptions=p=>(p.options||[]).concat(USEROPTS[p.id]||[]);
 const defaultQty=p=>{const m=String(p.qty||"").match(/\d+/);return m?+m[0]:1;};
 const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);
 const bestRegion=p=>p.bestRegion||"india";
+const pinsOf=id=>Array.isArray(PINS[id])?PINS[id]:(PINS[id]!=null?[PINS[id]]:[]);
+const isPinned=(id,i)=>pinsOf(id).includes(i);
+const hasPin=id=>pinsOf(id).length>0;
+function normPins(){ for(const k in PINS){ const v=PINS[k]; if(!Array.isArray(v)) PINS[k]=(v==null?[]:[v]); if(!PINS[k].length) delete PINS[k]; } }
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const allItems=()=>PRODUCTS.filter(p=>!HIDDEN[p.id]).concat(USER.filter(p=>!HIDDEN[p.id]));
@@ -40,7 +45,7 @@ function pushState(){ if(!SUPA.url)return; clearTimeout(_pt); _pt=setTimeout(()=
     body:JSON.stringify({id:"shared",data:{track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY}})}).catch(()=>{}); },600); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
   const map={track:v=>TRACK=v,hidden:v=>HIDDEN=v,useritems:v=>USER=v,pins:v=>PINS=v,statusovr:v=>STATUSOVR=v,useropts:v=>USEROPTS=v,userqty:v=>USERQTY=v};
-  Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); }
+  Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); normPins(); }
 async function syncPull(){ if(!SUPA.url)return; try{
   const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data&t="+Date.now(),{headers:SUPA.h(),cache:"no-store"});
   if(!r.ok)return; const a=await r.json(); if(a&&a[0]&&a[0].data) applyShared(a[0].data);
@@ -71,7 +76,7 @@ function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</
 
 function cardHtml(p){
   const pi=isTracked(p.id)?priceInfo(p.id):null;
-  const isDeal=pi&&pi.isDeal, pinned=PINS[p.id]!=null, pri=p.priority||"-";
+  const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
   let price=""; if(pi){ price=`<div class="pr"><span class="cur">${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`; }
@@ -93,7 +98,7 @@ function passFilter(p){
   if(state.stat==="day1"&&!(p.priority||"").startsWith("Day 1"))return false;
   if(state.stat==="buy"&&effStatus(p)!=="Buy")return false;
   if(state.stat==="owned"&&effStatus(p)!=="Owned")return false;
-  if(state.stat==="pinned"&&PINS[p.id]==null)return false;
+  if(state.stat==="pinned"&&!hasPin(p.id))return false;
   if(state.stat==="deal"&&!(isTracked(p.id)&&priceInfo(p.id)?.isDeal))return false;
   return true;
 }
@@ -128,7 +133,7 @@ function renderDash(){
 
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx){
-  const pinned=PINS[p.id]===i; const ic=CATICON[p.category]||"🍼";
+  const pinned=isPinned(p.id,i); const ic=CATICON[p.category]||"🍼";
   const img=(i===0&&p.img)?p.img:(o.img||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
@@ -140,7 +145,7 @@ function optCard(o,i,p,isUser,userIdx){
 }
 function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=(p.options||[]).length;
-  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); if(PINS[id]!=null&&opts[PINS[id]]){ order=[PINS[id]].concat(order.filter(i=>i!==PINS[id])); } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
+  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pin=pinsOf(id).filter(i=>i<opts.length); if(pin.length){ order=[...pin, ...order.filter(i=>!pin.includes(i))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
   let price=""; if(pi){ price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
   const qn=effQty(p);
@@ -163,17 +168,18 @@ function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 /* ---------- actions ---------- */
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
 function setStatus(id,st){ const b=(itemById(id)||{}).status; if(st===b)delete STATUSOVR[id]; else STATUSOVR[id]=st; save("statusovr",STATUSOVR); stats(); renderDash(); openItem(id); }
-function pinOpt(id,i){ if(PINS[id]===i)delete PINS[id]; else PINS[id]=i; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
+function pinOpt(id,i){ let a=pinsOf(id).slice(); a=a.includes(i)?a.filter(x=>x!==i):a.concat(i); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
 function setQty(id,d){ const cur=effQty(itemById(id)); USERQTY[id]=Math.max(0,cur+d); save("userqty",USERQTY); renderDash(); openItem(id); renderPending(); }
 function delItem(id){ if(!confirm("Remove this item?"))return; if(String(id).startsWith("u")){USER=USER.filter(x=>String(x.id)!==String(id));save("useritems",USER);}else{HIDDEN[id]=1;save("hidden",HIDDEN);} stats();renderDash();renderPending();closeModal("itemOverlay"); }
 function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userIdx,1); if(!USEROPTS[id].length)delete USEROPTS[id]; save("useropts",USEROPTS); renderDash(); openItem(id); }
 
 /* ---------- pending + log ---------- */
 function renderPending(){ const w=document.getElementById("pendingList");
-  const items=allItems().filter(p=>PINS[p.id]!=null&&effOptions(p)[PINS[p.id]]);
+  const rows=[]; allItems().forEach(p=>{ pinsOf(p.id).forEach(i=>{ const o=effOptions(p)[i]; if(o) rows.push({p,o,i}); }); });
+  const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" onclick="showView(\'dash\')">Open Dashboard</button>':'')+'</div>'; return; }
-  const tot=items.reduce((s,p)=>{const pi=priceInfo(p.id);return s+(pi?pi.cur*effQty(p):0);},0);
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+items.length+' item'+(items.length>1?'s':'')+' chosen'+(tot?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
+  const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' pick'+(rows.length>1?'s':'')+' chosen'+(tot?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
     const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
     return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-item">${esc(p.item)}</div><div class="ri-brand">${esc(o.name)}</div><div class="ri-cat">${esc(p.category)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
@@ -218,7 +224,7 @@ function importEdits(e){ const f=e.target.files[0]; if(!f)return; const r=new Fi
 
 /* ---------- stats + shell ---------- */
 function stats(){ const items=allItems();
-  const c={items:items.length,day1:items.filter(p=>(p.priority||"").startsWith("Day 1")).length,buy:items.filter(p=>effStatus(p)==="Buy").length,owned:items.filter(p=>effStatus(p)==="Owned").length,pinned:items.filter(p=>PINS[p.id]!=null).length,deal:items.filter(p=>isTracked(p.id)&&priceInfo(p.id)?.isDeal).length};
+  const c={items:items.length,day1:items.filter(p=>(p.priority||"").startsWith("Day 1")).length,buy:items.filter(p=>effStatus(p)==="Buy").length,owned:items.filter(p=>effStatus(p)==="Owned").length,pinned:items.filter(p=>hasPin(p.id)).length,deal:items.filter(p=>isTracked(p.id)&&priceInfo(p.id)?.isDeal).length};
   const defs=[["","items","Items"],["day1","day1","Day-1"],["buy","buy","To buy"],["owned","owned","Owned"],["pinned","pinned","📌 Final"],["deal","deal","🔥 Deals"]];
   document.getElementById("stats").innerHTML=defs.map(([k,key,l])=>`<button class="stat ${key==='deal'?'deal':''} ${key==='pinned'?'pin':''} ${state.stat===k?'active':''}" data-stat="${k}"><div class="n">${c[key]}</div><div class="l">${l}</div></button>`).join("");
 }
