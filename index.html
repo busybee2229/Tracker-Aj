@@ -159,6 +159,8 @@ const bcls={"Day 1":"day1","Day 1*":"day1","First weeks":"weeks","Later":"later"
 let PRICES={}, UPDATED="";
 const LS=(k,d)=>JSON.parse(localStorage.getItem(k)||d);
 let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OPEN=LS("accopen","null"),PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"";
+let STATUSOVR=LS("statusovr","{}");
+const effStatus=p=>STATUSOVR[p.id]||effStatus(p);
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
 const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const isTracked=id=>TRACK[id]!==false, inr=n=>"₹"+(+n||0).toLocaleString("en-IN");
@@ -182,14 +184,14 @@ function priceInfo(id){const h=PRICES[id]||[];if(!h.length)return null;const cur
 
 function cardHtml(p){
   const pi=isTracked(p.id)?priceInfo(p.id):null;const isDeal=pi&&pi.isDeal,pinned=PINS[p.id]!=null;
-  const pri=p.priority||"-",pc=bcls[pri]||"opt",stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[p.status]||"opt";
+  const pri=p.priority||"-",pc=bcls[pri]||"opt",stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const best=p.options&&p.options[0];const br=bestRegion(p);const bl=best?(best[br]||best.india||best.uk||best.canada):"";
   let pr="";if(pi){pr=`<div class="pr"><span class="cur">${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`;}
   const have=p.owned?`<div class="have">✓ ${p.owned}</div>`:"";
-  const pk=(best&&best.name&&p.status!=="Owned")?`<div class="pk">${best.name}</div>`:"";
-  const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+`<span class="b ${pc}">${pri}</span><span class="b ${stc}">${p.status}</span></div>`;
+  const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${best.name}</div>`:"";
+  const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+`<span class="b ${pc}">${pri}</span><span class="b ${stc}">${effStatus(p)}</span></div>`;
   let foot=`<div class="cfoot">`;
-  if(best&&bl&&p.status!=="Owned")foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${bl}" onclick="event.stopPropagation()">★ Buy best</a>`;
+  if(best&&bl&&effStatus(p)!=="Owned")foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${bl}" onclick="event.stopPropagation()">★ Buy best</a>`;
   foot+=`<span class="detbtn" onclick="event.stopPropagation();openItem('${p.id}')">Details</span></div>`;
   return `<div class="card ${isDeal?'isdeal':''}" onclick="openItem('${p.id}')"><div class="imgwrap">${imgHtml(p)}${badges}<span class="delc" title="Delete" onclick="event.stopPropagation();delItem('${p.id}')">✕</span></div>`+
     `<div class="cbody"><div class="ttl">${p.item}</div>${pk}${have}${pr}</div>${foot}</div>`;
@@ -218,15 +220,15 @@ function passFilter(p){
   if(state.deal&&!(p._pi&&p._pi.isDeal))return false;
   if(state.tracked&&!isTracked(p.id))return false;
   if(state.stat==="day1"&&!(p.priority||"").startsWith("Day 1"))return false;
-  if(state.stat==="buy"&&p.status!=="Buy")return false;
-  if(state.stat==="owned"&&p.status!=="Owned")return false;
+  if(state.stat==="buy"&&effStatus(p)!=="Buy")return false;
+  if(state.stat==="owned"&&effStatus(p)!=="Owned")return false;
   if(state.stat==="pinned"&&PINS[p.id]==null)return false;
   if(state.stat==="deal"&&!(p._pi&&p._pi.isDeal))return false;
   return true;
 }
 function stats(){
   const items=allItems();
-  const c={items:items.length,day1:items.filter(p=>(p.priority||"").startsWith("Day 1")).length,buy:items.filter(p=>p.status==="Buy").length,owned:items.filter(p=>p.status==="Owned").length,pinned:items.filter(p=>PINS[p.id]!=null).length,deal:items.filter(p=>isTracked(p.id)&&priceInfo(p.id)?.isDeal).length};
+  const c={items:items.length,day1:items.filter(p=>(p.priority||"").startsWith("Day 1")).length,buy:items.filter(p=>effStatus(p)==="Buy").length,owned:items.filter(p=>effStatus(p)==="Owned").length,pinned:items.filter(p=>PINS[p.id]!=null).length,deal:items.filter(p=>isTracked(p.id)&&priceInfo(p.id)?.isDeal).length};
   const defs=[["","items","Items"],["day1","day1","Day-1"],["buy","buy","To buy"],["owned","owned","Owned"],["pinned","pinned","📌 Final"],["deal","deal","🔥 Deals"]];
   document.getElementById("stats").innerHTML=defs.map(([k,key,l])=>`<div class="stat ${key==='deal'?'deal':''} ${key==='pinned'?'pin':''} ${state.stat===k?'active':''}" data-stat="${k}"><div class="n">${c[key]}</div><div class="l">${l}</div></div>`).join("");
   document.querySelectorAll("[data-stat]").forEach(e=>e.onclick=()=>{state.stat=state.stat===e.dataset.stat?"":e.dataset.stat;stats();renderDash();});
@@ -240,8 +242,8 @@ window.openItem=id=>{const p=itemById(id);if(!p)return;const m=document.getEleme
   let price="";if(pi){price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`;}
   m.innerHTML=`<button class="mclose" onclick="closeModal('itemOverlay')">×</button>`+
     `<div class="mhead"><div class="mimg">${imgHtml(p,1)}</div><div><h3>${p.item}</h3>`+
-    `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px"><span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span><span class="b ${({Buy:'buy',Owned:'owned',Confirm:'confirm'})[p.status]||'opt'}">${p.status}</span>`+
-    `<button class="trk ${isTracked(id)?'on':''}" onclick="toggleTrack('${id}')">${isTracked(id)?'Tracking ✓':'Track'}</button></div>`+
+    `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px"><span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span><span class="b ${({Buy:'buy',Owned:'owned',Confirm:'confirm'})[effStatus(p)]||'opt'}">${effStatus(p)}</span>`+
+    `<button class="trk ${isTracked(id)?'on':''}" onclick="toggleTrack('${id}')">${isTracked(id)?'Tracking ✓':'Track'}</button>`+["Buy","Owned","Confirm"].map(s=>`<button class="trk ${effStatus(p)===s?'on':''}" onclick="setStatus('${id}','${s}')">${s==="Buy"?"To buy":s}</button>`).join("")+`</div>`+
     (p.qty?`<div style="font-size:12.5px;color:var(--muted)">Qty: <b style="color:var(--ink)">${p.qty}</b></div>`:"")+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted)">Best market: <b style="color:var(--ink)">${p.best}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${opts}`+(p.notes&&p.notes.trim()?`<div class="notes">${p.notes}</div>`:"")+`</div>`;
@@ -250,6 +252,7 @@ window.openItem=id=>{const p=itemById(id);if(!p)return;const m=document.getEleme
 };
 window.closeModal=id=>document.getElementById(id).classList.remove("show");
 window.toggleTrack=id=>{TRACK[id]=isTracked(id)?false:true;save("track",TRACK);stats();renderDash();if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id);};
+window.setStatus=(id,st)=>{const b=(PRODUCTS.find(x=>String(x.id)===String(id))||{}).status;if(st===b)delete STATUSOVR[id];else STATUSOVR[id]=st;save("statusovr",STATUSOVR);stats();renderDash();openItem(id);};
 window.pinOpt=(id,i)=>{if(PINS[id]===i)delete PINS[id];else PINS[id]=i;save("pins",PINS);stats();renderDash();renderPending();openItem(id);};
 window.delItem=id=>{if(!confirm("Remove this item?"))return;if(String(id).startsWith("u")){USER=USER.filter(x=>String(x.id)!==String(id));save("useritems",USER);}else{HIDDEN[id]=1;save("hidden",HIDDEN);}stats();renderDash();renderPending();};
 document.querySelectorAll(".overlay").forEach(o=>o.onclick=e=>{if(e.target===o)o.classList.remove("show")});
@@ -273,7 +276,8 @@ window.addItem=cat=>{document.getElementById("m_cat").innerHTML=CATS.map(c=>`<op
 document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
 document.getElementById("m_save").onclick=()=>{const item=document.getElementById("m_item").value.trim();if(!item){alert("Enter a name");return;}
   const g=id=>document.getElementById(id).value.trim();
-  USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item,priority:"Later",status:"Buy",qty:"",best:"-",notes:"Added by you.",owned:"",img:g("m_img"),options:[{name:g("m_pick")||item,why:"",india:g("m_in"),uk:g("m_uk"),canada:g("m_ca")}]});
+  const qq=encodeURIComponent(g("m_pick")||item);const lin=(v,b)=>v||b+qq;
+  USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item,priority:"Later",status:"Buy",qty:"",best:"-",notes:"Added by you. Links are auto-generated searches \u2014 refine anytime.",owned:"",img:g("m_img"),options:[{name:g("m_pick")||item,why:"",india:lin(g("m_in"),"https://www.amazon.in/s?k="),uk:lin(g("m_uk"),"https://www.amazon.co.uk/s?k="),canada:lin(g("m_ca"),"https://www.amazon.ca/s?k=")}]});
   save("useritems",USER);closeModal("addOverlay");stats();renderDash();};
 window.exportEdits=()=>{const b=new Blob([JSON.stringify({track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="baby-tracker-edits.json";a.click();};
 window.importEdits=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(j.track){TRACK=j.track;save("track",TRACK);}if(j.hidden){HIDDEN=j.hidden;save("hidden",HIDDEN);}if(j.useritems){USER=j.useritems;save("useritems",USER);}if(j.pins){PINS=j.pins;save("pins",PINS);}stats();renderDash();renderPending();alert("Imported.");}catch(x){alert("Invalid file");}};r.readAsText(f);};
