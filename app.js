@@ -55,8 +55,14 @@ function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys
 function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[]); new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const s=[...new Set([...ar((a||{})[k]),...ar((b||{})[k])])]; if(s.length)out[k]=s; }); return out; }
 function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
+let _recovering=false;
+async function recoverAdminPw(){ if(_recovering||ADMIN_PW)return; _recovering=true;
+  const pw=prompt("Your admin session needs the password again to save changes:");
+  _recovering=false; if(pw==null)return;
+  if(await sha(pw)===ADMIN_HASH){ ADMIN_PW=pw; sessionStorage.setItem("apw",pw); pushState(); }
+  else alert("Wrong password — your change wasn't saved."); }
 function pushState(){ if(!SUPA.url)return;
-  if(!ADMIN_PW){ return; } // friends/non-admins never write (RLS denies anon writes anyway)
+  if(!ADMIN_PW){ if(isAdmin) recoverAdminPw(); return; } // friends never write; a stale admin session re-prompts instead of failing silently
   _pushPending=true; clearTimeout(_pt); _pt=setTimeout(async()=>{
   const data=localState(); data.ts=Date.now(); bumpTs(data.ts);
   try{ const r=await fetch(SUPA.saveFn,{method:"POST",headers:SUPA.h({"Content-Type":"application/json"}),body:JSON.stringify({password:ADMIN_PW,data})});
