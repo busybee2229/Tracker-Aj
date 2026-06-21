@@ -36,7 +36,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 const allItems=()=>PRODUCTS.filter(p=>!HIDDEN[p.id]).concat(USER.filter(p=>!HIDDEN[p.id]));
 const itemById=id=>allItems().find(p=>String(p.id)===String(id));
 const state={q:"",stat:"",deal:false,tracked:false};
-let NOTIFS=[], sparks=[], _lastSig="";
+let NOTIFS=[], sparks=[], _lastTs=+(localStorage.getItem("lastTs")||0), _pushPending=false;
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
@@ -47,16 +47,21 @@ function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys
 function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[]); new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const s=[...new Set([...ar((a||{})[k]),...ar((b||{})[k])])]; if(s.length)out[k]=s; }); return out; }
 function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
-function pushState(){ if(!SUPA.url)return; clearTimeout(_pt); _pt=setTimeout(async()=>{
-  const merged=mergeState(await getRemote(), localState()); applyShared(merged); _lastSig=JSON.stringify(merged);
-  fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data:merged})}).catch(()=>{});
-  try{ stats(); renderDash(); renderPending(); }catch(e){}
+function pushState(){ if(!SUPA.url)return; _pushPending=true; clearTimeout(_pt); _pt=setTimeout(async()=>{
+  const data=localState(); data.ts=Date.now(); bumpTs(data.ts);
+  try{ await fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data})}); }catch(e){}
+  _pushPending=false;
 },700); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
-  const map={track:v=>TRACK=v,hidden:v=>HIDDEN=v,useritems:v=>USER=v,pins:v=>PINS=v,statusovr:v=>STATUSOVR=v,useropts:v=>USEROPTS=v,userqty:v=>USERQTY=v};
-  Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); normPins(); }
-async function syncPull(){ if(!SUPA.url)return; const remote=await getRemote(); _lastSig=JSON.stringify(remote); applyShared(mergeState(remote, localState())); }
-async function pullAndRender(){ if(!SUPA.url)return; const remote=await getRemote(); const sig=JSON.stringify(remote); if(sig===_lastSig)return; _lastSig=sig; applyShared(mergeState(remote, localState())); try{ stats(); renderDash(); renderPending(); buildNotifs(); }catch(e){} }
+  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};
+  localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));
+  normPins(); }
+function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length); }
+function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
+async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
+  if(rt>_lastTs && hasData(r)){ applyShared(r); bumpTs(rt); }
+  else if(_lastTs>rt && hasData(localState())){ pushState(); } }
+async function pullAndRender(){ if(!SUPA.url||_pushPending)return; const r=await getRemote(); const rt=r.ts||0; if(rt<=_lastTs)return; applyShared(r); bumpTs(rt); try{ stats(); renderDash(); renderPending(); buildNotifs(); }catch(e){} }
 const save=(k,v)=>{ localStorage.setItem(k,JSON.stringify(v)); pushState(); };
 
 /* ---------- prices ---------- */
@@ -147,7 +152,7 @@ function optCard(o,i,p,isUser,userIdx){
   const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]} ${k[0].toUpperCase()+k.slice(1)}</a>`:"").join("");
   return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pini="${i}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
-    (isUser?`<button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
+    (isUser?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
     (o.why?`<div class="owhy">${esc(o.why)}</div>`:"")+`<div class="links">${links}</div></div></div>`;
 }
 function openItem(id){
@@ -157,12 +162,13 @@ function openItem(id){
   let price=""; if(pi){ price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
   const qn=effQty(p);
   const stbtns=["Buy","Owned","Confirm"].map(st=>`<button class="trk ${effStatus(p)===st?'on':''}" data-setstatus="${esc(id)}" data-st="${st}">${st==="Buy"?"To buy":st}</button>`).join("");
+  const edititem=String(id).startsWith("u")?`<button class="trk" data-edititem="${esc(id)}">✎ Edit</button>`:"";
   const m=document.getElementById("itemModal");
   m.innerHTML=`<button class="mclose" data-close="itemOverlay" aria-label="Close">×</button>`+
     `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3>${esc(p.item)}</h3>`+
     `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px">`+
       (URGENCIES.includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:"")+
-      `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}</div>`+
+      `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}</div>`+
     `<div class="qtyrow">Qty: <button class="qbtn" data-qty="${esc(id)}" data-d="-1" aria-label="Decrease">−</button><b id="qval">${qn}</b><button class="qbtn" data-qty="${esc(id)}" data-d="1" aria-label="Increase">+</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
@@ -190,7 +196,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
     const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`;
     const q=effQty(p);
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
-    return `<div class="regcard"><div class="regimg">${imgEl}${q>1?`<span class="qbadge">×${q}</span>`:""}</div><div class="regcardbody"><div class="ri-brand">${esc(p.item)}</div><div class="ri-pick">${esc(o.name)}</div><div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div></div>`;
+    return `<div class="regcard"><div class="regimg">${imgEl}${q>1?`<span class="qbadge">×${q}</span>`:""}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div><div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Last updated "+UPDATED):"No price data yet.";
   const rows=[]; allItems().forEach(p=>{ (PRICES[p.id]||[]).forEach(x=>rows.push({item:p.item,...x})); }); rows.sort((a,b)=>b.date-a.date);
@@ -204,15 +210,16 @@ function buildNotifs(){ NOTIFS=[]; allItems().forEach(p=>{ if(!isTracked(p.id))r
 function openNotifs(){ document.getElementById("notifList").innerHTML=NOTIFS.length?NOTIFS.map(x=>`<div class="notif"><div class="nm">${x.isNew?"🟢 ":""}${esc(x.item)}</div><div class="nt">${esc(x.msg)}</div></div>`).join(""):'<p class="empty">No notifications yet.</p>'; document.getElementById("notifOverlay").classList.add("show"); }
 
 /* ---------- add (new item OR option under existing) ---------- */
-function openAdd(cat){
-  const sel=document.getElementById("m_parent");
-  const opts=['<option value="">— New standalone item —</option>'].concat(
-    CATS.map(c=>`<optgroup label="${c}">`+PRODUCTS.filter(p=>p.category===c&&!HIDDEN[p.id]).map(p=>`<option value="${esc(p.id)}">${esc(p.item)}</option>`).join("")+`</optgroup>`));
-  sel.innerHTML=opts.join("");
+let _edit=null;
+function fillSelects(cat){
+  document.getElementById("m_parent").innerHTML=['<option value="">— New standalone item —</option>'].concat(
+    CATS.map(c=>`<optgroup label="${c}">`+allItems().filter(p=>p.category===c).map(p=>`<option value="${esc(p.id)}">${esc(p.item)}</option>`).join("")+`</optgroup>`)).join("");
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
-  ["m_item","m_pick","m_img","m_in","m_uk","m_ca"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay");
 }
+function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; }
+function openAdd(cat){ _edit=null; document.querySelector("#addOverlay h3").textContent="Add product"; fillSelects(cat); setFields({}); document.getElementById("m_parent").value=""; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
+window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=pid; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
+window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; fillSelects(p.category); setFields({item:p.item,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=""; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
   const parent=g("m_parent"), name=g("m_pick")||g("m_item"); if(!name){alert("Enter a name");return;}
@@ -220,6 +227,11 @@ function saveAdd(){
   let india=g("m_in"),uk=g("m_uk"),canada=g("m_ca");
   if(!india&&!uk&&!canada){ india="https://www.amazon.in/s?k="+qq; }   // only fall back if user gave no link
   const opt={name,why:"",img:g("m_img"),india,uk,canada};
+  if(_edit){
+    if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
+    else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
+    _edit=null; closeModal("addOverlay"); stats(); renderDash(); renderPending(); return;
+  }
   if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
   else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:"",best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
   closeModal("addOverlay"); stats(); renderDash(); renderPending();
@@ -253,6 +265,8 @@ document.addEventListener("click",e=>{
   if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,+el.dataset.pini);
   if((el=c("[data-qty]"))) return setQty(el.dataset.qty,+el.dataset.d);
   if((el=c("[data-delopt]"))) return delOpt(el.dataset.delopt,+el.dataset.optidx);
+  if((el=c("[data-editopt]"))) return editOpt(el.dataset.editopt,+el.dataset.eidx);
+  if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
   if((el=c("[data-addopt]"))) { closeModal("itemOverlay"); const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); document.getElementById("m_parent").value=el.dataset.addopt; return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
 });
@@ -305,7 +319,7 @@ function applyAdminUI(){
 (async()=>{
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
-  await Promise.all([getFX(),loadPrices()]); await syncPull(); pushState();
+  await Promise.all([getFX(),loadPrices()]); await syncPull();
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
   // instant cross-device sync: Supabase Realtime (push) + 5s poll fallback
