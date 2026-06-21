@@ -46,9 +46,9 @@ header h1{margin:0;font-size:22px;font-weight:740;letter-spacing:-0.025em;flex:1
 .nav button.on{color:var(--accent-d);background:var(--accent-soft);font-weight:650}
 /* friend view: no header chrome, just muted theme + admin controls */
 body:not(.admin) header{position:absolute;top:0;left:0;right:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:none;z-index:40}
-body:not(.admin) .htop{justify-content:flex-end;padding:14px 16px 0}
+body:not(.admin) .htop{justify-content:flex-end;gap:10px;padding:18px 22px 0}
 body:not(.admin) header h1,body:not(.admin) .nav,body:not(.admin) .sub{display:none}
-body:not(.admin) #adminBtn,body:not(.admin) #themeBtn{background:transparent;border-color:transparent;color:var(--faint);opacity:.65}
+body:not(.admin) #adminBtn,body:not(.admin) #themeBtn{background:var(--surface);border-color:var(--line);color:var(--muted);opacity:.85;box-shadow:var(--sh-1)}
 body:not(.admin) #adminBtn:hover,body:not(.admin) #themeBtn:hover{opacity:1;color:var(--ink)}
 
 .wrap{max-width:1180px;margin:0 auto;padding:20px 22px 80px}
@@ -233,10 +233,10 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div></div></div>
 <div class="overlay" id="addOverlay"><div class="modal" style="max-width:430px" role="dialog" aria-modal="true"><div style="padding:18px" class="formrow">
   <h3 style="margin:0 0 6px">Add product</h3>
-  <label>Item name</label><input id="m_item" placeholder="e.g. Night light"/>
+  <div id="f_parent"><label>Add under (or new item)</label><select id="m_parent"></select></div>
+  <div id="f_item"><label>Item name</label><input id="m_item" placeholder="e.g. Night light"/>
   <label>Quantity</label><input id="m_qty" placeholder="e.g. 5, or 2-3 packs"/>
-  <label>Add under (or new item)</label><select id="m_parent"></select>
-  <label>Category (for new item)</label><select id="m_cat"></select>
+  <label>Category</label><select id="m_cat"></select></div>
   <label>Recommended product / brand</label><input id="m_pick"/>
   <label>Image URL (optional)</label><input id="m_img" placeholder="https://…jpg"/>
   <label>India link</label><input id="m_in"/><label>UK link</label><input id="m_uk"/><label>Canada link</label><input id="m_ca"/>
@@ -244,4 +244,4 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=19" defer></script></body></html>
+<script src="app.js?v=20" defer></script></body></html>
