@@ -112,9 +112,12 @@ function priceInfo(id){ const h=PRICES[id]||[]; if(!h.length)return null; const 
   return {cur,avg,region:last.region||"",isDeal:cur<avg&&cur<=avg*(1-CONFIG.DEAL_THRESHOLD),pct:Math.round((1-cur/avg)*100)}; }
 
 /* ---------- dashboard ---------- */
-function imgHtml(p){ const ic=CATICON[p.category]||"🍼"; const u=safeUrl(p.img||IMAGES[p.id]); return u
+function imgHtml(p,override){ const ic=CATICON[p.category]||"🍼"; const u=safeUrl(override||p.img||IMAGES[p.id]); return u
   ? `<img src="${esc(u)}" alt="${esc(p.item)}" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}"/>`
   : `<div class="ph">${ic}</div>`; }
+// image of the finalised (pinned) option for an item, if any — else "" (caller falls back to default)
+function finalImg(p){ const pins=pinsOf(p.id); if(!pins.length)return ""; const opts=effOptions(p); const i=pins[0]; const o=opts[i]; if(!o)return "";
+  return (i===0?(p.img||IMAGES[p.id]||""):(o.img||""))||p.img||IMAGES[p.id]||""; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
 function cardHtml(p){
@@ -132,7 +135,7 @@ function cardHtml(p){
   if(best&&blSafe&&effStatus(p)!=="Owned") foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(blSafe)}">★ Buy best</a>`;
   foot+=`<span class="detbtn">Details</span></div>`;
   return `<div class="card ${isDeal?'isdeal':''}" role="button" tabindex="0" aria-label="${esc(p.item)}" data-open="${esc(p.id)}">`+
-    `<div class="imgwrap">${imgHtml(p)}${badges}${qtyChip(p)}<button class="delc" title="Delete ${esc(p.item)}" aria-label="Delete ${esc(p.item)}" data-del="${esc(p.id)}">✕</button></div>`+
+    `<div class="imgwrap">${imgHtml(p,finalImg(p))}${badges}${qtyChip(p)}<button class="delc" title="Delete ${esc(p.item)}" aria-label="Delete ${esc(p.item)}" data-del="${esc(p.id)}">✕</button></div>`+
     `<div class="cbody"><div class="ttl">${esc(p.item)}</div>${pk}${have}${price}</div>${foot}</div>`;
 }
 function passFilter(p){
