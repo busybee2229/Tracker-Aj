@@ -1,0 +1,23 @@
+name: Update baby prices
+on:
+  schedule:
+    - cron: "0 6,18 * * *"   # twice daily (UTC) — adjust as you like
+  workflow_dispatch:          # lets you run it manually from the Actions tab
+permissions:
+  contents: write
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Fetch prices & images
+        run: node scripts/fetch-prices.mjs
+      - name: Commit if changed
+        run: |
+          git config user.name  "baby-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add prices.json
+          git diff --staged --quiet || git commit -m "price update $(date -u +%F)"
+          git push
