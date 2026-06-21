@@ -133,10 +133,7 @@ function renderDash(){
     L.appendChild(acc);
   });
   if(!shown)L.innerHTML='<p class="empty">No items match.</p>';
-  const jb=document.getElementById("jumpbar");
-  if(jb){ const present=CATS.filter(cat=>items.some(p=>p.category===cat&&passFilter(p)));
-    jb.innerHTML=present.map(cat=>`<button class="jumpchip" data-jump="cat${CATS.indexOf(cat)}">${CATICON[cat]} ${cat[0]+cat.slice(1).toLowerCase()}</button>`).join("");
-    jb.style.display=present.length>1?"flex":"none"; }
+  const jb=document.getElementById("jumpbar"); if(jb)jb.style.display="none";
   document.getElementById("foot").innerHTML=`Showing ${shown} items · FX £1=₹${CONFIG.FX.GBP}, C$1=₹${CONFIG.FX.CAD} ${CONFIG._fx?"(live)":""} · <span class="lk2" id="exportBtn">Export</span> · <span class="lk2" id="importBtn">Import</span> · <a href="${CONFIG.REPO}" target="_blank" rel="noopener">repo</a><input type="file" id="impFile" accept="application/json" style="display:none"/>`;
   document.getElementById("exportBtn").onclick=exportEdits;
   document.getElementById("importBtn").onclick=()=>document.getElementById("impFile").click();
@@ -192,7 +189,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
   const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" onclick="showView(\'dash\')">Open Dashboard</button>':'')+'</div>'; return; }
   const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' pick'+(rows.length>1?'s':'')+' chosen'+(tot?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' pick'+(rows.length>1?'s':'')+' chosen'+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
     const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror='this.parentNode.innerHTML="<div class=ph>${ic}</div>"'>`:`<div class="ph">${ic}</div>`;
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
@@ -216,10 +213,10 @@ function fillSelects(cat){
     CATS.map(c=>`<optgroup label="${c}">`+allItems().filter(p=>p.category===c).map(p=>`<option value="${esc(p.id)}">${esc(p.item)}</option>`).join("")+`</optgroup>`)).join("");
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
 }
-function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; }
+function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; }
 function openAdd(cat){ _edit=null; document.querySelector("#addOverlay h3").textContent="Add product"; fillSelects(cat); setFields({}); document.getElementById("m_parent").value=""; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=pid; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
-window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; fillSelects(p.category); setFields({item:p.item,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=""; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
+window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=""; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
   const parent=g("m_parent"), name=g("m_pick")||g("m_item"); if(!name){alert("Enter a name");return;}
@@ -229,11 +226,11 @@ function saveAdd(){
   const opt={name,why:"",img:g("m_img"),india,uk,canada};
   if(_edit){
     if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
-    else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
+    else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.qty=g("m_qty"); it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
     _edit=null; closeModal("addOverlay"); stats(); renderDash(); renderPending(); return;
   }
   if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
-  else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:"",best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
+  else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:g("m_qty"),best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
   closeModal("addOverlay"); stats(); renderDash(); renderPending();
 }
 
