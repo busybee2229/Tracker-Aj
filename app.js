@@ -124,16 +124,19 @@ function renderDash(){
 
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx){
-  const pinned=PINS[p.id]===i;
+  const pinned=PINS[p.id]===i; const ic=CATICON[p.category]||"🍼";
+  const img=(i===0&&p.img)?p.img:(o.img||"");
+  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
+  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
   const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]} ${k[0].toUpperCase()+k.slice(1)}</a>`:"").join("");
-  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}"><div class="otop"><span class="rank ${i===0?'':'alt'}">${i===0?'★ BEST':'ALT '+(i+1)}</span><span class="oname">${esc(o.name)}</span>`+
+  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pini="${i}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
-    (isUser?`<button class="delc" style="position:static;border:none;background:none" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
-    (o.why?`<div class="owhy">${esc(o.why)}</div>`:"")+`<div class="links">${links}</div></div>`;
+    (isUser?`<button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
+    (o.why?`<div class="owhy">${esc(o.why)}</div>`:"")+`<div class="links">${links}</div></div></div>`;
 }
 function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=(p.options||[]).length;
-  let optsHtml=""; if(opts.length){ optsHtml=opts.map((o,i)=>optCard(o,i,p,i>=baseLen,i-baseLen)).join(""); }
+  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); if(PINS[id]!=null&&opts[PINS[id]]){ order=[PINS[id]].concat(order.filter(i=>i!==PINS[id])); } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
   let price=""; if(pi){ price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
   const qn=effQty(p);
@@ -165,11 +168,11 @@ function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userId
 function renderPending(){ const w=document.getElementById("pendingList");
   const items=allItems().filter(p=>PINS[p.id]!=null&&effOptions(p)[PINS[p.id]]);
   if(!items.length){ w.innerHTML='<p class="empty">No finalised picks yet. Open an item and tap ★ Finalise.</p>'; return; }
-  w.innerHTML=`<table><thead><tr><th>Item</th><th>Qty</th><th>Finalised brand</th><th>Links</th><th>₹</th></tr></thead><tbody>`+
-    items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id);
-      const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join(" ");
-      return `<tr><td><b>${esc(p.item)}</b><br><span style="color:#999;font-size:11px">${esc(p.category)}</span></td><td>×${effQty(p)}</td><td>${esc(o.name)}</td><td><div style="display:flex;gap:5px">${links}</div></td><td>${pi?inr(pi.cur):'—'}</td></tr>`;
-    }).join("")+`</tbody></table>`; }
+  w.innerHTML='<div class="regwrap">'+items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
+    const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
+    const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
+    return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-item">${esc(p.item)}</div><div class="ri-brand">${esc(o.name)}</div><div class="ri-cat">${esc(p.category)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
+  }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Last updated "+UPDATED):"No price data yet.";
   const rows=[]; allItems().forEach(p=>{ (PRICES[p.id]||[]).forEach(x=>rows.push({item:p.item,...x})); }); rows.sort((a,b)=>b.date-a.date);
   const t=document.getElementById("logTable");
@@ -197,7 +200,7 @@ function saveAdd(){
   const qq=encodeURIComponent(name);
   let india=g("m_in"),uk=g("m_uk"),canada=g("m_ca");
   if(!india&&!uk&&!canada){ india="https://www.amazon.in/s?k="+qq; }   // only fall back if user gave no link
-  const opt={name,why:"",india,uk,canada};
+  const opt={name,why:"",img:g("m_img"),india,uk,canada};
   if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
   else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:"",best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
   closeModal("addOverlay"); stats(); renderDash(); renderPending();
@@ -250,7 +253,7 @@ document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=fals
 document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
 document.getElementById("m_save").onclick=saveAdd;
 /* ---------- admin gate (friends = read-only registry) ---------- */
-const ADMIN_HASH="7f16e218c99525506299fd686b568decc0b6b305659f9d3a543bd45acbb920be";
+const ADMIN_HASH="ac03b24268491327fe765d9e0f6061150213d0367c4bf48993aefe93f0018e94";
 let isAdmin=localStorage.getItem("admin")==="1";
 async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 function applyAdminUI(){
