@@ -42,7 +42,7 @@ function applyShared(d){ if(!d||typeof d!=="object")return;
   const map={track:v=>TRACK=v,hidden:v=>HIDDEN=v,useritems:v=>USER=v,pins:v=>PINS=v,statusovr:v=>STATUSOVR=v,useropts:v=>USEROPTS=v,userqty:v=>USERQTY=v};
   Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); }
 async function syncPull(){ if(!SUPA.url)return; try{
-  const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h()});
+  const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data&t="+Date.now(),{headers:SUPA.h(),cache:"no-store"});
   if(!r.ok)return; const a=await r.json(); if(a&&a[0]&&a[0].data) applyShared(a[0].data);
 }catch(e){} }
 const save=(k,v)=>{ localStorage.setItem(k,JSON.stringify(v)); pushState(); };
@@ -65,7 +65,7 @@ function priceInfo(id){ const h=PRICES[id]||[]; if(!h.length)return null; const 
 
 /* ---------- dashboard ---------- */
 function imgHtml(p){ const ic=CATICON[p.category]||"🍼"; return p.img
-  ? `<img src="${esc(p.img)}" alt="${esc(p.item)}" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'"/>`
+  ? `<img src="${esc(p.img)}" alt="${esc(p.item)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'"/>`
   : `<div class="ph">${ic}</div>`; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
@@ -106,7 +106,7 @@ function renderDash(){
     if(!list.length&&(state.q||state.deal||state.tracked||state.stat))return;
     shown+=list.length;
     const open=OPEN[cat]!==false||!!(state.q||state.stat||state.deal);
-    const acc=document.createElement("div"); acc.className="acc"+(open?" open":"");
+    const acc=document.createElement("div"); acc.className="acc"+(open?" open":""); acc.id="cat"+CATS.indexOf(cat);
     acc.innerHTML=`<div class="head" role="button" tabindex="0"><span class="chev">▶</span><h2>${CATICON[cat]} ${cat}</h2><span class="cnt">${list.length}</span><button class="minibtn" data-add="${cat}">＋ Add</button></div><div class="body"><div class="grid"></div></div>`;
     const head=acc.querySelector(".head");
     const toggle=()=>{acc.classList.toggle("open");OPEN[cat]=acc.classList.contains("open");save("accopen",OPEN);};
@@ -116,6 +116,10 @@ function renderDash(){
     L.appendChild(acc);
   });
   if(!shown)L.innerHTML='<p class="empty">No items match.</p>';
+  const jb=document.getElementById("jumpbar");
+  if(jb){ const present=CATS.filter(cat=>items.some(p=>p.category===cat&&passFilter(p)));
+    jb.innerHTML=present.map(cat=>`<button class="jumpchip" data-jump="cat${CATS.indexOf(cat)}">${CATICON[cat]} ${cat[0]+cat.slice(1).toLowerCase()}</button>`).join("");
+    jb.style.display=present.length>1?"flex":"none"; }
   document.getElementById("foot").innerHTML=`Showing ${shown} items · FX £1=₹${CONFIG.FX.GBP}, C$1=₹${CONFIG.FX.CAD} ${CONFIG._fx?"(live)":""} · <span class="lk2" id="exportBtn">Export</span> · <span class="lk2" id="importBtn">Import</span> · <a href="${CONFIG.REPO}" target="_blank" rel="noopener">repo</a><input type="file" id="impFile" accept="application/json" style="display:none"/>`;
   document.getElementById("exportBtn").onclick=exportEdits;
   document.getElementById("importBtn").onclick=()=>document.getElementById("impFile").click();
@@ -126,7 +130,7 @@ function renderDash(){
 function optCard(o,i,p,isUser,userIdx){
   const pinned=PINS[p.id]===i; const ic=CATICON[p.category]||"🍼";
   const img=(i===0&&p.img)?p.img:(o.img||"");
-  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
+  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
   const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]} ${k[0].toUpperCase()+k.slice(1)}</a>`:"").join("");
   return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
@@ -150,7 +154,7 @@ function openItem(id){
     `<div class="qtyrow">Qty: <button class="qbtn" data-qty="${esc(id)}" data-d="-1" aria-label="Decrease">−</button><b id="qval">${qn}</b><button class="qbtn" data-qty="${esc(id)}" data-d="1" aria-label="Increase">+</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
-  document.getElementById("itemOverlay").classList.add("show");
+  document.getElementById("itemOverlay").classList.add("show"); focusModal("itemOverlay");
   if(pi){ const h=(PRICES[id]||[]).slice(-20); const el=document.getElementById("mspark");
     if(el&&window.Chart) new Chart(el,{type:"line",data:{labels:h.map(_=>""),datasets:[{data:h.map(x=>x.inr),borderColor:"#6b8caf",borderWidth:2,pointRadius:0,tension:.3}]},options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}},animation:false}}); }
 }
@@ -169,7 +173,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
   const items=allItems().filter(p=>PINS[p.id]!=null&&effOptions(p)[PINS[p.id]]);
   if(!items.length){ w.innerHTML='<p class="empty">No finalised picks yet. Open an item and tap ★ Finalise.</p>'; return; }
   w.innerHTML='<div class="regwrap">'+items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
-    const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
+    const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
     return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-item">${esc(p.item)}</div><div class="ri-brand">${esc(o.name)}</div><div class="ri-cat">${esc(p.category)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
   }).join('')+'</div>'; }
@@ -192,7 +196,7 @@ function openAdd(cat){
   sel.innerHTML=opts.join("");
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
   ["m_item","m_pick","m_img","m_in","m_uk","m_ca"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("addOverlay").classList.add("show");
+  document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay");
 }
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
@@ -235,6 +239,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-qty]"))) return setQty(el.dataset.qty,+el.dataset.d);
   if((el=c("[data-delopt]"))) return delOpt(el.dataset.delopt,+el.dataset.optidx);
   if((el=c("[data-addopt]"))) { closeModal("itemOverlay"); const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); document.getElementById("m_parent").value=el.dataset.addopt; return; }
+  if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
 });
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){document.querySelectorAll(".overlay.show").forEach(o=>o.classList.remove("show"));}
@@ -252,16 +257,23 @@ document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);
 document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);save("accopen",OPEN);renderDash();};
 document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
 document.getElementById("m_save").onclick=saveAdd;
+/* focus trap within open modal */
+document.addEventListener("keydown",e=>{ if(e.key!=="Tab")return; const ov=document.querySelector(".overlay.show"); if(!ov)return;
+  const f=[...ov.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);
+  if(!f.length)return; const first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();} });
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ syncPull().then(()=>{ stats(); renderDash(); renderPending(); buildNotifs(); }); } });
+function focusModal(id){ setTimeout(()=>{ const ov=document.getElementById(id); const b=ov&&ov.querySelector("button,a,input,select"); if(b)b.focus(); },30); }
+
 /* ---------- admin gate (friends = read-only registry) ---------- */
 const ADMIN_HASH="ac03b24268491327fe765d9e0f6061150213d0367c4bf48993aefe93f0018e94";
 let isAdmin=localStorage.getItem("admin")==="1";
 async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 function applyAdminUI(){
   document.body.classList.toggle("admin",isAdmin);
-  document.querySelectorAll("#nav button").forEach(b=>{ b.style.display=(isAdmin||b.dataset.v==="pending")?"":"none"; });
-  const bell=document.getElementById("bell"); if(bell)bell.style.display=isAdmin?"":"none";
   const ab=document.getElementById("adminBtn"); if(ab)ab.textContent=isAdmin?"🔓 Log out":"🔒 Admin";
-  if(!isAdmin)showView("pending");
+  showView(isAdmin?"dash":"pending");
 }
 (function(){ const ab=document.getElementById("adminBtn"); if(!ab)return;
   ab.onclick=async()=>{ if(isAdmin){localStorage.removeItem("admin");isAdmin=false;applyAdminUI();return;}
