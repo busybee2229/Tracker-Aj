@@ -193,7 +193,7 @@ function cardHtml(p){
   let pr="";if(pi){pr=`<div class="pr"><span class="cur">${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`;}
   const have=p.owned?`<div class="have">✓ ${p.owned}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${best.name}</div>`:"";
-  const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+`<span class="b ${pc}">${pri}</span><span class="b ${stc}">${effStatus(p)}</span></div>`;
+  const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+(["Day 1","Day 1*","First weeks","Later"].includes(pri)?`<span class="b ${pc}">${pri}</span>`:"")+`<span class="b ${stc}">${effStatus(p)}</span></div>`;
   let foot=`<div class="cfoot">`;
   if(best&&bl&&effStatus(p)!=="Owned")foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${bl}" onclick="event.stopPropagation()">★ Buy best</a>`;
   foot+=`<span class="detbtn" onclick="event.stopPropagation();openItem('${p.id}')">Details</span></div>`;
@@ -246,7 +246,7 @@ window.openItem=id=>{const p=itemById(id);if(!p)return;const m=document.getEleme
   let price="";if(pi){price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`;}
   m.innerHTML=`<button class="mclose" onclick="closeModal('itemOverlay')">×</button>`+
     `<div class="mhead"><div class="mimg">${imgHtml(p,1)}</div><div><h3>${p.item}</h3>`+
-    `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px"><span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span><span class="b ${({Buy:'buy',Owned:'owned',Confirm:'confirm'})[effStatus(p)]||'opt'}">${effStatus(p)}</span>`+
+    `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">${["Day 1","Day 1*","First weeks","Later"].includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:""}<span class="b ${({Buy:'buy',Owned:'owned',Confirm:'confirm'})[effStatus(p)]||'opt'}">${effStatus(p)}</span>`+
     `<button class="trk ${isTracked(id)?'on':''}" onclick="toggleTrack('${id}')">${isTracked(id)?'Tracking ✓':'Track'}</button>`+["Buy","Owned","Confirm"].map(s=>`<button class="trk ${effStatus(p)===s?'on':''}" onclick="setStatus('${id}','${s}')">${s==="Buy"?"To buy":s}</button>`).join("")+`</div>`+
     (p.qty?`<div style="font-size:12.5px;color:var(--muted)">Qty: <b style="color:var(--ink)">${p.qty}</b></div>`:"")+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted)">Best market: <b style="color:var(--ink)">${p.best}</b></div>`:"")+price+`</div></div>`+
