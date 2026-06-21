@@ -54,7 +54,7 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
   try{ const r=await fetch("./prices.json",{cache:"no-store"}); if(r.ok){ const j=await r.json(); const it=j.items||{}; IMAGES=j.images||{}; UPDATED=j.updated||"";
     for(const id in it){ PRICES[id]=it[id].map(x=>({date:new Date(x.date).getTime(),ds:x.date,inr:+x.inr,region:x.region||"",local:x.local,currency:x.currency})).filter(x=>!isNaN(x.date)&&x.inr); }
     Object.values(PRICES).forEach(a=>a.sort((x,y)=>x.date-y.date));
-    if(Object.keys(PRICES).length){ b.style.display="none"; if(UPDATED)document.getElementById("updated").textContent="updated "+UPDATED; return; } }
+    if(Object.keys(PRICES).length){ b.style.display="none"; if(UPDATED)(document.getElementById("updated")||{}).textContent="updated "+UPDATED; return; } }
   }catch(e){}
   b.textContent="📊 Live prices fill in as the GitHub Action reads each product page. Photos, plan, options and links work now.";
 }
@@ -171,8 +171,9 @@ function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userId
 /* ---------- pending + log ---------- */
 function renderPending(){ const w=document.getElementById("pendingList");
   const items=allItems().filter(p=>PINS[p.id]!=null&&effOptions(p)[PINS[p.id]]);
-  if(!items.length){ w.innerHTML='<p class="empty">No finalised picks yet. Open an item and tap ★ Finalise.</p>'; return; }
-  w.innerHTML='<div class="regwrap">'+items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
+  if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" onclick="showView(\'dash\')">Open Dashboard</button>':'')+'</div>'; return; }
+  const tot=items.reduce((s,p)=>{const pi=priceInfo(p.id);return s+(pi?pi.cur*effQty(p):0);},0);
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+items.length+' item'+(items.length>1?'s':'')+' chosen'+(tot?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+items.map(p=>{ const o=effOptions(p)[PINS[p.id]]; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
     const thumb=`<div class="regthumb">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<div class=ph>'+${JSON.stringify(ic)}+'</div>'">`:`<div class="ph">${ic}</div>`}</div>`;
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
     return `<div class="regrow">${thumb}<div class="reginfo"><div class="ri-item">${esc(p.item)}</div><div class="ri-brand">${esc(o.name)}</div><div class="ri-cat">${esc(p.category)}</div></div><div class="regmeta"><span class="regqty">×${effQty(p)}</span><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div>`;
@@ -257,6 +258,10 @@ document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);
 document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);save("accopen",OPEN);renderDash();};
 document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
 document.getElementById("m_save").onclick=saveAdd;
+function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); const b=document.getElementById("themeBtn"); if(b)b.textContent=(t==="dark")?"☀️":"🌙"; }
+let theme=localStorage.getItem("theme")||"light"; applyTheme(theme);
+(function(){ const tb=document.getElementById("themeBtn"); if(tb)tb.onclick=()=>{ theme=(theme==="dark")?"light":"dark"; localStorage.setItem("theme",theme); applyTheme(theme); }; })();
+
 /* focus trap within open modal */
 document.addEventListener("keydown",e=>{ if(e.key!=="Tab")return; const ov=document.querySelector(".overlay.show"); if(!ov)return;
   const f=[...ov.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);
@@ -284,9 +289,9 @@ function applyAdminUI(){
 
 /* ---------- boot ---------- */
 (async()=>{
-  document.getElementById("updated").textContent="loading…";
+  (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
   await Promise.all([getFX(),loadPrices()]); await syncPull();
   stats(); renderDash(); buildNotifs(); applyAdminUI();
-  if(!UPDATED)document.getElementById("updated").textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+  if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
 })();
