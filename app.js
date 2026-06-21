@@ -24,7 +24,8 @@ const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d);}catch(e){ret
 const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local only — never synced (2.2)
 let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OPEN=LS("accopen","null"),
     PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"",
-    STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}");
+    STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}"),
+    USERPRICES=LS("userprices","{}"),USERTARGET=LS("usertarget","{}");
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
 normPins();
 
@@ -48,7 +49,7 @@ let NOTIFS=[], sparks=[], _lastTs=+(localStorage.getItem("lastTs")||0), _pushPen
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
-function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY}; }
+function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY,userprices:USERPRICES,usertarget:USERTARGET}; }
 function mO(a,b){ return Object.assign({},a||{},b||{}); }
 function mItems(a,b){ const m={}; [...(a||[]),...(b||[])].forEach(x=>{ if(x&&x.id!=null)m[x.id]=x; }); return Object.values(m); }
 function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.name||"")+"|"+(o.uk||"")+(o.india||"")+(o.canada||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
@@ -79,10 +80,10 @@ function syncToast(msg){ let el=document.getElementById("syncToast");
     document.body.appendChild(el); }
   el.textContent=msg; el.style.display="block"; clearTimeout(_toastT); _toastT=setTimeout(()=>el.style.display="none",4000); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
-  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};
-  localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));
+  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};
+  localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));localStorage.setItem("userprices",JSON.stringify(USERPRICES));localStorage.setItem("usertarget",JSON.stringify(USERTARGET));
   normPins(); }
-function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length); }
+function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length); }
 function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
 async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
   if(rt>_lastTs && hasData(r)){ applyShared(r); bumpTs(rt); }
@@ -106,10 +107,27 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
 // ₹ for a record: prefer converting the stored LOCAL price at the current FX rate
 // (so history/averages aren't polluted by old FX); fall back to legacy stored inr (3.4)
 const recInr=x=>(x.local!=null&&x.currency)?toINR(x.local,x.currency):x.inr;
-function priceInfo(id){ const h=PRICES[id]||[]; if(!h.length)return null; const last=h[h.length-1]; const cur=recInr(last);
+// auto prices (prices.json) + manual prices (admin-entered, synced), merged & sorted
+function effPrices(id){ const man=(USERPRICES[id]||[]).map(x=>({date:new Date(x.date).getTime(),ds:x.date,inr:+x.inr,local:x.local!=null?x.local:+x.inr,currency:x.currency||"INR",region:x.region||"manual"})).filter(x=>!isNaN(x.date)&&x.inr);
+  return (PRICES[id]||[]).concat(man).sort((a,b)=>a.date-b.date); }
+// latest ₹ per market for an item (most recent record wins per region)
+function latestByRegion(id){ const o={}; effPrices(id).forEach(x=>{ if(x.region==="india"||x.region==="uk"||x.region==="canada") o[x.region]=recInr(x); }); return o; }
+const SIMILAR_PCT=0.07; // within 7% counts as "similar" → prefer India
+// which market to buy from: cheapest, but prefer India when it's within ~7% of cheapest
+function buyRec(byReg){ const regs=Object.keys(byReg); if(!regs.length)return null;
+  const cheapest=regs.reduce((a,b)=>byReg[b]<byReg[a]?b:a);
+  if(byReg.india!=null && byReg.india<=byReg[cheapest]*(1+SIMILAR_PCT)) return "india";
+  return cheapest; }
+function priceInfo(id){ const h=effPrices(id); const tgt=+USERTARGET[id]||0; if(!h.length)return null;
+  const byReg=latestByRegion(id), regs=Object.keys(byReg);
+  let cur, region="";
+  if(regs.length){ region=buyRec(byReg); cur=byReg[region]; }   // recommended market (cheapest, India-preferred when similar)
+  else { const last=h[h.length-1]; cur=recInr(last); region=last.region||""; }
   const cut=Date.now()-CONFIG.AVG_WINDOW_DAYS*864e5; const win=h.filter(x=>x.date>=cut); const arr=win.length?win:h;
   const avg=Math.round(arr.reduce((s,x)=>s+recInr(x),0)/arr.length);
-  return {cur,avg,region:last.region||"",isDeal:cur<avg&&cur<=avg*(1-CONFIG.DEAL_THRESHOLD),pct:Math.round((1-cur/avg)*100)}; }
+  const isDeal = tgt>0 ? cur<=tgt : (cur<avg && cur<=avg*(1-CONFIG.DEAL_THRESHOLD));
+  const pct = tgt>0 ? Math.max(0,Math.round((1-cur/tgt)*100)) : Math.round((1-cur/avg)*100);
+  return {cur,avg,target:tgt||null,region,byReg,isDeal,pct}; }
 
 /* ---------- dashboard ---------- */
 function imgHtml(p,override){ const ic=CATICON[p.category]||"🍼"; const u=safeUrl(override||p.img||IMAGES[p.id]); return u
@@ -125,7 +143,7 @@ function cardHtml(p){
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">${pi.target?'target '+inr(pi.target):'avg '+inr(pi.avg)}</span>`)+`</div>`; }
   const have=p.owned?`<div class="have">✓ ${esc(p.owned)}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${esc(best.name)}</div>`:"";
   const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+
@@ -191,7 +209,14 @@ function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=(p.options||[]).length;
   let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pin=pinsOf(id).filter(i=>i<opts.length); if(pin.length){ order=[...pin, ...order.filter(i=>!pin.includes(i))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):'· avg '+inr(pi.avg)); price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div><canvas class="spark" id="mspark"></canvas>`; }
+  const tgtVal=(USERTARGET[id]!=null?USERTARGET[id]:""), lbr=latestByRegion(id), pv=r=>lbr[r]!=null?lbr[r]:"";
+  const priceEdit=`<div class="priceedit"><span class="pelbl">Prices ₹</span>`+
+    `<label>🇮🇳<input id="m_price_india" inputmode="decimal" placeholder="—" value="${pv('india')}"></label>`+
+    `<label>🇬🇧<input id="m_price_uk" inputmode="decimal" placeholder="—" value="${pv('uk')}"></label>`+
+    `<label>🇨🇦<input id="m_price_canada" inputmode="decimal" placeholder="—" value="${pv('canada')}"></label>`+
+    `<label title="Flag a deal when the cheapest price drops to/below this">🎯<input id="m_target" inputmode="decimal" placeholder="target" value="${tgtVal}"></label>`+
+    `<button class="minibtn" data-saveprice="${esc(id)}">Save</button></div>`;
   const qn=effQty(p);
   const stbtns=["Buy","Owned","Confirm"].map(st=>`<button class="trk ${effStatus(p)===st?'on':''}" data-setstatus="${esc(id)}" data-st="${st}">${st==="Buy"?"To buy":st}</button>`).join("");
   const edititem=String(id).startsWith("u")?`<button class="trk" data-edititem="${esc(id)}">✎ Edit</button>`:"";
@@ -203,10 +228,10 @@ function openItem(id){
       `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}</div>`+
     `<div class="qtyrow">Qty: <button class="qbtn" data-qty="${esc(id)}" data-d="-1" aria-label="Decrease">−</button><b id="qval">${qn}</b><button class="qbtn" data-qty="${esc(id)}" data-d="1" aria-label="Increase">+</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
-    `<div class="mbody">${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
+    `<div class="mbody">${priceEdit}${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
   m.setAttribute("aria-labelledby","mtitle");
   document.getElementById("itemOverlay").classList.add("show"); focusModal("itemOverlay");
-  if(pi){ const h=(PRICES[id]||[]).slice(-20); const el=document.getElementById("mspark");
+  if(pi){ const h=effPrices(id).slice(-20); const el=document.getElementById("mspark");
     if(el) ensureChart().then(Chart=>{ if(Chart&&document.body.contains(el)) new Chart(el,{type:"line",data:{labels:h.map(_=>""),datasets:[{data:h.map(recInr),borderColor:"#6b8caf",borderWidth:2,pointRadius:0,tension:.3}]},options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}},animation:false}}); }).catch(()=>{}); }
 }
 let _chartP=null;
@@ -223,6 +248,12 @@ function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK
 function setStatus(id,st){ const b=(itemById(id)||{}).status; if(st===b)delete STATUSOVR[id]; else STATUSOVR[id]=st; save("statusovr",STATUSOVR); stats(); renderDash(); openItem(id); }
 function pinOpt(id,i){ let a=pinsOf(id).slice(); a=a.includes(i)?a.filter(x=>x!==i):a.concat(i); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
 function setQty(id,d){ const cur=effQty(itemById(id)); USERQTY[id]=Math.max(0,cur+d); save("userqty",USERQTY); renderDash(); openItem(id); renderPending(); }
+function setPrice(id){ const g=s=>{const el=document.getElementById(s); const n=parseFloat(String(el?el.value:"").replace(/[^\d.]/g,"")); return isNaN(n)?0:n;};
+  const today=new Date().toISOString().slice(0,10); let arr=(USERPRICES[id]||[]).slice();
+  ["india","uk","canada"].forEach(r=>{ const v=g("m_price_"+r); if(v>0){ arr=arr.filter(x=>!(x.manual&&x.region===r&&x.date===today)); arr.push({date:today,inr:Math.round(v),local:Math.round(v),currency:"INR",region:r,manual:true}); } });
+  if(arr.length){USERPRICES[id]=arr;save("userprices",USERPRICES);}
+  const tv=g("m_target"); if(tv>0)USERTARGET[id]=Math.round(tv); else delete USERTARGET[id]; save("usertarget",USERTARGET);
+  stats(); renderDash(); buildNotifs(); if(document.getElementById("v-log").classList.contains("on"))renderLog(); openItem(id); }
 function delItem(id){ if(!confirm("Remove this item?"))return; if(String(id).startsWith("u")){USER=USER.filter(x=>String(x.id)!==String(id));save("useritems",USER);}else{HIDDEN[id]=1;save("hidden",HIDDEN);} stats();renderDash();renderPending();closeModal("itemOverlay"); }
 function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userIdx,1); if(!USEROPTS[id].length)delete USEROPTS[id]; save("useropts",USEROPTS); renderDash(); openItem(id); }
 
@@ -239,13 +270,19 @@ function renderPending(){ const w=document.getElementById("pendingList");
     const regflag=pi&&pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":"";
     return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?regflag+inr(pi.cur):'—'}</span></div></div></div>`;
   }).join('')+'</div>'; }
-function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Last updated "+UPDATED):"No price data yet.";
-  const rows=[]; allItems().forEach(p=>{ (PRICES[p.id]||[]).forEach(x=>rows.push({item:p.item,...x})); }); rows.sort((a,b)=>b.date-a.date);
+function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Auto-prices last updated "+UPDATED+" · add your own per item"):"Add India/UK/Canada prices in any item, or let the job fetch them.";
   const t=document.getElementById("logTable");
-  t.innerHTML=rows.length?`<table><thead><tr><th>Date</th><th>Item</th><th>Market</th><th>Local</th><th>₹</th></tr></thead><tbody>`+rows.slice(0,300).map(r=>`<tr><td>${r.ds||""}</td><td>${esc(r.item)}</td><td>${FLAG[r.region]||""} ${r.region}</td><td>${r.currency||""} ${r.local??""}</td><td><b>${inr(r.inr)}</b></td></tr>`).join("")+`</tbody></table>`:'<p class="empty">Price history will appear here.</p>'; }
+  const rows=allItems().map(p=>({p,byReg:latestByRegion(p.id)})).filter(r=>Object.keys(r.byReg).length);
+  if(!rows.length){ t.innerHTML='<p class="empty">No prices yet. Open an item → enter 🇮🇳/🇬🇧/🇨🇦 prices, or wait for the price job.</p>'; return; }
+  const cell=(byReg,rec,r)=>{ if(byReg[r]==null)return '<td class="na">—</td>'; return `<td class="${r===rec?'win':''}">${inr(byReg[r])}${r===rec?' ✓':''}</td>`; };
+  const recCell=byReg=>{ const rec=buyRec(byReg); if(!rec)return '<td>—</td>'; const lbl=rec==="india"?"🇮🇳 India":(rec==="uk"?"🇬🇧 UK":"🇨🇦 Canada");
+    const note=(rec==="india"&&Object.keys(byReg).length>1)?'<span class="rnote">similar — buy local</span>':''; return `<td class="rec">${lbl}${note}</td>`; };
+  t.innerHTML=`<table class="cmp"><thead><tr><th>Item</th><th>🇮🇳 India</th><th>🇬🇧 UK</th><th>🇨🇦 Canada</th><th>Best buy</th></tr></thead><tbody>`+
+    rows.map(({p,byReg})=>{ const rec=buyRec(byReg); return `<tr><td class="it">${esc(p.item)}</td>${cell(byReg,rec,"india")}${cell(byReg,rec,"uk")}${cell(byReg,rec,"canada")}${recCell(byReg)}</tr>`; }).join("")+
+    `</tbody></table><p class="cmpnote">“Best buy” = cheapest market, but prefers 🇮🇳 India when it’s within ~7% of the cheapest (saves shipping/customs).</p>`; }
 
 /* ---------- notifications ---------- */
-function buildNotifs(){ NOTIFS=[]; allItems().forEach(p=>{ if(!isTracked(p.id))return; const pi=priceInfo(p.id); if(pi&&pi.isDeal){ const key=p.id+"@"+pi.cur; NOTIFS.push({key,item:p.item,msg:`now ${inr(pi.cur)} — ${pi.pct}% below average`,isNew:!SEEN[key]}); } });
+function buildNotifs(){ NOTIFS=[]; allItems().forEach(p=>{ if(!isTracked(p.id))return; const pi=priceInfo(p.id); if(pi&&pi.isDeal){ const key=p.id+"@"+pi.cur; const m=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; NOTIFS.push({key,item:p.item,msg:`now ${m}${inr(pi.cur)} — ${pi.pct}% below ${pi.target?'target':'average'}`,isNew:!SEEN[key]}); } });
   if(UPDATED&&UPDATED!==SEENUP&&Object.keys(PRICES).length) NOTIFS.unshift({key:"upd@"+UPDATED,item:"Prices refreshed",msg:"new data synced "+UPDATED,isNew:true});
   const n=NOTIFS.filter(x=>x.isNew).length; const bdg=document.getElementById("bdg"); if(n){bdg.style.display="";bdg.textContent=n;}else bdg.style.display="none"; }
 function openNotifs(){ document.getElementById("notifList").innerHTML=NOTIFS.length?NOTIFS.map(x=>`<div class="notif"><div class="nm">${x.isNew?"🟢 ":""}${esc(x.item)}</div><div class="nt">${esc(x.msg)}</div></div>`).join(""):'<p class="empty">No notifications yet.</p>'; document.getElementById("notifOverlay").classList.add("show"); }
@@ -307,6 +344,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-setstatus]"))) return setStatus(el.dataset.setstatus,el.dataset.st);
   if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,+el.dataset.pini);
   if((el=c("[data-qty]"))) return setQty(el.dataset.qty,+el.dataset.d);
+  if((el=c("[data-saveprice]"))) return setPrice(el.dataset.saveprice);
   if((el=c("[data-delopt]"))) return delOpt(el.dataset.delopt,+el.dataset.optidx);
   if((el=c("[data-editopt]"))) return editOpt(el.dataset.editopt,+el.dataset.eidx);
   if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
