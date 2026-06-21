@@ -342,7 +342,7 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden)pullAndRe
 function focusModal(id){ setTimeout(()=>{ const ov=document.getElementById(id); const b=ov&&ov.querySelector("button,a,input,select"); if(b)b.focus(); },30); }
 
 /* ---------- admin gate (friends = read-only registry) ---------- */
-const ADMIN_HASH="ac03b24268491327fe765d9e0f6061150213d0367c4bf48993aefe93f0018e94";
+const ADMIN_HASH="72822ef23d9410a1845543fa7f5a0a4ec565412abd3785aeae424fc9cc0eb41a";
 let isAdmin=localStorage.getItem("admin")==="1";
 async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 function applyAdminUI(){
