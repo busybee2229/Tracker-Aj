@@ -189,7 +189,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
   const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" onclick="showView(\'dash\')">Open Dashboard</button>':'')+'</div>'; return; }
   const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' pick'+(rows.length>1?'s':'')+' chosen'+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
     const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror='this.parentNode.innerHTML="<div class=ph>${ic}</div>"'>`:`<div class="ph">${ic}</div>`;
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
     const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
@@ -207,16 +207,16 @@ function buildNotifs(){ NOTIFS=[]; allItems().forEach(p=>{ if(!isTracked(p.id))r
 function openNotifs(){ document.getElementById("notifList").innerHTML=NOTIFS.length?NOTIFS.map(x=>`<div class="notif"><div class="nm">${x.isNew?"🟢 ":""}${esc(x.item)}</div><div class="nt">${esc(x.msg)}</div></div>`).join(""):'<p class="empty">No notifications yet.</p>'; document.getElementById("notifOverlay").classList.add("show"); }
 
 /* ---------- add (new item OR option under existing) ---------- */
-let _edit=null;
+let _edit=null,_editReturn=null;
 function fillSelects(cat){
   document.getElementById("m_parent").innerHTML=['<option value="">— New standalone item —</option>'].concat(
     CATS.map(c=>`<optgroup label="${c}">`+allItems().filter(p=>p.category===c).map(p=>`<option value="${esc(p.id)}">${esc(p.item)}</option>`).join("")+`</optgroup>`)).join("");
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
 }
 function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; }
-function openAdd(cat){ _edit=null; document.querySelector("#addOverlay h3").textContent="Add product"; fillSelects(cat); setFields({}); document.getElementById("m_parent").value=""; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
-window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=pid; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
-window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=""; closeModal("itemOverlay"); document.getElementById("addOverlay").classList.add("show"); };
+function openAdd(cat){ _edit=null; _editReturn=null; document.querySelector("#addOverlay h3").textContent="Add product"; fillSelects(cat); setFields({}); document.getElementById("m_parent").value=""; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
+window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=pid; _editReturn=pid; document.getElementById("addOverlay").classList.add("show"); };
+window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada}); document.getElementById("m_parent").value=""; _editReturn=id; document.getElementById("addOverlay").classList.add("show"); };
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
   const parent=g("m_parent"), name=g("m_pick")||g("m_item"); if(!name){alert("Enter a name");return;}
@@ -227,11 +227,11 @@ function saveAdd(){
   if(_edit){
     if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
     else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.qty=g("m_qty"); it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
-    _edit=null; closeModal("addOverlay"); stats(); renderDash(); renderPending(); return;
+    _edit=null; closeModal("addOverlay"); stats(); renderDash(); renderPending(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} return;
   }
   if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
   else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:g("m_qty"),best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
-  closeModal("addOverlay"); stats(); renderDash(); renderPending();
+  closeModal("addOverlay"); stats(); renderDash(); renderPending(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);}
 }
 
 /* ---------- export / import ---------- */
@@ -264,7 +264,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-delopt]"))) return delOpt(el.dataset.delopt,+el.dataset.optidx);
   if((el=c("[data-editopt]"))) return editOpt(el.dataset.editopt,+el.dataset.eidx);
   if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
-  if((el=c("[data-addopt]"))) { closeModal("itemOverlay"); const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); document.getElementById("m_parent").value=el.dataset.addopt; return; }
+  if((el=c("[data-addopt]"))) { const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); _editReturn=el.dataset.addopt; document.getElementById("m_parent").value=el.dataset.addopt; return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
 });
 document.addEventListener("keydown",e=>{
@@ -281,7 +281,7 @@ document.getElementById("q").oninput=e=>{state.q=e.target.value;renderDash();};
 document.querySelectorAll("[data-f]").forEach(el=>el.onclick=()=>{state[el.dataset.f]=!state[el.dataset.f];el.classList.toggle("on");renderDash();});
 document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);save("accopen",OPEN);renderDash();};
 document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);save("accopen",OPEN);renderDash();};
-document.getElementById("m_cancel").onclick=()=>closeModal("addOverlay");
+document.getElementById("m_cancel").onclick=()=>{ closeModal("addOverlay"); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} };
 document.getElementById("m_save").onclick=saveAdd;
 function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); const b=document.getElementById("themeBtn"); if(b)b.textContent=(t==="dark")?"☀️":"🌙"; }
 let theme=localStorage.getItem("theme")||"light"; applyTheme(theme);
