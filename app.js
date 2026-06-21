@@ -1,19 +1,27 @@
 "use strict";
 /* Baby Deal Tracker — app logic (data lives in products.json; this is the only app file). */
-const CONFIG = { FX:{GBP:108,CAD:62,USD:85,INR:1}, DEAL_THRESHOLD:0.0, AVG_WINDOW_DAYS:30,
+const CONFIG = { FX:{GBP:108,CAD:62,USD:85,INR:1}, DEAL_THRESHOLD:0.05, AVG_WINDOW_DAYS:30,
   REPO:"https://github.com/busybee2229/Tracker-Aj" };
 const SUPA = { url:"https://nrpjtychwmuecmskehyj.supabase.co",
   key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycGp0eWNod211ZWNtc2tlaHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDMyMDUsImV4cCI6MjA5NzYxOTIwNX0.g-WGgUyrHLwql4ZqcNjVvCuT1TzcNIo1z6NNIdVNE9s",
+  saveFn:"https://nrpjtychwmuecmskehyj.supabase.co/functions/v1/save-state",
   h:e=>Object.assign({apikey:SUPA.key,Authorization:"Bearer "+SUPA.key},e||{}) };
 
 const FLAG={india:"🇮🇳",uk:"🇬🇧",canada:"🇨🇦"};
+const REGION={india:"India",uk:"UK",canada:"Canada"};       // proper display names (3.5)
+// only allow http/https URLs to become href/src — blocks javascript:/data: XSS (1.4)
+const safeUrl=u=>{ if(!u)return ""; try{ const x=new URL(u,location.href); return (x.protocol==="http:"||x.protocol==="https:")?x.href:""; }catch(e){ return ""; } };
+// convert a local price to ₹ using the CURRENT FX rate (3.4 — don't trust baked-in ₹)
+const toINR=(p,c)=>Math.round((+p||0)*(CONFIG.FX[String(c||"INR").toUpperCase()]||1));
 const CATS=["CLOTHING","HYGIENE & HEALTH","BASICS & GEAR","EXTRAS"];
 const CATICON={"CLOTHING":"👕","HYGIENE & HEALTH":"🧴","BASICS & GEAR":"🍼","EXTRAS":"🧸"};
 const URGENCIES=["Day 1","Day 1*","First weeks","Later"];
 const bcls={"Day 1":"day1","Day 1*":"day1","First weeks":"weeks","Later":"later","Optional":"opt","Owned":"owned","-":"opt"};
 
 let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="";
+let ADMIN_PW=sessionStorage.getItem("apw")||"";   // verified server-side on each write
 const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d);}catch(e){return JSON.parse(d);}};
+const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local only — never synced (2.2)
 let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OPEN=LS("accopen","null"),
     PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"",
     STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}");
@@ -47,11 +55,23 @@ function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys
 function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[]); new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const s=[...new Set([...ar((a||{})[k]),...ar((b||{})[k])])]; if(s.length)out[k]=s; }); return out; }
 function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
-function pushState(){ if(!SUPA.url)return; _pushPending=true; clearTimeout(_pt); _pt=setTimeout(async()=>{
+function pushState(){ if(!SUPA.url)return;
+  if(!ADMIN_PW){ return; } // friends/non-admins never write (RLS denies anon writes anyway)
+  _pushPending=true; clearTimeout(_pt); _pt=setTimeout(async()=>{
   const data=localState(); data.ts=Date.now(); bumpTs(data.ts);
-  try{ await fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data})}); }catch(e){}
+  try{ const r=await fetch(SUPA.saveFn,{method:"POST",headers:SUPA.h({"Content-Type":"application/json"}),body:JSON.stringify({password:ADMIN_PW,data})});
+    if(r.status===409){ console.warn("[sync] newer remote state — adopting it"); _pushPending=false; pullAndRender(); return; }
+    if(r.status===401){ syncToast("Save failed — admin session expired. Log in again."); console.warn("[sync] write unauthorized"); }
+    else if(!r.ok){ syncToast("Couldn't save changes — will retry on next edit."); console.warn("[sync] write failed",r.status); }
+  }catch(e){ syncToast("Offline — changes saved locally, not synced yet."); console.warn("[sync] write error",e); }
   _pushPending=false;
 },700); }
+let _toastT=null;
+function syncToast(msg){ let el=document.getElementById("syncToast");
+  if(!el){ el=document.createElement("div"); el.id="syncToast"; el.setAttribute("role","status");
+    el.style.cssText="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:13px;font-weight:560;padding:10px 16px;border-radius:980px;box-shadow:var(--sh-2);z-index:80;max-width:90vw;text-align:center";
+    document.body.appendChild(el); }
+  el.textContent=msg; el.style.display="block"; clearTimeout(_toastT); _toastT=setTimeout(()=>el.style.display="none",4000); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
   TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};
   localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));
@@ -61,7 +81,9 @@ function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
 async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
   if(rt>_lastTs && hasData(r)){ applyShared(r); bumpTs(rt); }
   else if(_lastTs>rt && hasData(localState())){ pushState(); } }
-async function pullAndRender(){ if(!SUPA.url||_pushPending)return; const r=await getRemote(); const rt=r.ts||0; if(rt<=_lastTs)return; applyShared(r); bumpTs(rt); try{ stats(); renderDash(); renderPending(); buildNotifs(); }catch(e){} }
+// don't yank the UI out from under an active interaction (2.1)
+function uiBusy(){ if(document.querySelector(".overlay.show"))return true; const a=document.activeElement; return !!(a&&(a.tagName==="INPUT"||a.tagName==="SELECT"||a.tagName==="TEXTAREA")); }
+async function pullAndRender(){ if(!SUPA.url||_pushPending||uiBusy())return; const r=await getRemote(); const rt=r.ts||0; if(rt<=_lastTs)return; applyShared(r); bumpTs(rt); try{ stats(); renderDash(); renderPending(); buildNotifs(); }catch(e){ console.warn("[sync] render after pull failed",e); } }
 const save=(k,v)=>{ localStorage.setItem(k,JSON.stringify(v)); pushState(); };
 
 /* ---------- prices ---------- */
@@ -75,14 +97,17 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
   }catch(e){}
   b.textContent="📊 Live prices fill in as the GitHub Action reads each product page. Photos, plan, options and links work now.";
 }
-function priceInfo(id){ const h=PRICES[id]||[]; if(!h.length)return null; const cur=h[h.length-1].inr;
+// ₹ for a record: prefer converting the stored LOCAL price at the current FX rate
+// (so history/averages aren't polluted by old FX); fall back to legacy stored inr (3.4)
+const recInr=x=>(x.local!=null&&x.currency)?toINR(x.local,x.currency):x.inr;
+function priceInfo(id){ const h=PRICES[id]||[]; if(!h.length)return null; const last=h[h.length-1]; const cur=recInr(last);
   const cut=Date.now()-CONFIG.AVG_WINDOW_DAYS*864e5; const win=h.filter(x=>x.date>=cut); const arr=win.length?win:h;
-  const avg=Math.round(arr.reduce((s,x)=>s+x.inr,0)/arr.length);
-  return {cur,avg,isDeal:cur<avg&&cur<=avg*(1-CONFIG.DEAL_THRESHOLD),pct:Math.round((1-cur/avg)*100)}; }
+  const avg=Math.round(arr.reduce((s,x)=>s+recInr(x),0)/arr.length);
+  return {cur,avg,region:last.region||"",isDeal:cur<avg&&cur<=avg*(1-CONFIG.DEAL_THRESHOLD),pct:Math.round((1-cur/avg)*100)}; }
 
 /* ---------- dashboard ---------- */
-function imgHtml(p){ const ic=CATICON[p.category]||"🍼"; return p.img
-  ? `<img src="${esc(p.img)}" alt="${esc(p.item)}" loading="lazy" referrerpolicy="no-referrer" onerror='this.parentNode.innerHTML="<div class=ph>${ic}</div>"'/>`
+function imgHtml(p){ const ic=CATICON[p.category]||"🍼"; const u=safeUrl(p.img||IMAGES[p.id]); return u
+  ? `<img src="${esc(u)}" alt="${esc(p.item)}" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}"/>`
   : `<div class="ph">${ic}</div>`; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
@@ -91,13 +116,14 @@ function cardHtml(p){
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
-  let price=""; if(pi){ price=`<div class="pr"><span class="cur">${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">avg ${inr(pi.avg)}</span>`)+`</div>`; }
   const have=p.owned?`<div class="have">✓ ${esc(p.owned)}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${esc(best.name)}</div>`:"";
   const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+
     (URGENCIES.includes(pri)?`<span class="b ${pc}">${pri}</span>`:"")+`<span class="b ${stc}">${effStatus(p)}</span></div>`;
   let foot=`<div class="cfoot">`;
-  if(best&&bl&&effStatus(p)!=="Owned") foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}" onclick="event.stopPropagation()">★ Buy best</a>`;
+  const blSafe=safeUrl(bl);
+  if(best&&blSafe&&effStatus(p)!=="Owned") foot+=`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(blSafe)}">★ Buy best</a>`;
   foot+=`<span class="detbtn">Details</span></div>`;
   return `<div class="card ${isDeal?'isdeal':''}" role="button" tabindex="0" aria-label="${esc(p.item)}" data-open="${esc(p.id)}">`+
     `<div class="imgwrap">${imgHtml(p)}${badges}${qtyChip(p)}<button class="delc" title="Delete ${esc(p.item)}" aria-label="Delete ${esc(p.item)}" data-del="${esc(p.id)}">✕</button></div>`+
@@ -126,7 +152,7 @@ function renderDash(){
     const acc=document.createElement("div"); acc.className="acc"+(open?" open":""); acc.id="cat"+CATS.indexOf(cat);
     acc.innerHTML=`<div class="head" role="button" tabindex="0"><span class="chev">▶</span><h2>${CATICON[cat]} ${cat}</h2><span class="cnt">${list.length}</span><button class="minibtn" data-add="${cat}">＋ Add</button></div><div class="body"><div class="grid"></div></div>`;
     const head=acc.querySelector(".head");
-    const toggle=()=>{acc.classList.toggle("open");OPEN[cat]=acc.classList.contains("open");save("accopen",OPEN);};
+    const toggle=()=>{acc.classList.toggle("open");OPEN[cat]=acc.classList.contains("open");lset("accopen",OPEN);};
     head.addEventListener("click",e=>{ if(e.target.closest("[data-add]"))return; toggle(); });
     head.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();} });
     acc.querySelector(".grid").innerHTML=list.map(cardHtml).join("")||'<p class="empty">No items.</p>';
@@ -143,10 +169,10 @@ function renderDash(){
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx){
   const pinned=isPinned(p.id,i); const ic=CATICON[p.category]||"🍼";
-  const img=(i===0&&p.img)?p.img:(o.img||"");
-  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror='this.parentNode.innerHTML="<div class=ph>${ic}</div>"'>`:`<div class="ph">${ic}</div>`}</div>`;
+  const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
+  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
-  const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]} ${k[0].toUpperCase()+k.slice(1)}</a>`:"").join("");
+  const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("");
   return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pini="${i}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
     (isUser?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
@@ -156,23 +182,31 @@ function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=(p.options||[]).length;
   let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pin=pinsOf(id).filter(i=>i<opts.length); if(pin.length){ order=[...pin, ...order.filter(i=>!pin.includes(i))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
-  let price=""; if(pi){ price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${pi.isDeal?'· '+pi.pct+'% below avg':'· avg '+inr(pi.avg)}</span></div><canvas class="spark" id="mspark"></canvas>`; }
   const qn=effQty(p);
   const stbtns=["Buy","Owned","Confirm"].map(st=>`<button class="trk ${effStatus(p)===st?'on':''}" data-setstatus="${esc(id)}" data-st="${st}">${st==="Buy"?"To buy":st}</button>`).join("");
   const edititem=String(id).startsWith("u")?`<button class="trk" data-edititem="${esc(id)}">✎ Edit</button>`:"";
   const m=document.getElementById("itemModal");
   m.innerHTML=`<button class="mclose" data-close="itemOverlay" aria-label="Close">×</button>`+
-    `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3>${esc(p.item)}</h3>`+
+    `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3 id="mtitle">${esc(p.item)}</h3>`+
     `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px">`+
       (URGENCIES.includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:"")+
       `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}</div>`+
     `<div class="qtyrow">Qty: <button class="qbtn" data-qty="${esc(id)}" data-d="-1" aria-label="Decrease">−</button><b id="qval">${qn}</b><button class="qbtn" data-qty="${esc(id)}" data-d="1" aria-label="Increase">+</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
+  m.setAttribute("aria-labelledby","mtitle");
   document.getElementById("itemOverlay").classList.add("show"); focusModal("itemOverlay");
   if(pi){ const h=(PRICES[id]||[]).slice(-20); const el=document.getElementById("mspark");
-    if(el&&window.Chart) new Chart(el,{type:"line",data:{labels:h.map(_=>""),datasets:[{data:h.map(x=>x.inr),borderColor:"#6b8caf",borderWidth:2,pointRadius:0,tension:.3}]},options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}},animation:false}}); }
+    if(el) ensureChart().then(Chart=>{ if(Chart&&document.body.contains(el)) new Chart(el,{type:"line",data:{labels:h.map(_=>""),datasets:[{data:h.map(recInr),borderColor:"#6b8caf",borderWidth:2,pointRadius:0,tension:.3}]},options:{plugins:{legend:{display:false}},scales:{x:{display:false},y:{display:false}},animation:false}}); }).catch(()=>{}); }
 }
+let _chartP=null;
+function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if(_chartP)return _chartP;
+  _chartP=new Promise((res,rej)=>{ const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js";
+    s.integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4"; s.crossOrigin="anonymous";
+    s.onload=()=>res(window.Chart); s.onerror=()=>{ _chartP=null; rej(new Error("chart load failed")); }; document.head.appendChild(s); });
+  return _chartP; }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
 /* ---------- actions ---------- */
@@ -187,13 +221,14 @@ function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userId
 function renderPending(){ const w=document.getElementById("pendingList");
   const rows=[]; allItems().forEach(p=>{ pinsOf(p.id).forEach(i=>{ const o=effOptions(p)[i]; if(o) rows.push({p,o,i}); }); });
   const items=rows;
-  if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" onclick="showView(\'dash\')">Open Dashboard</button>':'')+'</div>'; return; }
+  if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" data-showview="dash">Open Dashboard</button>':'')+'</div>'; return; }
   const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=o.img||p.img||"";
-    const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror='this.parentNode.innerHTML="<div class=ph>${ic}</div>"'>`:`<div class="ph">${ic}</div>`;
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=safeUrl(o.img||p.img||IMAGES[p.id]||"");
+    const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
-    const links=["india","uk","canada"].map(k=>o[k]?`<a class="lk" target="_blank" rel="noopener" href="${esc(o[k])}">${FLAG[k]}</a>`:"").join("");
-    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?inr(pi.cur):'—'}</span></div></div></div>`;
+    const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
+    const regflag=pi&&pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":"";
+    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?regflag+inr(pi.cur):'—'}</span></div></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Last updated "+UPDATED):"No price data yet.";
   const rows=[]; allItems().forEach(p=>{ (PRICES[p.id]||[]).forEach(x=>rows.push({item:p.item,...x})); }); rows.sort((a,b)=>b.date-a.date);
@@ -231,7 +266,7 @@ function saveAdd(){
     _edit=null; closeModal("addOverlay"); stats(); renderDash(); renderPending(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} return;
   }
   if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
-  else { USER.push({id:"u"+Date.now(),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:g("m_qty"),best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
+  else { USER.push({id:"u"+((crypto.randomUUID&&crypto.randomUUID())||Date.now()),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:g("m_qty"),best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
   closeModal("addOverlay"); stats(); renderDash(); renderPending(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);}
 }
 
@@ -258,6 +293,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-add]"))) { e.stopPropagation(); return openAdd(el.dataset.add); }
   if((el=c("[data-stat]"))) { state.stat=state.stat===el.dataset.stat?"":el.dataset.stat; stats(); return renderDash(); }
   if((el=c("[data-close]"))) return closeModal(el.dataset.close);
+  if((el=c("[data-showview]"))) return showView(el.dataset.showview);
   if((el=c("[data-track]"))) return toggleTrack(el.dataset.track);
   if((el=c("[data-setstatus]"))) return setStatus(el.dataset.setstatus,el.dataset.st);
   if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,+el.dataset.pini);
@@ -268,6 +304,8 @@ document.addEventListener("click",e=>{
   if((el=c("[data-addopt]"))) { const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); _editReturn=el.dataset.addopt; document.getElementById("m_parent").value=el.dataset.addopt; return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
 });
+// broken image → swap for the emoji placeholder (replaces inline onerror, CSP-safe)
+document.addEventListener("error",e=>{ const img=e.target; if(img&&img.tagName==="IMG"&&img.dataset&&img.dataset.ph!==undefined){ const d=document.createElement("div"); d.className="ph"; d.textContent=img.dataset.ph||"🍼"; img.replaceWith(d); } },true);
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){document.querySelectorAll(".overlay.show").forEach(o=>o.classList.remove("show"));}
   const card=e.target.closest&&e.target.closest("[data-open]");
@@ -277,11 +315,11 @@ document.querySelectorAll(".overlay").forEach(o=>o.addEventListener("click",e=>{
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>showView(b.dataset.v));
 document.getElementById("bell").onclick=openNotifs;
 document.getElementById("notifClose").onclick=()=>closeModal("notifOverlay");
-document.getElementById("notifClear").onclick=()=>{ NOTIFS.forEach(x=>SEEN[x.key]=1); save("seenDeals",SEEN); if(UPDATED){SEENUP=UPDATED;localStorage.setItem("seenUpdated",UPDATED);} buildNotifs(); openNotifs(); };
-document.getElementById("q").oninput=e=>{state.q=e.target.value;renderDash();};
+document.getElementById("notifClear").onclick=()=>{ NOTIFS.forEach(x=>SEEN[x.key]=1); lset("seenDeals",SEEN); if(UPDATED){SEENUP=UPDATED;localStorage.setItem("seenUpdated",UPDATED);} buildNotifs(); openNotifs(); };
+let _qT=null; document.getElementById("q").oninput=e=>{state.q=e.target.value;clearTimeout(_qT);_qT=setTimeout(renderDash,150);};
 document.querySelectorAll("[data-f]").forEach(el=>el.onclick=()=>{state[el.dataset.f]=!state[el.dataset.f];el.classList.toggle("on");renderDash();});
-document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);save("accopen",OPEN);renderDash();};
-document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);save("accopen",OPEN);renderDash();};
+document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);lset("accopen",OPEN);renderDash();};
+document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);lset("accopen",OPEN);renderDash();};
 document.getElementById("m_cancel").onclick=()=>{ closeModal("addOverlay"); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} };
 document.getElementById("m_save").onclick=saveAdd;
 function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); const b=document.getElementById("themeBtn"); if(b)b.textContent=(t==="dark")?"☀️":"🌙"; }
@@ -303,13 +341,15 @@ let isAdmin=localStorage.getItem("admin")==="1";
 async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");}
 function applyAdminUI(){
   document.body.classList.toggle("admin",isAdmin);
-  const ab=document.getElementById("adminBtn"); if(ab)ab.textContent=isAdmin?"🔓 Log out":"🔒 Admin";
+  const ab=document.getElementById("adminBtn");
+  if(ab){ ab.innerHTML=isAdmin?'<span aria-hidden="true">🔓</span> <span class="lbl">Log out</span>':'<span aria-hidden="true">🔒</span> <span class="lbl">Admin</span>';
+    ab.setAttribute("aria-label",isAdmin?"Log out of admin":"Admin login"); }
   showView(isAdmin?"dash":"pending");
 }
 (function(){ const ab=document.getElementById("adminBtn"); if(!ab)return;
-  ab.onclick=async()=>{ if(isAdmin){localStorage.removeItem("admin");isAdmin=false;applyAdminUI();return;}
+  ab.onclick=async()=>{ if(isAdmin){localStorage.removeItem("admin");isAdmin=false;ADMIN_PW="";sessionStorage.removeItem("apw");applyAdminUI();return;}
     const pw=prompt("Admin password:"); if(pw==null)return;
-    if(await sha(pw)===ADMIN_HASH){localStorage.setItem("admin","1");isAdmin=true;applyAdminUI();}
+    if(await sha(pw)===ADMIN_HASH){ ADMIN_PW=pw; sessionStorage.setItem("apw",pw); localStorage.setItem("admin","1"); isAdmin=true; applyAdminUI(); }
     else alert("Wrong password."); }; })();
 
 

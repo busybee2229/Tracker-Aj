@@ -1,3 +1,9 @@
 .DS_Store
 node_modules/
 baby-tracker-edits.json
+supabase/.temp/
+
+# internal docs — keep out of the public repo
+AUDIT.md
+SECURITY-SETUP.md
+HANDOFF.md

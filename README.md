@@ -1,41 +1,66 @@
-# 👶 Baby Deal Tracker
+# 👶 Naina's Baby Registry
 
-A static dashboard (India · UK · Canada, cheapest in ₹) with per-item top-3 brand
-options, three-country links, an Owned view, add/delete, and live prices+photos
-fed by a free GitHub Actions cron.
+A warm, static baby **registry + private deal tracker** for India · UK · Canada
+(prices shown in ₹). Family/friends see a read-only registry of finalised picks;
+you and your wife log in as **admin** to research, add, edit and finalise items.
+
+- **Live:** https://tracker-aj.vercel.app
+- **Host:** Vercel (auto-deploys on push to `main`)
+- **Sync DB:** Supabase project `nrpjtychwmuecmskehyj`, table `tracker_state`
+
+## How it works
+- **Catalogue** lives in `products.json` (base items, each with top-3 options,
+  images, `bestRegion`). The page shell + design system is `index.html`; all app
+  logic is `app.js`.
+- **Your edits** (added items/options, finalised pins, quantities, status, track)
+  live in **Supabase** and sync live across devices (Realtime + a 5s poll).
+- **Prices** live in `prices.json`, written by a free GitHub Action twice daily
+  (best-effort — see below).
 
 ## Files
-- `index.html` — the whole dashboard (catalogue embedded). Reads `prices.json` for live data.
-- `products.json` — item list + top-3 options the price job reads.
-- `prices.json` — written by the job: `{updated, items:{id:[{date,inr,region}]}, images:{id:url}}`.
-- `scripts/fetch-prices.mjs` — Node price/image fetcher (no dependencies).
-- `.github/workflows/update-prices.yml` — runs the fetcher twice daily and commits.
+| File | Purpose |
+|---|---|
+| `index.html` | Shell + full CSS (the design system). Loads `app.js`. |
+| `app.js` | All app logic; reads `products.json` + `prices.json`; syncs via Supabase. |
+| `products.json` | Catalogue (54 base items) + top-3 options + images + `bestRegion`. |
+| `prices.json` | `{updated, items, images}` written by the price job. |
+| `scripts/fetch-prices.mjs` | Free product-page price + og:image reader (Shopify/JSON-LD/meta). |
+| `.github/workflows/update-prices.yml` | Twice-daily price job → commits `prices.json`. |
+| `.github/workflows/backup-state.yml` | Daily backup of the Supabase shared row → `state-backup.json`. |
+| `supabase/functions/save-state/` | Edge Function: the only authorized write path (see SECURITY-SETUP.md). |
+| `vercel.json` | Security headers (CSP) + no-cache. |
+| `DESIGN.md` | Apple-grade design principles (standing instruction). |
+| `SECURITY-SETUP.md` | One-time Supabase RLS + Edge Function + secret setup. |
 
-## Deploy (one-time)
+## Security model (read this)
+- **Friends are read-only.** Supabase RLS lets anonymous visitors *read* the shared
+  row but not write it. (Run the SQL in `SECURITY-SETUP.md` to enable this.)
+- **Writes go through an Edge Function** that verifies the admin password against a
+  server-side secret and writes with the service-role key. The SHA-256 hash in
+  `app.js` is only an instant UX gate — the real check is server-side.
+- See **`SECURITY-SETUP.md`** for the one-time setup and the required deploy order.
+
+## Deploy
 ```bash
-# from inside this folder
-git init
-git add .
-git commit -m "Baby Deal Tracker"
-git branch -M main
-git remote add origin https://github.com/<your-username>/baby-deal-tracker.git
-git push -u origin main
+cd ~/Tracker
+git add -A && git commit -m "describe change" && git push   # Vercel redeploys in ~30s
 ```
-Then on Vercel: **Add New → Project → Import** that repo → **Deploy**.
-You'll get a public URL (e.g. `baby-deal-tracker.vercel.app`) to share with family.
+> **First-time / after pulling these security changes:** deploy the Edge Function and
+> set the `ADMIN_PASSWORD` secret **before** (or together with) pushing the site, or
+> admin saves will fail until the function exists. See `SECURITY-SETUP.md`.
 
-## Turn on automated prices & photos
-1. The workflow runs automatically on schedule once the repo is on GitHub.
-2. To run it immediately: GitHub repo → **Actions** tab → **Update baby prices** → **Run workflow**.
-3. It commits `prices.json`; Vercel auto-redeploys; the dashboard then shows live ₹ prices, deal flags and product photos.
+## Prices (caveats)
+- The free reader prices only items that expose machine-readable data on their
+  product page (Shopify/JSON-LD/meta) — currently ~10 items; the rest stay blank
+  because big retailers (e.g. Amazon) block scrapers.
+- ₹ is computed from the stored **local price + currency at display time** using the
+  current FX rate, so price history and "deals" reflect real price moves, not
+  currency swings.
+- A shown price may come from a different market than the item's "Buy best" link;
+  the card now shows the price's **market flag** to make that clear.
+- For exact Amazon prices across IN/UK/CA, plug a price API (e.g. Keepa/SerpAPI)
+  into `scripts/fetch-prices.mjs` where `extractPrice` is called.
 
-### Reliability note
-Retailers block automated scrapers from cloud IPs, so the free fetcher is best-effort —
-it reliably captures product **images** (og:image) and many prices, but some prices will be
-skipped. For rock-solid prices, plug a price API (e.g. a Keepa/SerpAPI key) into
-`scripts/fetch-prices.mjs` where `extractPrice` is called.
-
-## Editing on the site
-Add/delete items and Track toggles are saved in your browser. Use **Export edits** to
-download them and **Import** on another device. To make an edit permanent for everyone,
-edit `products.json` and push.
+## Editing
+- Add/delete items, finalise picks, set quantities/status in the admin Dashboard.
+- **Export edits** downloads a JSON backup; **Import** restores it.

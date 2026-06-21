@@ -1,6 +1,11 @@
 {
   "headers": [
-    { "source": "/(.*)", "headers": [ { "key": "Cache-Control", "value": "no-cache, must-revalidate" } ] },
+    { "source": "/(.*)", "headers": [
+      { "key": "Cache-Control", "value": "no-cache, must-revalidate" },
+      { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" },
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "Referrer-Policy", "value": "no-referrer" }
+    ] },
     { "source": "/prices.json", "headers": [ { "key": "Cache-Control", "value": "no-store" } ] },
     { "source": "/products.json", "headers": [ { "key": "Cache-Control", "value": "no-store" } ] },
     { "source": "/app.js", "headers": [ { "key": "Cache-Control", "value": "no-cache, must-revalidate" } ] }
