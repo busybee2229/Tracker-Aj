@@ -40,16 +40,22 @@ let NOTIFS=[], sparks=[];
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
-function pushState(){ if(!SUPA.url)return; clearTimeout(_pt); _pt=setTimeout(()=>{
-  fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),
-    body:JSON.stringify({id:"shared",data:{track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY}})}).catch(()=>{}); },600); }
+function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY}; }
+function mO(a,b){ return Object.assign({},a||{},b||{}); }
+function mItems(a,b){ const m={}; [...(a||[]),...(b||[])].forEach(x=>{ if(x&&x.id!=null)m[x.id]=x; }); return Object.values(m); }
+function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.name||"")+"|"+(o.uk||"")+(o.india||"")+(o.canada||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
+function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[]); new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const s=[...new Set([...ar((a||{})[k]),...ar((b||{})[k])])]; if(s.length)out[k]=s; }); return out; }
+function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
+async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data&t="+Date.now(),{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
+function pushState(){ if(!SUPA.url)return; clearTimeout(_pt); _pt=setTimeout(async()=>{
+  const merged=mergeState(await getRemote(), localState()); applyShared(merged);
+  fetch(SUPA.url+"/rest/v1/tracker_state",{method:"POST",headers:SUPA.h({"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=minimal"}),body:JSON.stringify({id:"shared",data:merged})}).catch(()=>{});
+  try{ stats(); renderDash(); renderPending(); }catch(e){}
+},700); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
   const map={track:v=>TRACK=v,hidden:v=>HIDDEN=v,useritems:v=>USER=v,pins:v=>PINS=v,statusovr:v=>STATUSOVR=v,useropts:v=>USEROPTS=v,userqty:v=>USERQTY=v};
   Object.keys(map).forEach(k=>{ if(d[k]!=null){ map[k](d[k]); localStorage.setItem(k==="useritems"?"useritems":k==="statusovr"?"statusovr":k, JSON.stringify(d[k])); } }); normPins(); }
-async function syncPull(){ if(!SUPA.url)return; try{
-  const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data&t="+Date.now(),{headers:SUPA.h(),cache:"no-store"});
-  if(!r.ok)return; const a=await r.json(); if(a&&a[0]&&a[0].data) applyShared(a[0].data);
-}catch(e){} }
+async function syncPull(){ if(!SUPA.url)return; const remote=await getRemote(); applyShared(mergeState(remote, localState())); }
 const save=(k,v)=>{ localStorage.setItem(k,JSON.stringify(v)); pushState(); };
 
 /* ---------- prices ---------- */
@@ -297,7 +303,7 @@ function applyAdminUI(){
 (async()=>{
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
-  await Promise.all([getFX(),loadPrices()]); await syncPull();
+  await Promise.all([getFX(),loadPrices()]); await syncPull(); pushState();
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
 })();
