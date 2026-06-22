@@ -192,7 +192,7 @@ function imgHtml(p,override){ const ic=CATICON[p.category]||"🍼"; const u=safe
   : `<div class="ph">${ic}</div>`; }
 // image of the finalised (pinned) option for an item, if any — else "" (caller falls back to default)
 function finalImg(p){ const pins=pinsOf(p.id); if(!pins.length)return ""; const opts=effOptions(p); const i=opts.findIndex(o=>pins.includes(o._key)); if(i<0)return ""; const o=opts[i];
-  return (i===0?(p.img||IMAGES[p.id]||""):(o.img||""))||p.img||IMAGES[p.id]||""; }
+  return o.img||p.img||IMAGES[p.id]||""; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
 function cardHtml(p){
@@ -265,7 +265,7 @@ function renderToBuy(){
   const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
   const L=document.getElementById("buyList");
   const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
-    const cimg=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
+    const cimg=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]):"")||"");
     const ct=cimg?`<img src="${esc(cimg)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const sub=(pc.pros&&pc.pros[0])?esc(pc.pros[0]):(o.why?esc(o.why):"");
     const isPick=pins.includes(i), l=singleLink(o,p);
@@ -296,7 +296,7 @@ function renderToBuy(){
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx,bestKey){
   const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
-  const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
+  const img=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]||""):"")||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(o._key===bestKey?`<span class="rank">★ Best value</span>`:"");
   const links=o.multi
@@ -352,7 +352,7 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
 const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
 function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
   const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0; const bestKey=bestValueKey(id);
-  const cards=opts.map((o,i)=>{ const data=pcOf(id,o); const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||""); const prc=optPriceINR(id,o);
+  const cards=opts.map((o,i)=>{ const data=pcOf(id,o); const img=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]):"")||""); const prc=optPriceINR(id,o);
     const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
     const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
     const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
@@ -423,9 +423,11 @@ function renderPending(){ const w=document.getElementById("pendingList");
   w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+totLine+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=safeUrl(o.img||p.img||IMAGES[p.id]||"");
     const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
-    const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
-    const regflag=pi&&pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":"";
-    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?regflag+inr(pi.cur):'—'}</span></div></div></div>`;
+    const links=o.multi
+      ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("")
+      : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View</a>`:"";})();
+    const prc=optPriceINR(p.id,o);   // this pick's OWN price, not the item's cheapest
+    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${prc?inr(prc):'—'}</span></div></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Auto-prices last updated "+UPDATED+" · add your own per item"):"Add India/UK/Canada prices in any item, or let the job fetch them.";
   const t=document.getElementById("logTable");
