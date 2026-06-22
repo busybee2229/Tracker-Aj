@@ -25,7 +25,7 @@ const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local o
 let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OPEN=LS("accopen","null"),
     PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"",
     STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}"),
-    USERPRICES=LS("userprices","{}"),USERTARGET=LS("usertarget","{}");
+    USERPRICES=LS("userprices","{}"),USERTARGET=LS("usertarget","{}"),USERBOUGHT=LS("userbought","{}");
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
 normPins();
 
@@ -33,8 +33,12 @@ const isTracked=id=>TRACK[id]!==false;
 const inr=n=>"₹"+(+n||0).toLocaleString("en-IN");
 const effStatus=p=>STATUSOVR[p.id]||p.status;
 const effOptions=p=>(p.options||[]).concat(USEROPTS[p.id]||[]);
-const defaultQty=p=>{const m=String(p.qty||"").match(/\d+/);return m?+m[0]:1;};
-const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);
+const defaultQty=p=>{const m=String(p.qty||"").match(/\d+/g);return m?+m[m.length-1]:1;};  // upper bound of "5-7" → 7
+const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);   // = quantity NEEDED
+const neededQty=p=>effQty(p);
+const boughtQty=p=>+USERBOUGHT[p.id]||0;
+const isDone=p=>effStatus(p)==="Owned"||(neededQty(p)>0&&boughtQty(p)>=neededQty(p));
+const isToBuy=p=>!HIDDEN[p.id]&&(effStatus(p)==="Buy"||effStatus(p)==="Confirm")&&!isDone(p);
 const bestRegion=p=>p.bestRegion||"india";
 const pinsOf=id=>Array.isArray(PINS[id])?PINS[id]:(PINS[id]!=null?[PINS[id]]:[]);
 const isPinned=(id,i)=>pinsOf(id).includes(i);
@@ -49,7 +53,7 @@ let NOTIFS=[], sparks=[], _lastTs=+(localStorage.getItem("lastTs")||0), _pushPen
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
-function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY,userprices:USERPRICES,usertarget:USERTARGET}; }
+function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY,userprices:USERPRICES,usertarget:USERTARGET,userbought:USERBOUGHT}; }
 function mO(a,b){ return Object.assign({},a||{},b||{}); }
 function mItems(a,b){ const m={}; [...(a||[]),...(b||[])].forEach(x=>{ if(x&&x.id!=null)m[x.id]=x; }); return Object.values(m); }
 function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.name||"")+"|"+(o.uk||"")+(o.india||"")+(o.canada||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
@@ -80,10 +84,10 @@ function syncToast(msg){ let el=document.getElementById("syncToast");
     document.body.appendChild(el); }
   el.textContent=msg; el.style.display="block"; clearTimeout(_toastT); _toastT=setTimeout(()=>el.style.display="none",4000); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
-  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};
-  localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));localStorage.setItem("userprices",JSON.stringify(USERPRICES));localStorage.setItem("usertarget",JSON.stringify(USERTARGET));
+  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};USERBOUGHT=d.userbought||{};
+  localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));localStorage.setItem("userprices",JSON.stringify(USERPRICES));localStorage.setItem("usertarget",JSON.stringify(USERTARGET));localStorage.setItem("userbought",JSON.stringify(USERBOUGHT));
   normPins(); }
-function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length); }
+function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length||Object.keys(r.userbought||{}).length); }
 function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
 async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
   if(rt>_lastTs && hasData(r)){ applyShared(r); bumpTs(rt); }
@@ -193,6 +197,36 @@ function renderDash(){
   document.getElementById("impFile").onchange=importEdits;
 }
 
+/* ---------- To-Buy checklist (default admin view) ---------- */
+function recOption(p){ const opts=effOptions(p); if(!opts.length)return null; const pins=pinsOf(p.id).filter(i=>i<opts.length); const i=pins.length?pins[0]:0; return {o:opts[i],i}; }
+function bestLinkFor(p){ const r=recOption(p); if(!r)return ""; const o=r.o, br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); }
+function renderToBuy(){
+  const items=allItems().filter(p=>!HIDDEN[p.id]);
+  const buy=items.filter(isToBuy);
+  const done=items.filter(p=>(effStatus(p)==="Buy"||effStatus(p)==="Confirm"||effStatus(p)==="Owned")&&isDone(p));
+  const urg=p=>{const i=URGENCIES.indexOf(p.priority);return i<0?9:i;};
+  buy.sort((a,b)=>urg(a)-urg(b)||CATS.indexOf(a.category)-CATS.indexOf(b.category)||(hasPin(b.id)?1:0)-(hasPin(a.id)?1:0));
+  const total=buy.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
+  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div>`;
+  const L=document.getElementById("buyList");
+  L.innerHTML = buy.length ? buy.map(p=>{ const r=recOption(p), pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼";
+    const img=safeUrl(finalImg(p)||p.img||IMAGES[p.id]||(r&&r.o.img)||"");
+    const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
+    const need=neededQty(p), got=boughtQty(p), pri=p.priority||"", badge=URGENCIES.includes(pri)?`<span class="b ${bcls[pri]||'opt'}">${pri}</span>`:"";
+    const qtyTag=need>1?`<span class="bqty">${got}/${need}</span>`:"";
+    const pickName=r?esc(r.o.name):(p.owned?esc(p.owned):"");
+    const why=r&&r.o.why?`<span class="bwhy">— ${esc(r.o.why)}</span>`:"";
+    const priceTxt = pi?`<span class="bprice ${pi.isDeal?'deal':''}">${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}${pi.isDeal?' 🔥':''}${pi.target&&!pi.isDeal?' · target '+inr(pi.target):''}</span>`:`<span class="bprice none">no price yet</span>`;
+    const bl=bestLinkFor(p), buyBtn=bl?`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}">★ Buy best</a>`:"";
+    const gotBtn=need>1?`<button class="trk" data-bought="${esc(p.id)}" data-d="1">+1 bought</button>`:`<button class="trk gotit" data-got="${esc(p.id)}">Got it ✓</button>`;
+    return `<div class="buyrow" role="button" tabindex="0" data-open="${esc(p.id)}" aria-label="${esc(p.item)}"><div class="bthumb">${thumb}</div><div class="bmain"><div class="btitle">${esc(p.item)} ${qtyTag} ${badge}</div><div class="bpick">${pickName?`<b>${pickName}</b>`:'<span class="muted">no pick chosen — tap Compare</span>'} ${why}</div><div class="bmetarow">${priceTxt}</div></div><div class="bact">${buyBtn}<button class="detbtn" data-open="${esc(p.id)}">Compare</button>${gotBtn}</div></div>`;
+  }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
+  const D=document.getElementById("buyDone");
+  if(!done.length){ D.innerHTML=""; }
+  else { D.innerHTML=`<div class="donehead" id="doneToggle"><span class="chev">▶</span> Done (${done.length})</div><div class="donebody" id="doneBody">`+done.map(p=>{ const r=recOption(p), nm=r?esc(r.o.name):(p.owned?esc(p.owned):""); return `<div class="donerow"><span class="dn">${esc(p.item)}${nm?` · ${nm}`:''}</span><button class="minibtn" data-got="${esc(p.id)}">Undo</button></div>`; }).join("")+`</div>`;
+    const dt=document.getElementById("doneToggle"),db=document.getElementById("doneBody"); if(dt&&db)dt.onclick=()=>{db.classList.toggle("open");dt.classList.toggle("open");}; }
+}
+
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx){
   const pinned=isPinned(p.id,i); const ic=CATICON[p.category]||"🍼";
@@ -226,7 +260,7 @@ function openItem(id){
     `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px">`+
       (URGENCIES.includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:"")+
       `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}</div>`+
-    `<div class="qtyrow">Qty: <button class="qbtn" data-qty="${esc(id)}" data-d="-1" aria-label="Decrease">−</button><b id="qval">${qn}</b><button class="qbtn" data-qty="${esc(id)}" data-d="1" aria-label="Increase">+</button></div>`+
+    `<div class="qtyrow">Need <input class="qnum" id="m_need" inputmode="numeric" value="${neededQty(p)}" data-need="${esc(id)}" aria-label="Quantity needed"> · Bought <button class="qbtn" data-bought="${esc(id)}" data-d="-1" aria-label="Decrease bought">−</button><b id="bval">${boughtQty(p)}</b><button class="qbtn" data-bought="${esc(id)}" data-d="1" aria-label="Increase bought">+</button> <button class="trk gotit ${isDone(p)?'on':''}" data-got="${esc(id)}">${isDone(p)?'✓ Got it':'Got it'}</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${priceEdit}${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
   m.setAttribute("aria-labelledby","mtitle");
@@ -247,7 +281,11 @@ function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
 function setStatus(id,st){ const b=(itemById(id)||{}).status; if(st===b)delete STATUSOVR[id]; else STATUSOVR[id]=st; save("statusovr",STATUSOVR); stats(); renderDash(); openItem(id); }
 function pinOpt(id,i){ let a=pinsOf(id).slice(); a=a.includes(i)?a.filter(x=>x!==i):a.concat(i); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
-function setQty(id,d){ const cur=effQty(itemById(id)); USERQTY[id]=Math.max(0,cur+d); save("userqty",USERQTY); renderDash(); openItem(id); renderPending(); }
+function refreshAll(){ stats(); renderDash(); renderPending(); if(document.getElementById("v-tobuy"))renderToBuy(); buildNotifs(); }
+function reopenIfModal(id){ if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
+function setNeed(id,val){ USERQTY[id]=Math.max(0,Math.round(parseFloat(val)||0)); save("userqty",USERQTY); refreshAll(); }
+function setBought(id,d){ const cur=boughtQty(itemById(id)); USERBOUGHT[id]=Math.max(0,cur+(+d||0)); save("userbought",USERBOUGHT); refreshAll(); reopenIfModal(id); }
+function markGot(id){ const p=itemById(id); USERBOUGHT[id]=isDone(p)?0:Math.max(1,neededQty(p)); save("userbought",USERBOUGHT); refreshAll(); reopenIfModal(id); }
 function setPrice(id){ const g=s=>{const el=document.getElementById(s); const n=parseFloat(String(el?el.value:"").replace(/[^\d.]/g,"")); return isNaN(n)?0:n;};
   const today=new Date().toISOString().slice(0,10); let arr=(USERPRICES[id]||[]).slice();
   ["india","uk","canada"].forEach(r=>{ const v=g("m_price_"+r); if(v>0){ arr=arr.filter(x=>!(x.manual&&x.region===r&&x.date===today)); arr.push({date:today,inr:Math.round(v),local:Math.round(v),currency:"INR",region:r,manual:true}); } });
@@ -328,13 +366,13 @@ function stats(){ const items=allItems();
   document.getElementById("stats").innerHTML=defs.map(([k,key,l])=>`<button class="stat ${key==='deal'?'deal':''} ${key==='pinned'?'pin':''} ${state.stat===k?'active':''}" data-stat="${k}"><div class="n">${c[key]}</div><div class="l">${l}</div></button>`).join("");
 }
 function showView(v){ document.querySelectorAll(".view").forEach(x=>x.classList.remove("on")); document.getElementById("v-"+v).classList.add("on");
-  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v)); if(v==="pending")renderPending(); if(v==="log")renderLog(); }
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v)); if(v==="pending")renderPending(); if(v==="tobuy")renderToBuy(); if(v==="log")renderLog(); }
 
 /* ---------- global event wiring (delegation) ---------- */
 document.addEventListener("click",e=>{
   const t=e.target, c=s=>t.closest(s);
   let el;
-  if((el=c("[data-open]"))&&!t.closest("[data-del]")&&!t.closest("a")&&!t.closest(".bestbtn")) return openItem(el.dataset.open);
+  if((el=c("[data-open]"))&&!t.closest("[data-del]")&&!t.closest("a")&&!t.closest(".bestbtn")&&!t.closest("[data-got]")&&!t.closest("[data-bought]")) return openItem(el.dataset.open);
   if((el=c("[data-del]"))) { e.stopPropagation(); return delItem(el.dataset.del); }
   if((el=c("[data-add]"))) { e.stopPropagation(); return openAdd(el.dataset.add); }
   if((el=c("[data-stat]"))) { state.stat=state.stat===el.dataset.stat?"":el.dataset.stat; stats(); return renderDash(); }
@@ -343,7 +381,8 @@ document.addEventListener("click",e=>{
   if((el=c("[data-track]"))) return toggleTrack(el.dataset.track);
   if((el=c("[data-setstatus]"))) return setStatus(el.dataset.setstatus,el.dataset.st);
   if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,+el.dataset.pini);
-  if((el=c("[data-qty]"))) return setQty(el.dataset.qty,+el.dataset.d);
+  if((el=c("[data-bought]"))) return setBought(el.dataset.bought,+el.dataset.d);
+  if((el=c("[data-got]"))) return markGot(el.dataset.got);
   if((el=c("[data-saveprice]"))) return setPrice(el.dataset.saveprice);
   if((el=c("[data-delopt]"))) return delOpt(el.dataset.delopt,+el.dataset.optidx);
   if((el=c("[data-editopt]"))) return editOpt(el.dataset.editopt,+el.dataset.eidx);
@@ -353,6 +392,8 @@ document.addEventListener("click",e=>{
 });
 // broken image → swap for the emoji placeholder (replaces inline onerror, CSP-safe)
 document.addEventListener("error",e=>{ const img=e.target; if(img&&img.tagName==="IMG"&&img.dataset&&img.dataset.ph!==undefined){ const d=document.createElement("div"); d.className="ph"; d.textContent=img.dataset.ph||"🍼"; img.replaceWith(d); } },true);
+// typeable "Need" quantity input
+document.addEventListener("change",e=>{ const el=e.target.closest&&e.target.closest("[data-need]"); if(el)setNeed(el.dataset.need,el.value); });
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){document.querySelectorAll(".overlay.show").forEach(o=>o.classList.remove("show"));}
   const card=e.target.closest&&e.target.closest("[data-open]");
@@ -391,7 +432,7 @@ function applyAdminUI(){
   const ab=document.getElementById("adminBtn");
   if(ab){ ab.innerHTML=isAdmin?'<span aria-hidden="true">🔓</span> <span class="lbl">Log out</span>':'<span aria-hidden="true">🔒</span> <span class="lbl">Admin</span>';
     ab.setAttribute("aria-label",isAdmin?"Log out of admin":"Admin login"); }
-  showView(isAdmin?"dash":"pending");
+  showView(isAdmin?"tobuy":"pending");
 }
 (function(){ const ab=document.getElementById("adminBtn"); if(!ab)return;
   ab.onclick=async()=>{ if(isAdmin){localStorage.removeItem("admin");isAdmin=false;ADMIN_PW="";sessionStorage.removeItem("apw");applyAdminUI();return;}

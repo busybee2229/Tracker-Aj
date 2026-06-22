@@ -188,6 +188,39 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .formrow input:focus,.formrow select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
+/* To-Buy checklist */
+.buyhead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:6px 0 16px;flex-wrap:wrap}
+.buyh2{font-size:22px;font-weight:720;letter-spacing:-0.02em;margin:0}
+.buysub{font-size:13px;color:var(--muted);margin-top:2px}
+.prog{display:flex;align-items:center;gap:10px;min-width:170px;flex:1;max-width:280px}
+.progbar{flex:1;height:8px;background:var(--opt-soft);border-radius:980px;overflow:hidden}
+.progbar span{display:block;height:100%;background:var(--deal);border-radius:980px;transition:width .3s}
+.progn{font-size:12.5px;color:var(--muted);font-weight:560}
+.buyrow{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;box-shadow:var(--sh-1);cursor:pointer;transition:.15s}
+.buyrow:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
+.buyrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bthumb{width:62px;height:62px;flex:0 0 auto;border-radius:12px;overflow:hidden;background:var(--tile);border:1px solid var(--tile-line);display:flex;align-items:center;justify-content:center}
+.bthumb img{width:100%;height:100%;object-fit:cover}.bthumb .ph{font-size:26px;opacity:.4}
+.bmain{flex:1;min-width:0}
+.btitle{font-weight:620;font-size:15px;letter-spacing:-0.01em;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.bpick{font-size:13px;color:var(--muted);margin-top:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.bpick .muted{color:var(--faint)}.bwhy{color:var(--faint)}
+.bmetarow{margin-top:5px;font-size:13px}
+.bprice{font-weight:650}.bprice.deal{color:var(--deal)}.bprice.none{color:var(--faint);font-weight:500}
+.bqty{font-size:11.5px;font-weight:680;color:var(--accent-d);background:var(--accent-soft);border-radius:980px;padding:2px 8px}
+.bact{display:flex;flex-direction:column;gap:6px;flex:0 0 auto;align-items:stretch;min-width:104px}
+.bact .bestbtn,.bact .detbtn,.bact .trk{padding:8px 12px;font-size:12px;text-align:center;white-space:nowrap}
+@media(max-width:600px){.buyrow{flex-wrap:wrap}.bact{flex-direction:row;flex-wrap:wrap;width:100%;min-width:0}.bact>*{flex:1}}
+.donehead{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);margin:24px 0 0;padding:11px 2px;border-top:1px solid var(--line);user-select:none}
+.donehead .chev{transition:.2s;display:inline-block;font-size:11px;color:var(--faint)}
+.donehead.open .chev{transform:rotate(90deg)}
+.donebody{display:none;padding-top:4px}.donebody.open{display:block}
+.donerow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 2px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.donerow .dn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qnum{width:54px;padding:6px 8px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);color:var(--ink);font-size:14px;text-align:center}
+.qnum:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.gotit.on{background:var(--own-soft);color:var(--own);border-color:var(--own)}
+
 /* price + target editor in item modal */
 .priceedit{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:0 0 16px;font-size:13px;color:var(--muted)}
 .priceedit .pelbl{font-weight:560}
@@ -231,11 +264,17 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
     <button class="bell" id="adminBtn">🔒 Admin</button></div>
   <nav class="nav" id="nav">
     <button data-v="pending" class="on">📋 Registry</button>
-    <button data-v="dash" class="admin-only">Dashboard</button>
+    <button data-v="tobuy" class="admin-only">🛒 To Buy</button>
+    <button data-v="dash" class="admin-only">All items</button>
     <button data-v="log" class="admin-only">📈 Price Log</button>
   </nav>
 </header>
 <div class="wrap">
+  <div class="view" id="v-tobuy">
+    <div id="buyHeader"></div>
+    <div id="buyList"></div>
+    <div id="buyDone"></div>
+  </div>
   <div class="view" id="v-dash">
     <div id="livebanner" class="banner"></div>
     <div class="cards" id="stats"></div>
@@ -282,4 +321,4 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=26" defer></script></body></html>
+<script src="app.js?v=27" defer></script></body></html>
