@@ -18,7 +18,7 @@ const CATICON={"CLOTHING":"👕","HYGIENE & HEALTH":"🧴","BASICS & GEAR":"🍼
 const URGENCIES=["Day 1","Day 1*","First weeks","Later"];
 const bcls={"Day 1":"day1","Day 1*":"day1","First weeks":"weeks","Later":"later","Optional":"opt","Owned":"owned","-":"opt"};
 
-let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="", PROSCONS={}, OPTDATA={};
+let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="", PROSCONS={}, OPTDATA={}, SUGGEST={};
 let ADMIN_PW=sessionStorage.getItem("apw")||"";   // verified server-side on each write
 const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d);}catch(e){return JSON.parse(d);}};
 const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local only — never synced (2.2)
@@ -135,6 +135,11 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
 }
 async function loadProsCons(){ try{ const r=await fetch("./proscons.json",{cache:"no-store"}); if(r.ok)PROSCONS=await r.json(); }catch(e){ console.warn("[proscons] load failed",e); } }
 async function loadOptData(){ try{ const r=await fetch("./optdata.json",{cache:"no-store"}); if(r.ok)OPTDATA=await r.json(); }catch(e){ } }
+async function loadSuggest(){ try{ const r=await fetch("./suggestions.json",{cache:"no-store"}); if(r.ok)SUGGEST=await r.json(); }catch(e){ } }
+const suggList=id=>((SUGGEST[id]||{}).list)||[];
+const underFilled=p=>pinsOf(p.id).length<neededQty(p);
+// pros/cons for an option: catalogue file first, else the option's own (e.g. added from a suggestion)
+const pcOf=(id,o)=>((PROSCONS[id]||{})[o._orig||o.name])||((o.pros||o.cons)?{pros:o.pros||[],cons:o.cons||[]}:{});
 // ₹ price for one option: manual option.price (₹) wins, else auto-fetched optdata (local→₹)
 function optPriceINR(id,o){ if(o.price!=null&&o.price!==""){ const n=+o.price; if(n>0)return Math.round(n); }
   const od=(OPTDATA[id]||{})[o._orig||o.name]; if(od&&+od.price>0)return toINR(+od.price,od.currency||"INR"); return 0; }
@@ -255,7 +260,7 @@ function renderToBuy(){
   document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
   const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
   const L=document.getElementById("buyList");
-  const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=(PROSCONS[p.id]||{})[o._orig||o.name]||{};
+  const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
     const cimg=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
     const ct=cimg?`<img src="${esc(cimg)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const sub=(pc.pros&&pc.pros[0])?esc(pc.pros[0]):(o.why?esc(o.why):"");
@@ -275,7 +280,8 @@ function renderToBuy(){
     const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
     const primary=primaryIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
     const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")}</div></details>`:"";
-    return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
+    const ideas=(underFilled(p)&&suggList(p.id).length)?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${suggList(p.id).length} ideas</button>`:"";
+    return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
   const D=document.getElementById("buyDone");
   if(!done.length){ D.innerHTML=""; }
@@ -324,7 +330,7 @@ function openItem(id){
       `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}${effOptions(p).length>1?`<button class="trk" data-compare="${esc(id)}">⚖ Compare</button>`:""}</div>`+
     `<div class="qtyrow">Need <input class="qnum" id="m_need" inputmode="numeric" value="${neededQty(p)}" data-need="${esc(id)}" aria-label="Quantity needed"> · Bought <button class="qbtn" data-bought="${esc(id)}" data-d="-1" aria-label="Decrease bought">−</button><b id="bval">${boughtQty(p)}</b><button class="qbtn" data-bought="${esc(id)}" data-d="1" aria-label="Increase bought">+</button> <button class="trk gotit ${isDone(p)?'on':''}" data-got="${esc(id)}">${isDone(p)?'✓ Got it':'Got it'}</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
-    `<div class="mbody">${priceEdit}${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+((HIDDENOPTS[id]||[]).length?`<div class="hiddenopts"><span>Removed:</span> ${(HIDDENOPTS[id]||[]).map(n=>`<button class="restorechip" data-restoreopt="${esc(id)}" data-oname="${esc(n)}">↩ ${esc(n)}</button>`).join("")}</div>`:"")+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
+    `<div class="mbody">${priceEdit}${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+suggHtml(id,p)+((HIDDENOPTS[id]||[]).length?`<div class="hiddenopts"><span>Removed:</span> ${(HIDDENOPTS[id]||[]).map(n=>`<button class="restorechip" data-restoreopt="${esc(id)}" data-oname="${esc(n)}">↩ ${esc(n)}</button>`).join("")}</div>`:"")+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
   m.setAttribute("aria-labelledby","mtitle");
   document.getElementById("itemOverlay").classList.add("show"); focusModal("itemOverlay");
   if(pi){ const h=effPrices(id).slice(-20); const el=document.getElementById("mspark");
@@ -342,7 +348,7 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
 const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
 function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
   const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0; const bestKey=bestValueKey(id);
-  const cards=opts.map((o,i)=>{ const data=pc[o._orig||o.name]||{}; const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||""); const prc=optPriceINR(id,o);
+  const cards=opts.map((o,i)=>{ const data=pcOf(id,o); const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||""); const prc=optPriceINR(id,o);
     const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
     const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
     const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
@@ -354,9 +360,17 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
-  m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div></div>`;
+  const sg=(underFilled(p)&&suggList(id).length)?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${suggList(id).map((s,si)=>suggCardHtml(id,s,si,"＋ Add to compare")).join("")}</div>`:"";
+  m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div>${sg}</div>`;
   m.setAttribute("aria-labelledby","cmptitle"); document.getElementById("compareOverlay").classList.add("show"); focusModal("compareOverlay"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+// suggestions strip (shown when finalised < needed) — review & "Add" to compare/finalise
+function suggCardHtml(id,s,si,addLabel){ const pros=(s.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=(s.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
+  const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(s.why?`<div class="cmpwhy">${esc(s.why)}</div>`:"");
+  const links=["india","uk","canada"].map(k=>{const u=safeUrl((s.links||{})[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
+  return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${body}<div class="cmplinks">${links}</div></div><button class="minibtn" data-addsugg="${esc(id)}" data-sidx="${si}">${addLabel||"＋ Add"}</button></div>`; }
+function suggHtml(id,p){ if(!underFilled(p))return ""; const list=suggList(id); if(!list.length)return "";
+  return `<div class="suggwrap"><div class="suggh">💡 Suggestions to finalise — ${pinsOf(id).length}/${neededQty(p)} chosen</div>`+list.map((s,si)=>suggCardHtml(id,s,si)).join("")+`</div>`; }
 
 /* ---------- actions ---------- */
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
@@ -389,6 +403,11 @@ function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effO
   setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
+function addSuggestion(id,idx){ const s=suggList(id)[idx]; if(!s)return; const L=s.links||{};
+  const o={oid:rid(),name:s.name,why:s.why||"",img:"",india:L.india||"",uk:L.uk||"",canada:L.canada||"",multi:false,price:s.price?String(s.price):"",pros:s.pros||[],cons:s.cons||[]};
+  (USEROPTS[id]=USEROPTS[id]||[]).push(o); save("useropts",USEROPTS);
+  const cmpO=document.getElementById("compareOverlay").classList.contains("show"); refreshAll();
+  if(cmpO)openCompare(id); else reopenIfModal(id); }
 
 /* ---------- pending + log ---------- */
 function renderPending(){ const w=document.getElementById("pendingList");
@@ -487,6 +506,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-delbase]"))) return removeBaseOpt(el.dataset.delbase,el.dataset.oname);
   if((el=c("[data-editbase]"))) return editBaseOpt(el.dataset.editbase,el.dataset.oname);
   if((el=c("[data-restoreopt]"))) return restoreBaseOpt(el.dataset.restoreopt,el.dataset.oname);
+  if((el=c("[data-addsugg]"))) return addSuggestion(el.dataset.addsugg,+el.dataset.sidx);
   if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
   if((el=c("[data-addopt]"))) { const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); _editReturn=el.dataset.addopt; document.getElementById("m_parent").value=el.dataset.addopt; showFields(true,false); return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
@@ -546,7 +566,7 @@ function applyAdminUI(){
 (async()=>{
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
-  await Promise.all([getFX(),loadPrices(),loadProsCons(),loadOptData()]); await syncPull();
+  await Promise.all([getFX(),loadPrices(),loadProsCons(),loadOptData(),loadSuggest()]); await syncPull();
   if(migrateToKeys()&&ADMIN_PW)pushState();   // convert legacy index pins → stable keys (persist once if admin)
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
