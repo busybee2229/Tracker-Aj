@@ -215,8 +215,10 @@ function renderToBuy(){
     const cimg=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
     const ct=cimg?`<img src="${esc(cimg)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const sub=(pc.pros&&pc.pros[0])?esc(pc.pros[0]):(o.why?esc(o.why):"");
-    const l=o.multi?singleLink(o,p):singleLink(o,p); const link=l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View</a>`:"";
-    return `<div class="bicard ${pins.includes(i)?'best':''}"><div class="bicardimg">${ct}</div><div class="bicardname">${pins.includes(i)?'★ ':''}${esc(o.name)}</div>${sub?`<div class="bicardwhy">${sub}</div>`:""}${link}</div>`; };
+    const isPick=pins.includes(i), l=singleLink(o,p);
+    const inner=`<div class="bicardimg">${ct}${isPick?'<span class="pickbadge">★ Picked</span>':''}${l?'<span class="extlink" aria-hidden="true">↗</span>':''}</div><div class="bicardname">${esc(o.name)}</div>${sub?`<div class="bicardwhy">${sub}</div>`:""}`;
+    return l?`<a class="bicard ${isPick?'best':''}" href="${esc(l)}" target="_blank" rel="noopener" aria-label="${esc(o.name)} — view product">${inner}</a>`
+            :`<div class="bicard ${isPick?'best':''}">${inner}</div>`; };
   L.innerHTML = buy.length ? buy.map(p=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
     const need=neededQty(p), got=boughtQty(p), pri=p.priority||"", badge=URGENCIES.includes(pri)?`<span class="b ${bcls[pri]||'opt'}">${pri}</span>`:"";
     const qtyTag=need>1?`<span class="bqty">${got}/${need}</span>`:"";
