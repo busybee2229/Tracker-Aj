@@ -18,20 +18,24 @@
   "3": {
     "Next/M&S 5-7 Pair Socks": {"pros": ["Stay-on cuffs that hold shape"], "cons": ["Pricier than bulk India packs"]},
     "Carter's Terry Socks 6-pk": {"pros": ["Slightly warmer terry for winter"], "cons": ["Bulkier under booties"]},
-    "Socks 12 pack": {"pros": ["12-pair value pack", "Covers the daily rotation"], "cons": ["Check newborn sizing"]}
+    "Socks 12 pack": {"pros": ["12-pair value pack", "Covers the daily rotation"], "cons": ["Check newborn sizing"]},
+    "Luvlap / Mom's Home Multipack": {"pros": ["India value, buy in bulk"], "cons": ["Thinner than Next/M&S"]}
   },
   "4": {
     "H&M Knit Hat 2-pk": {"pros": ["Soft warm beanies", "Great price"], "cons": ["Not as warm as fleece-lined for outdoors"]},
     "Carter's Fleece Cap & Mitten Set": {"pros": ["Warmest for outdoor cold", "Cap + mitten set"], "cons": ["Can be too warm indoors"]},
-    "Hamish Baby Beanies": {"pros": ["Soft knit beanies (Next)", "Keeps newborn warm"], "cons": ["UK-only (Next)"]}
+    "Hamish Baby Beanies": {"pros": ["Soft knit beanies (Next)", "Keeps newborn warm"], "cons": ["UK-only (Next)"]},
+    "Luvlap Winter Cap": {"pros": ["India value"], "cons": ["Less warm than fleece-lined"]}
   },
   "5": {
     "John Lewis Cellular Cotton Blanket": {"pros": ["Breathable cellular weave, safe to layer"], "cons": ["Less plush-warm than fleece"]},
-    "Costco Fleece/Sherpa Blanket": {"pros": ["Best warm-per-dollar for winter"], "cons": ["Not breathable; never loose in crib"]}
+    "Costco Fleece/Sherpa Blanket": {"pros": ["Best warm-per-dollar for winter"], "cons": ["Not breathable; never loose in crib"]},
+    "Mom's Home / Brandonn Receiving": {"pros": ["India value workhorse"], "cons": ["Basic, thinner"]}
   },
   "7": {
     "Aden+Anais Essentials Muslin 3-pk": {"pros": ["Benchmark breathable muslin", "Large, multi-use"], "cons": ["Premium price"]},
-    "Love To Dream / HALO Swaddle Sack": {"pros": ["Zip sack safer for sleep than a loose wrap"], "cons": ["Outgrown within months"]}
+    "Love To Dream / HALO Swaddle Sack": {"pros": ["Zip sack safer for sleep than a loose wrap"], "cons": ["Outgrown within months"]},
+    "Tommee Tippee Muslin Squares": {"pros": ["Cheap bulk burp/cleanup cloths"], "cons": ["Smaller than swaddles"]}
   },
   "8": {
     "ASDA George / Tu Washcloth Multipack": {"pros": ["Cheap own-brand value"], "cons": ["Thinner weave"]},
@@ -213,5 +217,17 @@
     "Joie Litetrax 4 (owned)": {"pros": ["Your owned seat; pairs with Litetrax stroller"], "cons": ["Check expiry date and fit"]},
     "Cybex Cloud T": {"pros": ["Lie-flat, strong safety scores"], "cons": ["Premium price"]},
     "Graco SnugRide": {"pros": ["Trusted, good value"], "cons": ["Heavier carrier"]}
-  }
+  },
+  "6": { "Luvlap / Sunbaby Bath Tub + Seat": {"pros": ["Anti-slip; you already have the seat"], "cons": ["Tub is optional/bulky"]} },
+  "13": { "Per-gender accessories": {"pros": ["Decide after gender is confirmed"], "cons": ["Low priority"]} },
+  "20": { "Skip baby powder": {"pros": ["Skip — inhalation risk, not recommended"], "cons": []} },
+  "26": { "Only as prescribed": {"pros": ["Only give medicines a doctor prescribes; keep saline"], "cons": []} },
+  "32": { "Graco Pack 'n Play": {"pros": ["Bassinet + changer + travel crib", "You already own one"], "cons": ["Bulky to move around"]} },
+  "45": { "Matching Changing Bag Set": {"pros": ["Coordinated look"], "cons": ["Optional, costs more"]} },
+  "46": { "Family Matching Outfit Set": {"pros": ["Cute for photos"], "cons": ["Occasion-only wear"]} },
+  "48": { "Cloth/board books": {"pros": ["Durable for babies", "Sensory + early reading"], "cons": ["Few words per book"]} },
+  "49": { "Juniors Animal Shape Playmat": {"pros": ["Cushioned tummy-time play"], "cons": ["Takes floor space"]} },
+  "50": { "Convertible High Chair": {"pros": ["Grows with the child"], "cons": ["Not needed until ~6 months"]} },
+  "52": { "Canva prints / posters": {"pros": ["Cheap, personalised decor"], "cons": ["Purely cosmetic"]} },
+  "53": { "Handpaint plain clothes / theme sets": {"pros": ["Personalised and fun"], "cons": ["Takes time/effort"]} }
 }
