@@ -24,5 +24,11 @@ jobs:
           git config user.name  "baby-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
           git add state-backup.json
-          git diff --staged --quiet || git commit -m "state backup $(date -u +%F)"
-          git push
+          git diff --staged --quiet && echo "no backup changes" && exit 0
+          git commit -m "state backup $(date -u +%F)"
+          # rebase onto any commits that landed since checkout, then push — retry to survive races
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash -X theirs origin main && git push && exit 0
+            echo "push race, retry $i…"; sleep 5
+          done
+          echo "push failed after retries"; exit 1
