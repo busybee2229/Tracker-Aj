@@ -30,18 +30,18 @@ console.log(`${targets.length} option(s) need pros/cons`);
 if (!targets.length) process.exit(0);
 
 // call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
+let quotaHit = false;
 async function callGemini(body) {
+  if (quotaHit) return null;
   for (const model of MODELS) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
-    for (let a = 0; a < 3; a++) {
-      try {
-        const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-        if (res.ok) return await res.json();
-        if (res.status === 429) { console.log(`  ${model} 429 — wait 30s`); await new Promise(r => setTimeout(r, 30000)); continue; }
-        if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — trying next model`); await new Promise(r => setTimeout(r, 8000)); break; }
-        console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
-      } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
-    }
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (res.ok) return await res.json();
+      if (res.status === 429) { console.log(`  ${model} 429 — daily free quota reached; stopping (resets midnight PT)`); quotaHit = true; return null; }
+      if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — next model`); continue; }
+      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
+    } catch (e) { console.log("  net", e.message); }
   }
   return null;
 }
@@ -58,12 +58,14 @@ async function gen(t) {
   return null;
 }
 
-let n = 0;
+const CAP = 25;   // gentle: at most this many per run; fills the rest on later daily runs
+let n = 0, processed = 0;
 for (const t of targets) {
-  const out = await gen(t);
+  if (quotaHit || processed >= CAP) break;
+  const out = await gen(t); processed++;
   if (out) { (pc[t.id] = pc[t.id] || {})[t.name] = out; n++; console.log(`ok   [${t.id}] ${t.name}`); }
   else console.log(`skip [${t.id}] ${t.name}`);
-  await new Promise(r => setTimeout(r, 2500)); // ~24 req/min, under Flash-Lite's 30 RPM cap
+  await new Promise(r => setTimeout(r, 2500));
 }
 if (n) writeFileSync("proscons.json", JSON.stringify(pc, null, 2));
 console.log(`done — ${n} generated`);

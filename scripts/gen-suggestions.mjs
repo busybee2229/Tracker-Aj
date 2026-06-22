@@ -33,18 +33,18 @@ const optionNames = p => (p.options || []).filter(o => !((HID[p.id] || []).inclu
 const linksFor = name => { const q = encodeURIComponent(name); return { india: `https://www.amazon.in/s?k=${q}`, uk: `https://www.next.co.uk/search?w=${q}`, canada: `https://www.amazon.ca/s?k=${q}` }; };
 
 // call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
+let quotaHit = false;
 async function callGemini(body) {
+  if (quotaHit) return null;
   for (const model of MODELS) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
-    for (let a = 0; a < 3; a++) {
-      try {
-        const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-        if (res.ok) return await res.json();
-        if (res.status === 429) { console.log(`  ${model} 429 — wait 30s`); await new Promise(r => setTimeout(r, 30000)); continue; }
-        if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — trying next model`); await new Promise(r => setTimeout(r, 8000)); break; }
-        console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
-      } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
-    }
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (res.ok) return await res.json();
+      if (res.status === 429) { console.log(`  ${model} 429 — daily free quota reached; stopping (resets midnight PT)`); quotaHit = true; return null; }
+      if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — next model`); continue; }
+      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
+    } catch (e) { console.log("  net", e.message); }
   }
   return null;
 }
@@ -65,15 +65,17 @@ async function suggest(p, exclude) {
 }
 
 const items = products.concat(USER);
-let n = 0;
+const CAP = 18;   // gentle: at most this many items per run, fills the rest on later daily runs
+let n = 0, processed = 0;
 for (const p of items) {
+  if (quotaHit || processed >= CAP) break;
   const need = neededQty(p), done = pinsOf(p.id).length;
   if (done >= need) { delete out[String(p.id)]; continue; }          // filled enough → no suggestions
   const prev = (out[String(p.id)] && out[String(p.id)].seen) || [];
   const exclude = [...new Set([...optionNames(p), ...prev])];
-  const list = await suggest(p, exclude);
+  const list = await suggest(p, exclude); processed++;
   if (list.length) { out[String(p.id)] = { ts: new Date().toISOString().slice(0, 10), seen: [...new Set([...prev, ...list.map(s => s.name)])].slice(-40), list }; n += list.length; console.log(`ok  ${p.id} ${p.item}: ${list.length} (${done}/${need})`); }
-  await new Promise(r => setTimeout(r, 2500));   // ~24 req/min, under Flash-Lite's 30 RPM cap
+  await new Promise(r => setTimeout(r, 2500));
 }
 writeFileSync("suggestions.json", JSON.stringify(out, null, 1));
 console.log(`done — ${n} suggestions`);
