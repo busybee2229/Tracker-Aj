@@ -3,7 +3,12 @@
   "1": {
     "Next 2-way Zip Sleepsuit 3-pk": {"pros": ["Two-way zip makes night changes fast", "Durable, everyday-affordable in the UK"], "cons": ["Fewer deep discounts than Carter's sales"]},
     "Carter's 2-way Zip Sleep & Play": {"pros": ["Warm cotton-blend", "Unbeatable on frequent BOGO/50-60% sales"], "cons": ["Best value only when on sale"]},
-    "M&S Pure Cotton Zip Sleepsuit": {"pros": ["Soft pure cotton", "Gentle envelope neck, premium feel"], "cons": ["Higher everyday price"]}
+    "M&S Pure Cotton Zip Sleepsuit": {"pros": ["Soft pure cotton", "Gentle envelope neck, premium feel"], "cons": ["Higher everyday price"]},
+    "Next Sleepsuit (your pick)": {"pros": ["Your chosen favourite", "Next cotton, 2-way zip"], "cons": ["UK-only (Next)"]},
+    "Next Sleepsuit (your pick 2)": {"pros": ["Backup favourite", "Next cotton sleepsuit"], "cons": ["UK-only (Next)"]},
+    "Brown Pudding First Size": {"pros": ["Cute Christmas-pudding print", "Newborn first-size fit"], "cons": ["Seasonal print", "UK-only (Next)"]},
+    "Brown Reindeer 3months": {"pros": ["Cute reindeer print", "3-month size"], "cons": ["Seasonal print", "UK-only (Next)"]},
+    "Next": {"pros": ["Next cotton sleepsuit"], "cons": ["UK-only (Next)"]}
   },
   "2": {
     "M&S 7-pk Long-Sleeve Bodysuits": {"pros": ["Standout value: 7 pure-cotton bodysuits", "Envelope neck for easy dressing"], "cons": ["Plainer prints"]},
@@ -12,11 +17,13 @@
   },
   "3": {
     "Next/M&S 5-7 Pair Socks": {"pros": ["Stay-on cuffs that hold shape"], "cons": ["Pricier than bulk India packs"]},
-    "Carter's Terry Socks 6-pk": {"pros": ["Slightly warmer terry for winter"], "cons": ["Bulkier under booties"]}
+    "Carter's Terry Socks 6-pk": {"pros": ["Slightly warmer terry for winter"], "cons": ["Bulkier under booties"]},
+    "Socks 12 pack": {"pros": ["12-pair value pack", "Covers the daily rotation"], "cons": ["Check newborn sizing"]}
   },
   "4": {
     "H&M Knit Hat 2-pk": {"pros": ["Soft warm beanies", "Great price"], "cons": ["Not as warm as fleece-lined for outdoors"]},
-    "Carter's Fleece Cap & Mitten Set": {"pros": ["Warmest for outdoor cold", "Cap + mitten set"], "cons": ["Can be too warm indoors"]}
+    "Carter's Fleece Cap & Mitten Set": {"pros": ["Warmest for outdoor cold", "Cap + mitten set"], "cons": ["Can be too warm indoors"]},
+    "Hamish Baby Beanies": {"pros": ["Soft knit beanies (Next)", "Keeps newborn warm"], "cons": ["UK-only (Next)"]}
   },
   "5": {
     "John Lewis Cellular Cotton Blanket": {"pros": ["Breathable cellular weave, safe to layer"], "cons": ["Less plush-warm than fleece"]},
@@ -39,7 +46,8 @@
   "10": {
     "Bandana Dribble Bibs Multipack": {"pros": ["Stylish, absorbent for drool", "Can match outfits"], "cons": ["Not sized for feeds"]},
     "Carter's Bibs Set": {"pros": ["Trusted, soft"], "cons": ["Plainer designs"]},
-    "Tommee Tippee Milk Feed Bibs": {"pros": ["Larger coverage for feeds"], "cons": ["Bulkier"]}
+    "Tommee Tippee Milk Feed Bibs": {"pros": ["Larger coverage for feeds"], "cons": ["Bulkier"]},
+    "Hamish Baby Bibs 5 Pack": {"pros": ["5-pack bandana bibs (Next)", "Absorbent for drool"], "cons": ["UK-only (Next)"]}
   },
   "11": {
     "FirstCry Occasion Set": {"pros": ["Wide India range, affordable"], "cons": ["Occasion-only use"]},
