@@ -9,7 +9,7 @@ if (!GEMINI_KEY) { console.log("No GEMINI_API_KEY set — skipping."); process.e
 
 const SUPA_URL = "https://nrpjtychwmuecmskehyj.supabase.co";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycGp0eWNod211ZWNtc2tlaHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDMyMDUsImV4cCI6MjA5NzYxOTIwNX0.g-WGgUyrHLwql4ZqcNjVvCuT1TzcNIo1z6NNIdVNE9s";
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-2.5-flash-lite";   // free tier: 30 RPM, 1500/day (gemini-2.0-flash was retired Jun 2026)
 
 const products = JSON.parse(readFileSync("products.json", "utf8"));
 const pc = JSON.parse(readFileSync("proscons.json", "utf8"));
@@ -56,7 +56,7 @@ for (const t of targets) {
   const out = await gen(t);
   if (out) { (pc[t.id] = pc[t.id] || {})[t.name] = out; n++; console.log(`ok   [${t.id}] ${t.name}`); }
   else console.log(`skip [${t.id}] ${t.name}`);
-  await new Promise(r => setTimeout(r, 4500)); // ~13 req/min, under the free 15 RPM cap
+  await new Promise(r => setTimeout(r, 2500)); // ~24 req/min, under Flash-Lite's 30 RPM cap
 }
 if (n) writeFileSync("proscons.json", JSON.stringify(pc, null, 2));
 console.log(`done — ${n} generated`);

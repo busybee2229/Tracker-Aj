@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 // ─── EDIT THIS: your situation, so suggestions are tailored ───────────────────
 const CONTEXT = "Newborn arriving Oct/Nov (winter). Family based in India — buy in INR ₹; for higher quality they may also buy from the UK or Canada. Prefer practical, safe, well-reviewed, widely-available products.";
 const PER_ITEM = 3;            // how many fresh suggestions per under-filled item
-const MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-2.5-flash-lite";   // free tier: 30 RPM, 1500/day (gemini-2.0-flash was retired Jun 2026)
 // ──────────────────────────────────────────────────────────────────────────────
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
@@ -66,7 +66,7 @@ for (const p of items) {
   const exclude = [...new Set([...optionNames(p), ...prev])];
   const list = await suggest(p, exclude);
   if (list.length) { out[String(p.id)] = { ts: new Date().toISOString().slice(0, 10), seen: [...new Set([...prev, ...list.map(s => s.name)])].slice(-40), list }; n += list.length; console.log(`ok  ${p.id} ${p.item}: ${list.length} (${done}/${need})`); }
-  await new Promise(r => setTimeout(r, 5000));   // ~12 req/min, under the free 15 RPM cap
+  await new Promise(r => setTimeout(r, 2500));   // ~24 req/min, under Flash-Lite's 30 RPM cap
 }
 writeFileSync("suggestions.json", JSON.stringify(out, null, 1));
 console.log(`done — ${n} suggestions`);
