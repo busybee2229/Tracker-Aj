@@ -208,19 +208,28 @@ function renderToBuy(){
   const urg=p=>{const i=URGENCIES.indexOf(p.priority);return i<0?9:i;};
   buy.sort((a,b)=>urg(a)-urg(b)||CATS.indexOf(a.category)-CATS.indexOf(b.category)||(hasPin(b.id)?1:0)-(hasPin(a.id)?1:0));
   const total=buy.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
-  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div>`;
+  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
+  const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
   const L=document.getElementById("buyList");
-  L.innerHTML = buy.length ? buy.map(p=>{ const r=recOption(p), pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼";
-    const img=safeUrl(finalImg(p)||p.img||IMAGES[p.id]||(r&&r.o.img)||"");
-    const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
+  const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=(PROSCONS[p.id]||{})[o.name]||{};
+    const cimg=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
+    const ct=cimg?`<img src="${esc(cimg)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
+    const sub=(pc.pros&&pc.pros[0])?esc(pc.pros[0]):(o.why?esc(o.why):"");
+    const l=o.multi?singleLink(o,p):singleLink(o,p); const link=l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View</a>`:"";
+    return `<div class="bicard ${pins.includes(i)?'best':''}"><div class="bicardimg">${ct}</div><div class="bicardname">${pins.includes(i)?'★ ':''}${esc(o.name)}</div>${sub?`<div class="bicardwhy">${sub}</div>`:""}${link}</div>`; };
+  L.innerHTML = buy.length ? buy.map(p=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
     const need=neededQty(p), got=boughtQty(p), pri=p.priority||"", badge=URGENCIES.includes(pri)?`<span class="b ${bcls[pri]||'opt'}">${pri}</span>`:"";
     const qtyTag=need>1?`<span class="bqty">${got}/${need}</span>`:"";
-    const pickName=r?esc(r.o.name):(p.owned?esc(p.owned):"");
-    const why=r&&r.o.why?`<span class="bwhy">— ${esc(r.o.why)}</span>`:"";
     const priceTxt = pi?`<span class="bprice ${pi.isDeal?'deal':''}">${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}${pi.isDeal?' 🔥':''}${pi.target&&!pi.isDeal?' · target '+inr(pi.target):''}</span>`:`<span class="bprice none">no price yet</span>`;
     const bl=bestLinkFor(p), buyBtn=bl?`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}">★ Buy best</a>`:"";
     const gotBtn=need>1?`<button class="trk" data-bought="${esc(p.id)}" data-d="1">+1 bought</button>`:`<button class="trk gotit" data-got="${esc(p.id)}">Got it ✓</button>`;
-    return `<div class="buyrow" role="button" tabindex="0" data-open="${esc(p.id)}" aria-label="${esc(p.item)}"><div class="bthumb">${thumb}</div><div class="bmain"><div class="btitle">${esc(p.item)} ${qtyTag} ${badge}</div><div class="bpick">${pickName?`<b>${pickName}</b>`:'<span class="muted">no pick chosen — tap Compare</span>'} ${why}</div><div class="bmetarow">${priceTxt}</div></div><div class="bact">${buyBtn}<button class="detbtn" data-compare="${esc(p.id)}">Compare</button><button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div>`;
+    const cmpBtn=opts.length>1?`<button class="detbtn" data-compare="${esc(p.id)}">⚖ Compare</button>`:"";
+    const pins=pinsOf(p.id).filter(i=>i<opts.length);
+    const primaryIdx=pins.length?pins:opts.map((_,i)=>i).slice(0,3);
+    const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
+    const primary=primaryIdx.map(i=>card(p,opts,i,pins,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
+    const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pins,ic)).join("")}</div></details>`:"";
+    return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
   const D=document.getElementById("buyDone");
   if(!done.length){ D.innerHTML=""; }
@@ -301,6 +310,7 @@ function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK
 function setStatus(id,st){ const b=(itemById(id)||{}).status; if(st===b)delete STATUSOVR[id]; else STATUSOVR[id]=st; save("statusovr",STATUSOVR); stats(); renderDash(); openItem(id); }
 function pinOpt(id,i){ let a=pinsOf(id).slice(); a=a.includes(i)?a.filter(x=>x!==i):a.concat(i); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
 function refreshAll(){ stats(); renderDash(); renderPending(); if(document.getElementById("v-tobuy"))renderToBuy(); buildNotifs(); }
+async function reloadData(){ syncToast("Refreshing prices…"); try{ await Promise.all([getFX(),loadPrices(),loadProsCons()]); const r=await getRemote(); if(r&&r.ts){applyShared(r);bumpTs(r.ts);} }catch(e){ console.warn("[refresh]",e); } refreshAll(); syncToast("Prices refreshed"); }
 function reopenIfModal(id){ if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
 function setNeed(id,val){ USERQTY[id]=Math.max(0,Math.round(parseFloat(val)||0)); save("userqty",USERQTY); refreshAll(); }
 function setBought(id,d){ const cur=boughtQty(itemById(id)); USERBOUGHT[id]=Math.max(0,cur+(+d||0)); save("userbought",USERBOUGHT); refreshAll(); reopenIfModal(id); }

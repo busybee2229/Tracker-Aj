@@ -1,7 +1,7 @@
 name: Update baby prices
 on:
   schedule:
-    - cron: "0 6,18 * * *"   # twice daily (UTC) — adjust as you like
+    - cron: "0 */3 * * *"   # every 3 hours (UTC) — catches sales sooner on scrapable retailers
   workflow_dispatch:          # lets you run it manually from the Actions tab
 permissions:
   contents: write

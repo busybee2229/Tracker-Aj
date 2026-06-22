@@ -216,6 +216,8 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .progbar{flex:1;height:8px;background:var(--opt-soft);border-radius:980px;overflow:hidden}
 .progbar span{display:block;height:100%;background:var(--deal);border-radius:980px;transition:width .3s}
 .progn{font-size:12.5px;color:var(--muted);font-weight:560}
+.buytools{margin:2px 0 14px;font-size:13px;display:flex;align-items:center;gap:12px}
+.buytools .lk2{color:var(--accent-d);text-decoration:none}.buytools .lk2:hover{text-decoration:underline}
 .buyrow{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;box-shadow:var(--sh-1);cursor:pointer;transition:.15s}
 .buyrow:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
 .buyrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -240,6 +242,26 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .qnum{width:54px;padding:6px 8px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);color:var(--ink);font-size:14px;text-align:center}
 .qnum:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .gotit.on{background:var(--own-soft);color:var(--own);border-color:var(--own)}
+/* grouped item + candidate cards */
+.buyitem{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;margin:12px 0;box-shadow:var(--sh-1)}
+.bihead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.bihead-l{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.bititle{font-weight:660;font-size:16px;letter-spacing:-0.015em}
+.bihead-r{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bihead-r .bestbtn,.bihead-r .detbtn,.bihead-r .trk{padding:7px 12px;font-size:12px;white-space:nowrap}
+.bicards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.bicard{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px}
+.bicard.best{border-color:var(--accent);background:var(--accent-soft)}
+.bicard.muted{color:var(--faint);align-items:center;justify-content:center;text-align:center;font-size:12.5px}
+.bicardimg{aspect-ratio:1/1;border-radius:9px;overflow:hidden;background:var(--tile);border:1px solid var(--tile-line);display:flex;align-items:center;justify-content:center}
+.bicardimg img{width:100%;height:100%;object-fit:cover}.bicardimg .ph{font-size:34px;opacity:.4}
+.bicardname{font-weight:600;font-size:13px;line-height:1.25}
+.bicardwhy{font-size:12px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bicard .lk{margin-top:auto;align-self:flex-start;font-size:12px;padding:6px 11px}
+.moreopts{margin-top:10px}
+.moreopts>summary{cursor:pointer;font-size:12.5px;font-weight:550;color:var(--accent-d);list-style:none;user-select:none}
+.moreopts>summary::-webkit-details-marker{display:none}
+.moreopts[open]>summary{margin-bottom:10px}.moreopts .bicards{margin-top:0}
 
 /* price + target editor in item modal */
 .priceedit{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:0 0 16px;font-size:13px;color:var(--muted)}
@@ -342,4 +364,4 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=28" defer></script></body></html>
+<script src="app.js?v=29" defer></script></body></html>
