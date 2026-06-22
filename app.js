@@ -77,7 +77,7 @@ function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[
 // merge per-id arrays of price records, dedup by date+region+inr (for userprices)
 function mArr(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.date||"")+"|"+(o.region||"")+"|"+(o.inr||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
 // merge ALL synced keys (local wins on scalar maps) — used to reconcile a stale-write 409 without dropping the local edit
-function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),usertarget:mO(r.usertarget,l.usertarget),userbought:mO(r.userbought,l.userbought),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),userprices:mArr(r.userprices,l.userprices),pins:mPins(r.pins,l.pins)}; }
+function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),usertarget:mO(r.usertarget,l.usertarget),userbought:mO(r.userbought,l.userbought),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),userprices:mArr(r.userprices,l.userprices),pins:mPins(r.pins,l.pins),hiddenopts:mO(r.hiddenopts,l.hiddenopts),optoverride:mO(r.optoverride,l.optoverride)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
 let _recovering=false;
 async function recoverAdminPw(){ if(_recovering||ADMIN_PW)return; _recovering=true;
@@ -196,6 +196,22 @@ function finalImg(p){ const pins=pinsOf(p.id); if(!pins.length)return ""; const 
   return o.img||p.img||IMAGES[p.id]||""; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
+/* ---------- shared option helpers (defined once, used by every screen) ---------- */
+const LABEL={ finalised:"★ Finalised", bestValue:"★ Best value" };
+// option photo first, then the item photo, then the category emoji — same rule on every screen
+const optImg=(p,o)=>safeUrl((o&&o.img)||(p&&p.img)||IMAGES[p.id]||"");
+const thumbEl=(url,ic)=>url?`<img src="${esc(url)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
+// one option's own ₹ as a small tag (faint "—" when no price known yet)
+const optPriceTag=(id,o,cls)=>{ const v=optPriceINR(id,o); const c=cls||"oprice"; return v>0?`<span class="${c}">${inr(v)}</span>`:`<span class="${c} none">—</span>`; };
+// region links for one option — consistent everywhere: flags when a pick has separate
+// India/UK/Canada links, otherwise a single "View" link
+function optLinks(p,o){
+  if(o.multi){ return ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join(""); }
+  const u=singleLink(o,p); return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View</a>`:""; }
+// pros/cons list, falling back to the one-line why
+function pcBlock(data,why){ const pros=((data&&data.pros)||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=((data&&data.cons)||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
+  return (pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(why?`<div class="cmpwhy">${esc(why)}</div>`:""); }
+
 function cardHtml(p){
   const pi=isTracked(p.id)?priceInfo(p.id):null;
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
@@ -265,12 +281,11 @@ function renderToBuy(){
   document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled${ctLine}</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
   const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
   const L=document.getElementById("buyList");
-  const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
-    const cimg=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]):"")||"");
-    const ct=cimg?`<img src="${esc(cimg)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
+  const card=(p,opts,i,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
+    const ct=thumbEl(optImg(p,o),ic);
     const sub=(pc.pros&&pc.pros[0])?esc(pc.pros[0]):(o.why?esc(o.why):"");
-    const isPick=pins.includes(i), l=singleLink(o,p);
-    const inner=`<div class="bicardimg">${ct}${isPick?'<span class="pickbadge">★ Picked</span>':''}${l?'<span class="extlink" aria-hidden="true">↗</span>':''}</div><div class="bicardname">${esc(o.name)}</div>${sub?`<div class="bicardwhy">${sub}</div>`:""}`;
+    const isPick=isPinned(p.id,o._key), l=singleLink(o,p);
+    const inner=`<div class="bicardimg">${ct}${isPick?`<span class="pickbadge">${LABEL.finalised}</span>`:''}${l?'<span class="extlink" aria-hidden="true">↗</span>':''}</div><div class="bicardname">${esc(o.name)}</div>${optPriceTag(p.id,o,'bprice')}${sub?`<div class="bicardwhy">${sub}</div>`:""}`;
     return l?`<a class="bicard ${isPick?'best':''}" href="${esc(l)}" target="_blank" rel="noopener" aria-label="${esc(o.name)} — view product">${inner}</a>`
             :`<div class="bicard ${isPick?'best':''}">${inner}</div>`; };
   L.innerHTML = buy.length ? buy.map(p=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
@@ -286,8 +301,8 @@ function renderToBuy(){
     const pk=pinsOf(p.id), pinnedIdx=opts.map((_,i)=>i).filter(i=>pk.includes(opts[i]._key));
     const primaryIdx=pinnedIdx.length?pinnedIdx:opts.map((_,i)=>i).slice(0,3);
     const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
-    const primary=primaryIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
-    const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")}</div></details>`:"";
+    const primary=primaryIdx.map(i=>card(p,opts,i,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
+    const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,ic)).join("")}</div></details>`:"";
     const nSugg=underFilled(p)?suggFor(p).length:0; const ideas=nSugg?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${nSugg} ideas</button>`:"";
     return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
@@ -300,21 +315,17 @@ function renderToBuy(){
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx,bestKey){
   const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
-  const img=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]||""):"")||"");
-  const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
-  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(o._key===bestKey?`<span class="rank">★ Best value</span>`:"");
-  const links=o.multi
-    ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("")
-    : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View product</a>`:"";})();
-  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
+  const thumb=`<div class="optimg">${thumbEl(optImg(p,o),ic)}</div>`;
+  const rank=pinned?`<span class="rank fin">${LABEL.finalised}</span>`:(o._key===bestKey?`<span class="rank">${LABEL.bestValue}</span>`:"");
+  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>${optPriceTag(p.id,o)}`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pinkey="${esc(o._key)}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
     (isUser
       ?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`
       :`<button class="trk" title="Edit option" data-editbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✕</button>`)+`</div>`+
-    (o.why?`<div class="owhy">${esc(o.why)}</div>`:"")+`<div class="links">${links}</div></div></div>`;
+    pcBlock(pcOf(p.id,o),o.why)+`<div class="links">${optLinks(p,o,'view')}</div></div></div>`;
 }
 function openItem(id){
-  const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=opts.filter(o=>o._orig!==undefined).length;
+  const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=opts.filter(o=>o._key&&o._key[0]==="b").length;  // base options first, then user (u:) options
   const bestKey=bestValueKey(id);
   let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen,bestKey)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
@@ -332,7 +343,7 @@ function openItem(id){
   const edititem=String(id).startsWith("u")?`<button class="trk" data-edititem="${esc(id)}">✎ Edit</button>`:"";
   const m=document.getElementById("itemModal");
   m.innerHTML=`<button class="mclose" data-close="itemOverlay" aria-label="Close">×</button>`+
-    `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3 id="mtitle">${esc(p.item)}</h3>`+
+    `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3 id="mtitle">${esc(p.item)}</h3>${p.kw?`<div class="msub">${esc(p.kw)}</div>`:""}`+
     `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px">`+
       (URGENCIES.includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:"")+
       `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}${effOptions(p).length>1?`<button class="trk" data-compare="${esc(id)}">⚖ Compare</button>`:""}</div>`+
@@ -356,14 +367,12 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
 const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
 function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
   const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0; const bestKey=bestValueKey(id);
-  const cards=opts.map((o,i)=>{ const data=pcOf(id,o); const img=safeUrl(o.img||(i===0?(p.img||IMAGES[p.id]):"")||""); const prc=optPriceINR(id,o);
-    const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
-    const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
-    const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
-    const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(o.why?`<div class="cmpwhy">${esc(o.why)}</div>`:`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`);
-    const u=o.multi?["india","uk","canada"].map(k=>{const l=safeUrl(o[k]);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join(""):(()=>{const l=singleLink(o,p);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View product</a>`:"";})();
+  const cards=opts.map((o,i)=>{ const data=pcOf(id,o); const prc=optPriceINR(id,o);
+    const thumb=thumbEl(optImg(p,o),CATICON[p.category]||'🍼');
+    const body=pcBlock(data,o.why)||`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`;
+    const u=optLinks(p,o,'view');
     const prcEl=prc?`<div class="cmpprc">${inr(prc)}${prc===minP&&minP>0&&allP.length>1?' <span class="cheap">cheapest</span>':''}</div>`:`<div class="cmpprc none">no price</div>`;
-    const bv=(!pins.includes(o._key)&&o._key===bestKey)?'<span class="bestval">★ Best value</span>':"";
+    const bv=(!pins.includes(o._key)&&o._key===bestKey)?`<span class="bestval">${LABEL.bestValue}</span>`:"";
     return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}${bv}</div>${prcEl}${body}<div class="cmplinks">${u}</div></div></div>`;
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
@@ -424,14 +433,13 @@ function renderPending(){ const w=document.getElementById("pendingList");
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" data-showview="dash">Open Dashboard</button>':'')+'</div>'; return; }
   const ct=committedTotal();
   const totLine=(isAdmin&&ct.total)?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+totLine+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=safeUrl(o.img||p.img||IMAGES[p.id]||"");
-    const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
-    const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
-    const links=o.multi
-      ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("")
-      : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View</a>`:"";})();
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+totLine+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼";
+    const imgEl=thumbEl(optImg(p,o),ic);
+    const need=neededQty(p);
+    const links=optLinks(p,o);
     const prc=optPriceINR(p.id,o);   // this pick's OWN price, not the item's cheapest
-    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${prc?inr(prc):'—'}</span></div></div></div>`;
+    const isDeal=!!(pi&&pi.isDeal);
+    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${need>1?`<div class="ri-qty">Qty · ${need}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice${isDeal?' deal':''}">${prc?inr(prc):'—'}${isDeal?' 🔥':''}</span></div></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Auto-prices last updated "+UPDATED+" · add your own per item"):"Add India/UK/Canada prices in any item, or let the job fetch them.";
   const t=document.getElementById("logTable");

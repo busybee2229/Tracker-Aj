@@ -102,9 +102,9 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:.2s cubic-bezier(.2,.7,.3,1);position:relative;box-shadow:var(--sh-1)}
 .card:hover{box-shadow:var(--sh-2);transform:translateY(-3px)}
 .card.isdeal{border-color:var(--deal)}
-.imgwrap{aspect-ratio:1/1;background:var(--tile);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--tile-line)}
+.imgwrap{aspect-ratio:5/4;background:var(--tile);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--tile-line)}
 .imgwrap img{width:100%;height:100%;object-fit:cover;object-position:center}
-.imgwrap .ph{font-size:54px;opacity:.32}
+.imgwrap .ph{font-size:46px;opacity:.32}
 .cbadge{position:absolute;top:11px;left:11px;display:flex;gap:5px;flex-wrap:wrap}
 .cbadge .b{box-shadow:var(--sh-1)}
 .delc{position:absolute;top:11px;right:11px;background:var(--delc-bg);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:980px;width:27px;height:27px;line-height:1;cursor:pointer;color:#b15;font-size:13px;opacity:0;transition:.15s}
@@ -138,7 +138,8 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .mhead{display:flex;gap:18px;padding:24px 24px 18px;border-bottom:1px solid var(--line)}
 .mhead .mimg{width:150px;height:150px;border-radius:18px;background:var(--tile);border:1px solid var(--tile-line);flex:0 0 auto;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .mhead .mimg img{width:100%;height:100%;object-fit:cover;object-position:center}
-.mhead h3{margin:0 0 8px;font-size:20px;font-weight:680;letter-spacing:-0.02em}
+.mhead h3{margin:0 0 4px;font-size:20px;font-weight:680;letter-spacing:-0.02em}
+.mhead .msub{font-size:12.5px;color:var(--muted);margin:0 0 8px;letter-spacing:.01em}
 .mbody{padding:18px 24px 26px}
 .mclose{position:sticky;top:14px;align-self:flex-end;flex:0 0 auto;background:var(--surface);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:980px;width:34px;height:34px;font-size:18px;cursor:pointer;color:var(--muted);margin:14px 14px -34px 14px;z-index:2}
 .opt{border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0;background:var(--surface-2);display:flex;gap:14px;transition:.15s}
@@ -150,6 +151,7 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .opt .rank{font-size:10px;font-weight:760;color:#fff;background:var(--accent);border-radius:980px;padding:3px 9px;letter-spacing:.03em}.opt .rank.alt{background:#b6b6bd}.opt .rank.fin{background:var(--pin)}
 .opt .oname{font-weight:620;font-size:14.5px;flex:1;min-width:120px;letter-spacing:-0.01em}
 .opt .owhy{font-size:12.5px;color:var(--muted);margin:5px 0 9px}.opt .links{display:flex;gap:8px;flex-wrap:wrap}
+.opt .oprice{font-weight:650;font-size:13px;white-space:nowrap}.opt .oprice.none{color:var(--faint);font-weight:500}
 .lk{font-size:12.5px;text-decoration:none;padding:8px 13px;border-radius:980px;border:1px solid var(--line-2);color:var(--ink);background:var(--surface);display:inline-flex;gap:6px;align-items:center;transition:.15s}
 .lk:hover{background:var(--accent-soft);border-color:var(--accent)}
 .pinbtn{font-size:11.5px;border:1px solid var(--pin);color:var(--pin);background:var(--surface);border-radius:980px;padding:6px 12px;cursor:pointer;white-space:nowrap;font-weight:560;transition:.15s}
@@ -182,7 +184,7 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .regcardbody .ri-qty{font-size:12.5px;color:var(--faint);margin-top:3px;font-weight:560}
 .regcardfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
 .reglinks{display:flex;gap:6px}
-.regprice{font-size:14.5px;font-weight:650}
+.regprice{font-size:14.5px;font-weight:650}.regprice.deal{color:var(--deal)}
 
 /* sections + forms + notif */
 .sect{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:12px 0;box-shadow:var(--sh-1)}.sect h3{margin:0 0 8px;font-size:16px;font-weight:660;letter-spacing:-0.01em}
@@ -278,6 +280,7 @@ a.bicard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .extlink{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:980px;background:var(--delc-bg);backdrop-filter:blur(6px);border:1px solid var(--line);color:var(--muted);font-size:12px;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s}
 a.bicard:hover .extlink{opacity:1}
 .bicardname{font-weight:600;font-size:13px;line-height:1.25;margin-top:2px}
+.bicard .bprice{font-size:12px}
 .bicardwhy{font-size:12px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .moreopts{margin-top:10px}
 .moreopts>summary{cursor:pointer;font-size:12.5px;font-weight:550;color:var(--accent-d);list-style:none;user-select:none}
@@ -377,7 +380,7 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
   <div id="f_parent"><label>Add under (or new item)</label><select id="m_parent"></select></div>
   <div id="f_item"><label>Item name</label><input id="m_item" placeholder="e.g. Night light"/>
   <label>Quantity</label><input id="m_qty" placeholder="e.g. 5, or 2-3 packs"/>
-  <label>Category</label><select id="m_cat"></select></div>
+  <span id="f_cat" style="display:none"><label>Category</label><select id="m_cat"></select></span></div>
   <label>Recommended product / brand</label><input id="m_pick"/>
   <label>Image URL (optional)</label><input id="m_img" placeholder="https://…jpg"/>
   <label>Price ₹ (manual — for Amazon/Next, or leave blank to auto-fetch)</label><input id="m_price_opt" inputmode="decimal" placeholder="e.g. 2499"/>
@@ -387,4 +390,4 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=47" defer></script></body></html>
+<script src="app.js?v=48" defer></script></body></html>
