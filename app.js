@@ -137,6 +137,7 @@ async function loadProsCons(){ try{ const r=await fetch("./proscons.json",{cache
 async function loadOptData(){ try{ const r=await fetch("./optdata.json",{cache:"no-store"}); if(r.ok)OPTDATA=await r.json(); }catch(e){ } }
 async function loadSuggest(){ try{ const r=await fetch("./suggestions.json",{cache:"no-store"}); if(r.ok)SUGGEST=await r.json(); }catch(e){ } }
 const suggList=id=>((SUGGEST[id]||{}).list)||[];
+const suggFor=p=>{ const have=new Set(effOptions(p).map(o=>o.name)); return suggList(p.id).filter(s=>!have.has(s.name)); };  // hide suggestions already added as options
 const underFilled=p=>pinsOf(p.id).length<neededQty(p);
 // total ₹ committed = sum of each finalised pick's price (once each); tracks priced vs unpriced
 function committedTotal(){ let total=0,priced=0,count=0; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o){ count++; const v=optPriceINR(p.id,o); if(v>0){total+=v;priced++;} } }); }); return {total,priced,count,unpriced:count-priced}; }
@@ -199,7 +200,7 @@ function cardHtml(p){
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const note=pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:(pi.target?`<span class="avg">target ${inr(pi.target)}</span>`:(pi.hasAvg?`<span class="avg">avg ${inr(pi.avg)}</span>`:"")); price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> ${note}</div>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const note=pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> ${note}</div>`; }
   const have=p.owned?`<div class="have">✓ ${esc(p.owned)}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${esc(best.name)}</div>`:"";
   const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+
@@ -283,7 +284,7 @@ function renderToBuy(){
     const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
     const primary=primaryIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
     const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")}</div></details>`:"";
-    const ideas=(underFilled(p)&&suggList(p.id).length)?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${suggList(p.id).length} ideas</button>`:"";
+    const nSugg=underFilled(p)?suggFor(p).length:0; const ideas=nSugg?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${nSugg} ideas</button>`:"";
     return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
   const D=document.getElementById("buyDone");
@@ -313,7 +314,7 @@ function openItem(id){
   const bestKey=bestValueKey(id);
   let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen,bestKey)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):(pi.hasAvg?'· avg '+inr(pi.avg):'')); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below target'):(pi.target?'· target '+inr(pi.target):''); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
     price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div>${_spark?'<div class="sparkwrap"><canvas id="mspark"></canvas></div>':''}`; }
   const tgtVal=(USERTARGET[id]!=null?USERTARGET[id]:""), lbr=latestByRegion(id), pv=r=>lbr[r]!=null?lbr[r]:"";
   const priceEdit=`<details class="pricedetails"><summary>＋ Prices &amp; target</summary><div class="priceedit"><span class="pelbl">Prices ₹</span>`+
@@ -363,17 +364,17 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
-  const sg=(underFilled(p)&&suggList(id).length)?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${suggList(id).map((s,si)=>suggCardHtml(id,s,si,"＋ Add to compare")).join("")}</div>`:"";
+  const sgList=underFilled(p)?suggFor(p):[]; const sg=sgList.length?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${sgList.map(s=>suggCardHtml(id,s,"＋ Add to compare")).join("")}</div>`:"";
   m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div>${sg}</div>`;
   m.setAttribute("aria-labelledby","cmptitle"); document.getElementById("compareOverlay").classList.add("show"); focusModal("compareOverlay"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 // suggestions strip (shown when finalised < needed) — review & "Add" to compare/finalise
-function suggCardHtml(id,s,si,addLabel){ const pros=(s.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=(s.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
+function suggCardHtml(id,s,addLabel){ const pros=(s.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=(s.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
   const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(s.why?`<div class="cmpwhy">${esc(s.why)}</div>`:"");
   const links=["india","uk","canada"].map(k=>{const u=safeUrl((s.links||{})[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
-  return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${body}<div class="cmplinks">${links}</div></div><button class="minibtn" data-addsugg="${esc(id)}" data-sidx="${si}">${addLabel||"＋ Add"}</button></div>`; }
-function suggHtml(id,p){ if(!underFilled(p))return ""; const list=suggList(id); if(!list.length)return "";
-  return `<div class="suggwrap"><div class="suggh">💡 Suggestions to finalise — ${pinsOf(id).length}/${neededQty(p)} chosen</div>`+list.map((s,si)=>suggCardHtml(id,s,si)).join("")+`</div>`; }
+  return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${body}<div class="cmplinks">${links}</div></div><button class="minibtn" data-addsugg="${esc(id)}" data-sname="${esc(s.name)}">${addLabel||"＋ Add"}</button></div>`; }
+function suggHtml(id,p){ if(!underFilled(p))return ""; const list=suggFor(p); if(!list.length)return "";
+  return `<div class="suggwrap"><div class="suggh">💡 Suggestions to finalise — ${pinsOf(id).length}/${neededQty(p)} chosen</div>`+list.map(s=>suggCardHtml(id,s)).join("")+`</div>`; }
 
 /* ---------- actions ---------- */
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
@@ -406,7 +407,7 @@ function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effO
   setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
-function addSuggestion(id,idx){ const s=suggList(id)[idx]; if(!s)return; const L=s.links||{};
+function addSuggestion(id,name){ const s=suggList(id).find(x=>x.name===name); if(!s)return; const L=s.links||{};
   const o={oid:rid(),name:s.name,why:s.why||"",img:"",india:L.india||"",uk:L.uk||"",canada:L.canada||"",multi:false,price:s.price?String(s.price):"",pros:s.pros||[],cons:s.cons||[]};
   (USEROPTS[id]=USEROPTS[id]||[]).push(o); save("useropts",USEROPTS);
   const cmpO=document.getElementById("compareOverlay").classList.contains("show"); refreshAll();
@@ -424,7 +425,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
     const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
     const regflag=pi&&pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":"";
-    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(p.item)}</div><div class="ri-pick">${esc(o.name)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?regflag+inr(pi.cur):'—'}</span></div></div></div>`;
+    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${qtyText?`<div class="ri-qty">Qty · ${esc(qtyText)}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice">${pi?regflag+inr(pi.cur):'—'}</span></div></div></div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Auto-prices last updated "+UPDATED+" · add your own per item"):"Add India/UK/Canada prices in any item, or let the job fetch them.";
   const t=document.getElementById("logTable");
@@ -510,7 +511,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-delbase]"))) return removeBaseOpt(el.dataset.delbase,el.dataset.oname);
   if((el=c("[data-editbase]"))) return editBaseOpt(el.dataset.editbase,el.dataset.oname);
   if((el=c("[data-restoreopt]"))) return restoreBaseOpt(el.dataset.restoreopt,el.dataset.oname);
-  if((el=c("[data-addsugg]"))) return addSuggestion(el.dataset.addsugg,+el.dataset.sidx);
+  if((el=c("[data-addsugg]"))) return addSuggestion(el.dataset.addsugg,el.dataset.sname);
   if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
   if((el=c("[data-addopt]"))) { const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); _editReturn=el.dataset.addopt; document.getElementById("m_parent").value=el.dataset.addopt; showFields(true,false); return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }

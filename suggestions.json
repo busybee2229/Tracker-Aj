@@ -1,1 +1,265 @@
-{}
+{
+ "2": {
+  "ts": "2026-06-22",
+  "seen": [
+   "Mori Clever Zip Bodysuit 2-pk",
+   "Mothercare Bodysuits 5-pk",
+   "H&M Cotton Bodysuit 5-pk"
+  ],
+  "list": [
+   {
+    "name": "Mori Clever Zip Bodysuit 2-pk",
+    "why": "Zip instead of poppers — fast changes",
+    "pros": [
+     "Zip, no fiddly poppers",
+     "Soft bamboo/organic blend"
+    ],
+    "cons": [
+     "Premium price"
+    ],
+    "price": 1500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mori%20Clever%20Zip%20Bodysuit%202-pk",
+     "uk": "https://www.next.co.uk/search?w=Mori%20Clever%20Zip%20Bodysuit%202-pk",
+     "canada": "https://www.amazon.ca/s?k=Mori%20Clever%20Zip%20Bodysuit%202-pk"
+    }
+   },
+   {
+    "name": "Mothercare Bodysuits 5-pk",
+    "why": "Trusted value multipack",
+    "pros": [
+     "Good-value 5-pack",
+     "Envelope neck for easy dressing"
+    ],
+    "cons": [
+     "Plainer prints"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mothercare%20Bodysuits%205-pk",
+     "uk": "https://www.next.co.uk/search?w=Mothercare%20Bodysuits%205-pk",
+     "canada": "https://www.amazon.ca/s?k=Mothercare%20Bodysuits%205-pk"
+    }
+   },
+   {
+    "name": "H&M Cotton Bodysuit 5-pk",
+    "why": "Cheap soft everyday multipack",
+    "pros": [
+     "Budget multipack",
+     "Soft cotton"
+    ],
+    "cons": [
+     "Thins after many washes"
+    ],
+    "price": 1000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=H%26M%20Cotton%20Bodysuit%205-pk",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton%20Bodysuit%205-pk",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton%20Bodysuit%205-pk"
+    }
+   }
+  ]
+ },
+ "3": {
+  "ts": "2026-06-22",
+  "seen": [
+   "Mori Stay-on Socks 3-pk",
+   "FirstCry Newborn Socks 6-pk"
+  ],
+  "list": [
+   {
+    "name": "Mori Stay-on Socks 3-pk",
+    "why": "Stay-on design that actually holds",
+    "pros": [
+     "Won’t slip off",
+     "Soft bamboo"
+    ],
+    "cons": [
+     "Pricier per pair"
+    ],
+    "price": 900,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mori%20Stay-on%20Socks%203-pk",
+     "uk": "https://www.next.co.uk/search?w=Mori%20Stay-on%20Socks%203-pk",
+     "canada": "https://www.amazon.ca/s?k=Mori%20Stay-on%20Socks%203-pk"
+    }
+   },
+   {
+    "name": "FirstCry Newborn Socks 6-pk",
+    "why": "India bulk value",
+    "pros": [
+     "Affordable 6-pack",
+     "Soft cotton"
+    ],
+    "cons": [
+     "Sizing varies"
+    ],
+    "price": 400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=FirstCry%20Newborn%20Socks%206-pk",
+     "uk": "https://www.next.co.uk/search?w=FirstCry%20Newborn%20Socks%206-pk",
+     "canada": "https://www.amazon.ca/s?k=FirstCry%20Newborn%20Socks%206-pk"
+    }
+   }
+  ]
+ },
+ "5": {
+  "ts": "2026-06-22",
+  "seen": [
+   "Mori Cellular Blanket",
+   "Mamas & Papas Knitted Blanket"
+  ],
+  "list": [
+   {
+    "name": "Mori Cellular Blanket",
+    "why": "Breathable cellular, safe to layer",
+    "pros": [
+     "Breathable, safe to layer",
+     "Soft organic feel"
+    ],
+    "cons": [
+     "Premium price"
+    ],
+    "price": 2000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mori%20Cellular%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Mori%20Cellular%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Mori%20Cellular%20Blanket"
+    }
+   },
+   {
+    "name": "Mamas & Papas Knitted Blanket",
+    "why": "Cosy knitted, gift-worthy",
+    "pros": [
+     "Warm knit",
+     "Lovely as a gift"
+    ],
+    "cons": [
+     "Usually hand-wash"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Knitted%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Knitted%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Knitted%20Blanket"
+    }
+   }
+  ]
+ },
+ "7": {
+  "ts": "2026-06-22",
+  "seen": [
+   "Little Unicorn Cotton Muslin 3-pk",
+   "Masilo / Mulmul Organic Muslin (India)"
+  ],
+  "list": [
+   {
+    "name": "Little Unicorn Cotton Muslin 3-pk",
+    "why": "Large breathable muslins",
+    "pros": [
+     "Generously sized",
+     "Breathable, multi-use"
+    ],
+    "cons": [
+     "Premium price"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Little%20Unicorn%20Cotton%20Muslin%203-pk",
+     "uk": "https://www.next.co.uk/search?w=Little%20Unicorn%20Cotton%20Muslin%203-pk",
+     "canada": "https://www.amazon.ca/s?k=Little%20Unicorn%20Cotton%20Muslin%203-pk"
+    }
+   },
+   {
+    "name": "Masilo / Mulmul Organic Muslin (India)",
+    "why": "India organic value",
+    "pros": [
+     "Soft organic cotton",
+     "Softer with each wash"
+    ],
+    "cons": [
+     "Fewer print options"
+    ],
+    "price": 900,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Masilo%20%2F%20Mulmul%20Organic%20Muslin%20(India)",
+     "uk": "https://www.next.co.uk/search?w=Masilo%20%2F%20Mulmul%20Organic%20Muslin%20(India)",
+     "canada": "https://www.amazon.ca/s?k=Masilo%20%2F%20Mulmul%20Organic%20Muslin%20(India)"
+    }
+   }
+  ]
+ },
+ "10": {
+  "ts": "2026-06-22",
+  "seen": [
+   "KeaBabies Bandana Bibs 8-pk",
+   "Mushie Bandana Bibs 2-pk",
+   "Mom’s Home Bandana Bibs 8-pk"
+  ],
+  "list": [
+   {
+    "name": "KeaBabies Bandana Bibs 8-pk",
+    "why": "Big value pack for drool",
+    "pros": [
+     "8-pack value",
+     "Absorbent fleece back, snaps"
+    ],
+    "cons": [
+     "Bandana style, not for feeds"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=KeaBabies%20Bandana%20Bibs%208-pk",
+     "uk": "https://www.next.co.uk/search?w=KeaBabies%20Bandana%20Bibs%208-pk",
+     "canada": "https://www.amazon.ca/s?k=KeaBabies%20Bandana%20Bibs%208-pk"
+    }
+   },
+   {
+    "name": "Mushie Bandana Bibs 2-pk",
+    "why": "Stylish organic cotton",
+    "pros": [
+     "Soft organic cotton",
+     "Stylish prints"
+    ],
+    "cons": [
+     "Pricey per bib"
+    ],
+    "price": 1500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mushie%20Bandana%20Bibs%202-pk",
+     "uk": "https://www.next.co.uk/search?w=Mushie%20Bandana%20Bibs%202-pk",
+     "canada": "https://www.amazon.ca/s?k=Mushie%20Bandana%20Bibs%202-pk"
+    }
+   },
+   {
+    "name": "Mom’s Home Bandana Bibs 8-pk",
+    "why": "India bulk value",
+    "pros": [
+     "Affordable 8-pack",
+     "Adjustable snaps"
+    ],
+    "cons": [
+     "Thinner fabric"
+    ],
+    "price": 500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mom%E2%80%99s%20Home%20Bandana%20Bibs%208-pk",
+     "uk": "https://www.next.co.uk/search?w=Mom%E2%80%99s%20Home%20Bandana%20Bibs%208-pk",
+     "canada": "https://www.amazon.ca/s?k=Mom%E2%80%99s%20Home%20Bandana%20Bibs%208-pk"
+    }
+   }
+  ]
+ }
+}
