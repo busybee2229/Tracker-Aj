@@ -277,7 +277,7 @@ function optCard(o,i,p,isUser,userIdx){
   const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
   const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
-  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
+  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:"";   // no presumptive BEST/ALT — only show once you've finalised
   const links=o.multi
     ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("")
     : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View product</a>`:"";})();

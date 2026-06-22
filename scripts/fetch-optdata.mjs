@@ -31,15 +31,19 @@ products.forEach(p=>{ const opts=(p.options||[]).concat((shared.useropts||{})[p.
 await getFX();
 let n=0;
 for(const it of items){ for(const o of it.opts){ const link=o[it.br]||o.india||o.uk||o.canada; if(!link||isBlocked(link))continue;
-  let res=null, html="", img="", name="";
-  if(/\/products\//.test(link)){ const j=await getText(link.split("?")[0].replace(/\/$/,"")+".json"); if(j)res=fromShopify(j); }
+  const rec=((out[it.id]||{})[o.name])||{};
+  const hasImg=!!o.img||!!rec.img;                                  // already have a picture (yours or previously fetched) — don't touch
+  const hasManualPrice=o.price!=null&&String(o.price).trim()!=="";  // your manual price always wins — skip price fetch
+  if(hasImg&&hasManualPrice){ console.log(`skip ${it.id} ${o.name} (already complete)`); continue; }
+  let res=null, html="", img="";
+  if(!hasManualPrice&&/\/products\//.test(link)){ const j=await getText(link.split("?")[0].replace(/\/$/,"")+".json"); if(j)res=fromShopify(j); }
   html=await getText(link);
-  if(html){ if(!res)res=fromJsonLd(html)||fromMeta(html); img=ogImage(html); name=ogTitle(html); }
-  if(res||img){ const rec=(out[it.id]=out[it.id]||{})[o.name]||{};
-    if(res&&res.price>0){ rec.price=res.price; rec.currency=res.currency; }
-    if(img)rec.img=img; if(name)rec.name=name; out[it.id][o.name]=rec; n++;
-    console.log(`ok ${it.id} ${o.name}: ${res?res.currency+" "+res.price:"(no price)"} ${img?"img":""}`); }
-  else console.log(`skip ${it.id} ${o.name}`);
+  if(html){ if(!hasManualPrice&&!res)res=fromJsonLd(html)||fromMeta(html); if(!hasImg)img=ogImage(html); }
+  let changed=false;
+  if(!hasManualPrice&&res&&res.price>0){ rec.price=res.price; rec.currency=res.currency; changed=true; }
+  if(!hasImg&&img){ rec.img=img; changed=true; }
+  if(changed){ (out[it.id]=out[it.id]||{})[o.name]=rec; n++; console.log(`ok ${it.id} ${o.name}: ${res?res.currency+" "+res.price:""} ${img?"img":""}`); }
+  else console.log(`skip ${it.id} ${o.name} (nothing new)`);
   await new Promise(r=>setTimeout(r,350));
 } }
 writeFileSync("optdata.json", JSON.stringify(out));
