@@ -58,7 +58,10 @@ function mO(a,b){ return Object.assign({},a||{},b||{}); }
 function mItems(a,b){ const m={}; [...(a||[]),...(b||[])].forEach(x=>{ if(x&&x.id!=null)m[x.id]=x; }); return Object.values(m); }
 function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.name||"")+"|"+(o.uk||"")+(o.india||"")+(o.canada||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
 function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[]); new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const s=[...new Set([...ar((a||{})[k]),...ar((b||{})[k])])]; if(s.length)out[k]=s; }); return out; }
-function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),pins:mPins(r.pins,l.pins)}; }
+// merge per-id arrays of price records, dedup by date+region+inr (for userprices)
+function mArr(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.date||"")+"|"+(o.region||"")+"|"+(o.inr||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
+// merge ALL synced keys (local wins on scalar maps) — used to reconcile a stale-write 409 without dropping the local edit
+function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),usertarget:mO(r.usertarget,l.usertarget),userbought:mO(r.userbought,l.userbought),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),userprices:mArr(r.userprices,l.userprices),pins:mPins(r.pins,l.pins)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
 let _recovering=false;
 async function recoverAdminPw(){ if(_recovering||ADMIN_PW)return; _recovering=true;
@@ -71,7 +74,12 @@ function pushState(){ if(!SUPA.url)return;
   _pushPending=true; clearTimeout(_pt); _pt=setTimeout(async()=>{
   const data=localState(); data.ts=Date.now(); bumpTs(data.ts);
   try{ const r=await fetch(SUPA.saveFn,{method:"POST",headers:SUPA.h({"Content-Type":"application/json"}),body:JSON.stringify({password:ADMIN_PW,data})});
-    if(r.status===409){ console.warn("[sync] newer remote state — adopting it"); _pushPending=false; pullAndRender(); return; }
+    if(r.status===409){ console.warn("[sync] stale write — merging with remote instead of discarding");
+      const remote=await getRemote(); const merged=mergeState(remote,data); applyShared(merged); merged.ts=Date.now(); bumpTs(merged.ts);
+      try{ const r2=await fetch(SUPA.saveFn,{method:"POST",headers:SUPA.h({"Content-Type":"application/json"}),body:JSON.stringify({password:ADMIN_PW,data:merged})});
+        if(!r2.ok){ console.warn("[sync] merge re-write failed",r2.status); syncToast("Sync conflict — your changes are saved on this device; reopen to retry."); } }
+      catch(e){ console.warn("[sync] merge re-write error",e); }
+      try{ refreshAll(); }catch(e){} _pushPending=false; return; }
     if(r.status===401){ syncToast("Save failed — admin session expired. Log in again."); console.warn("[sync] write unauthorized"); }
     else if(!r.ok){ syncToast("Couldn't save changes — will retry on next edit."); console.warn("[sync] write failed",r.status); }
   }catch(e){ syncToast("Offline — changes saved locally, not synced yet."); console.warn("[sync] write error",e); }
@@ -386,7 +394,8 @@ function saveAdd(){
 }
 
 /* ---------- export / import ---------- */
-function exportEdits(){ const blob=new Blob([JSON.stringify({track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY},null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="baby-tracker-edits.json"; a.click(); }
+// full state (incl. userprices/usertarget/userbought) so a backup round-trips without dropping data
+function exportEdits(){ const blob=new Blob([JSON.stringify(localState(),null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="baby-tracker-edits.json"; a.click(); }
 function importEdits(e){ const f=e.target.files[0]; if(!f)return; const r=new FileReader();
   r.onload=()=>{ try{ applyShared(JSON.parse(r.result)); pushState(); stats(); renderDash(); renderPending(); alert("Imported & synced."); }catch(x){ alert("Invalid file"); } }; r.readAsText(f); }
 

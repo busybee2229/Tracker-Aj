@@ -22,7 +22,7 @@ you and your wife log in as **admin** to research, add, edit and finalise items.
 |---|---|
 | `index.html` | Shell + full CSS (the design system). Loads `app.js`. |
 | `app.js` | All app logic; reads `products.json` + `prices.json`; syncs via Supabase. |
-| `products.json` | Catalogue (54 base items) + top-3 options + images + `bestRegion`. |
+| `products.json` | Catalogue (57 base items) + top-3 options + images + `bestRegion`. |
 | `prices.json` | `{updated, items, images}` written by the price job. |
 | `scripts/fetch-prices.mjs` | Free product-page price + og:image reader (Shopify/JSON-LD/meta). |
 | `.github/workflows/update-prices.yml` | Twice-daily price job → commits `prices.json`. |
