@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 // ─── EDIT THIS: your situation, so suggestions are tailored ───────────────────
 const CONTEXT = "Newborn arriving Oct/Nov (winter). Family based in India — buy in INR ₹; for higher quality they may also buy from the UK or Canada. Prefer practical, safe, well-reviewed, widely-available products.";
 const PER_ITEM = 3;            // how many fresh suggestions per under-filled item
-const MODEL = "gemini-2.5-flash-lite";   // free tier: 30 RPM, 1500/day (gemini-2.0-flash was retired Jun 2026)
+const MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];   // try first; on 503 overload fall back to the next (gemini-2.0-flash retired Jun 2026)
 // ──────────────────────────────────────────────────────────────────────────────
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
@@ -32,19 +32,26 @@ const optionNames = p => (p.options || []).filter(o => !((HID[p.id] || []).inclu
 
 const linksFor = name => { const q = encodeURIComponent(name); return { india: `https://www.amazon.in/s?k=${q}`, uk: `https://www.next.co.uk/search?w=${q}`, canada: `https://www.amazon.ca/s?k=${q}` }; };
 
+// call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
+async function callGemini(body) {
+  for (const model of MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
+    for (let a = 0; a < 3; a++) {
+      try {
+        const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        if (res.ok) return await res.json();
+        if (res.status === 429) { console.log(`  ${model} 429 — wait 30s`); await new Promise(r => setTimeout(r, 30000)); continue; }
+        if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — trying next model`); await new Promise(r => setTimeout(r, 8000)); break; }
+        console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
+      } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
+    }
+  }
+  return null;
+}
 async function suggest(p, exclude) {
   const prompt = `You help a parent finalise baby-product purchases.\nContext: ${CONTEXT}\nThey still need more options for: "${p.item}" (category ${p.category || ""}).\nDo NOT repeat any of these already-considered products: ${exclude.join("; ") || "none"}.\nSuggest ${PER_ITEM} DIFFERENT, genuinely good, real products for this need. For each: name (brand + product), a one-line why, 2 short pros, 1 short con, and an estimated price in INR (integer).\nReply ONLY as JSON: [{"name":"","why":"","pros":["",""],"cons":[""],"price":0}]`;
   const body = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.8, maxOutputTokens: 700, responseMimeType: "application/json" } };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
-  let j = null;
-  for (let a = 0; a < 3 && !j; a++) {
-    try {
-      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      if (res.ok) { j = await res.json(); break; }
-      if (res.status === 429) { console.log("  429 rate limit — waiting 60s"); await new Promise(r => setTimeout(r, 60000)); continue; }
-      console.log("  gemini", res.status, (await res.text()).slice(0, 140)); return [];
-    } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
-  }
+  const j = await callGemini(body);
   if (!j) return [];
   try {
     const txt = j && j.candidates && j.candidates[0] && j.candidates[0].content.parts[0].text || "[]";

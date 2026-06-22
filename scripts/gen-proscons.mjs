@@ -9,7 +9,7 @@ if (!GEMINI_KEY) { console.log("No GEMINI_API_KEY set — skipping."); process.e
 
 const SUPA_URL = "https://nrpjtychwmuecmskehyj.supabase.co";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycGp0eWNod211ZWNtc2tlaHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDMyMDUsImV4cCI6MjA5NzYxOTIwNX0.g-WGgUyrHLwql4ZqcNjVvCuT1TzcNIo1z6NNIdVNE9s";
-const MODEL = "gemini-2.5-flash-lite";   // free tier: 30 RPM, 1500/day (gemini-2.0-flash was retired Jun 2026)
+const MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];   // try first; on 503 overload fall back to the next (gemini-2.0-flash retired Jun 2026)
 
 const products = JSON.parse(readFileSync("products.json", "utf8"));
 const pc = JSON.parse(readFileSync("proscons.json", "utf8"));
@@ -29,19 +29,26 @@ Object.entries(shared.useropts || {}).forEach(([id, arr]) => { const p = byId[id
 console.log(`${targets.length} option(s) need pros/cons`);
 if (!targets.length) process.exit(0);
 
+// call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
+async function callGemini(body) {
+  for (const model of MODELS) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
+    for (let a = 0; a < 3; a++) {
+      try {
+        const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        if (res.ok) return await res.json();
+        if (res.status === 429) { console.log(`  ${model} 429 — wait 30s`); await new Promise(r => setTimeout(r, 30000)); continue; }
+        if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — trying next model`); await new Promise(r => setTimeout(r, 8000)); break; }
+        console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
+      } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
+    }
+  }
+  return null;
+}
 async function gen(t) {
   const prompt = `For the baby product "${t.name}" (used as: ${t.item}${t.cat ? ", category " + t.cat : ""}), give concise buying pros and cons for new parents choosing between options. Reply ONLY as JSON: {"pros":["..."],"cons":["..."]} with 1-2 short pros and 1 short con. No extra text.`;
   const body = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.4, maxOutputTokens: 200, responseMimeType: "application/json" } };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
-  let j = null;
-  for (let a = 0; a < 3 && !j; a++) {
-    try {
-      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      if (res.ok) { j = await res.json(); break; }
-      if (res.status === 429) { console.log("  429 rate limit — waiting 60s"); await new Promise(r => setTimeout(r, 60000)); continue; }
-      console.log("  gemini error", res.status, (await res.text()).slice(0, 160)); return null;
-    } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
-  }
+  const j = await callGemini(body);
   if (!j) return null;
   try {
     const txt = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts[0].text || "";
