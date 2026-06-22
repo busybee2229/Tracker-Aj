@@ -34,9 +34,12 @@ const isTracked=id=>TRACK[id]!==false;
 const inr=n=>"₹"+(+n||0).toLocaleString("en-IN");
 const effStatus=p=>STATUSOVR[p.id]||p.status;
 // base catalogue options (with per-user hide + edit overrides applied, tagged _orig) then user-added options
+const rid=()=>"o"+((crypto.randomUUID&&crypto.randomUUID())||(Date.now()+""+Math.random()));
+// base catalogue options (hide + override applied, tagged _orig) then user options; every option carries a STABLE _key for pins
 const effOptions=p=>{ const ov=OPTOVERRIDE[p.id]||{}, hid=HIDDENOPTS[p.id]||[];
-  const base=(p.options||[]).filter(o=>!hid.includes(o.name)).map(o=>{ const m=ov[o.name]?Object.assign({},o,ov[o.name]):Object.assign({},o); m._orig=o.name; return m; });
-  return base.concat(USEROPTS[p.id]||[]); };
+  const base=(p.options||[]).filter(o=>!hid.includes(o.name)).map(o=>{ const m=ov[o.name]?Object.assign({},o,ov[o.name]):Object.assign({},o); m._orig=o.name; m._key="b:"+o.name; return m; });
+  const user=(USEROPTS[p.id]||[]).map(o=>{ const m=Object.assign({},o); m._key="u:"+(o.oid||o.name); return m; });
+  return base.concat(user); };
 const defaultQty=p=>{const m=String(p.qty||"").match(/\d+/g);return m?+m[m.length-1]:1;};  // upper bound of "5-7" → 7
 const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);   // = quantity NEEDED
 const neededQty=p=>effQty(p);
@@ -45,9 +48,17 @@ const isDone=p=>effStatus(p)==="Owned"||(neededQty(p)>0&&boughtQty(p)>=neededQty
 const isToBuy=p=>!HIDDEN[p.id]&&(effStatus(p)==="Buy"||effStatus(p)==="Confirm")&&!isDone(p);
 const bestRegion=p=>p.bestRegion||"india";
 const pinsOf=id=>Array.isArray(PINS[id])?PINS[id]:(PINS[id]!=null?[PINS[id]]:[]);
-const isPinned=(id,i)=>pinsOf(id).includes(i);
+const isPinned=(id,key)=>pinsOf(id).includes(key);
 const hasPin=id=>pinsOf(id).length>0;
 function normPins(){ for(const k in PINS){ const v=PINS[k]; if(!Array.isArray(v)) PINS[k]=(v==null?[]:[v]); if(!PINS[k].length) delete PINS[k]; } }
+// one-time: give user options stable ids, and convert any legacy numeric (index-based) pins to stable keys
+function migrateToKeys(){ let ch=false;
+  for(const id in USEROPTS){ (USEROPTS[id]||[]).forEach(o=>{ if(o&&!o.oid){ o.oid=rid(); ch=true; } }); }
+  for(const id in PINS){ const arr=pinsOf(id); if(arr.some(x=>typeof x==="number")){ const p=itemById(id);
+    if(p){ const opts=effOptions(p); PINS[id]=arr.map(x=> typeof x==="number"?(opts[x]&&opts[x]._key):x).filter(Boolean); }
+    else PINS[id]=arr.filter(x=>typeof x!=="number"); ch=true; } }
+  if(ch){ localStorage.setItem("useropts",JSON.stringify(USEROPTS)); localStorage.setItem("pins",JSON.stringify(PINS)); }
+  return ch; }
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 const allItems=()=>PRODUCTS.filter(p=>!HIDDEN[p.id]).concat(USER.filter(p=>!HIDDEN[p.id]));
@@ -99,7 +110,7 @@ function applyShared(d){ if(!d||typeof d!=="object")return;
   TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};USERBOUGHT=d.userbought||{};HIDDENOPTS=d.hiddenopts||{};OPTOVERRIDE=d.optoverride||{};
   localStorage.setItem("hiddenopts",JSON.stringify(HIDDENOPTS));localStorage.setItem("optoverride",JSON.stringify(OPTOVERRIDE));
   localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));localStorage.setItem("userprices",JSON.stringify(USERPRICES));localStorage.setItem("usertarget",JSON.stringify(USERTARGET));localStorage.setItem("userbought",JSON.stringify(USERBOUGHT));
-  normPins(); }
+  normPins(); migrateToKeys(); }
 function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length||Object.keys(r.userbought||{}).length||Object.keys(r.hiddenopts||{}).length||Object.keys(r.optoverride||{}).length); }
 function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
 async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
@@ -152,7 +163,7 @@ function imgHtml(p,override){ const ic=CATICON[p.category]||"🍼"; const u=safe
   ? `<img src="${esc(u)}" alt="${esc(p.item)}" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}"/>`
   : `<div class="ph">${ic}</div>`; }
 // image of the finalised (pinned) option for an item, if any — else "" (caller falls back to default)
-function finalImg(p){ const pins=pinsOf(p.id); if(!pins.length)return ""; const opts=effOptions(p); const i=pins[0]; const o=opts[i]; if(!o)return "";
+function finalImg(p){ const pins=pinsOf(p.id); if(!pins.length)return ""; const opts=effOptions(p); const i=opts.findIndex(o=>pins.includes(o._key)); if(i<0)return ""; const o=opts[i];
   return (i===0?(p.img||IMAGES[p.id]||""):(o.img||""))||p.img||IMAGES[p.id]||""; }
 function qtyChip(p){ const n=effQty(p); return n>1?`<span class="qchip">×${n}</span>`:""; }
 
@@ -212,7 +223,7 @@ function renderDash(){
 }
 
 /* ---------- To-Buy checklist (default admin view) ---------- */
-function recOption(p){ const opts=effOptions(p); if(!opts.length)return null; const pins=pinsOf(p.id).filter(i=>i<opts.length); const i=pins.length?pins[0]:0; return {o:opts[i],i}; }
+function recOption(p){ const opts=effOptions(p); if(!opts.length)return null; const pins=pinsOf(p.id); let i=opts.findIndex(o=>pins.includes(o._key)); if(i<0)i=0; return {o:opts[i],i}; }
 function bestLinkFor(p){ const r=recOption(p); if(!r)return ""; const o=r.o, br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); }
 function renderToBuy(){
   const items=allItems().filter(p=>!HIDDEN[p.id]);
@@ -239,11 +250,11 @@ function renderToBuy(){
     const bl=bestLinkFor(p), buyBtn=bl?`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}">★ Buy best</a>`:"";
     const gotBtn=need>1?`<button class="trk" data-bought="${esc(p.id)}" data-d="1">+1 bought</button>`:`<button class="trk gotit" data-got="${esc(p.id)}">Got it ✓</button>`;
     const cmpBtn=opts.length>1?`<button class="detbtn" data-compare="${esc(p.id)}">⚖ Compare</button>`:"";
-    const pins=pinsOf(p.id).filter(i=>i<opts.length);
-    const primaryIdx=pins.length?pins:opts.map((_,i)=>i).slice(0,3);
+    const pk=pinsOf(p.id), pinnedIdx=opts.map((_,i)=>i).filter(i=>pk.includes(opts[i]._key));
+    const primaryIdx=pinnedIdx.length?pinnedIdx:opts.map((_,i)=>i).slice(0,3);
     const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
-    const primary=primaryIdx.map(i=>card(p,opts,i,pins,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
-    const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pins,ic)).join("")}</div></details>`:"";
+    const primary=primaryIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
+    const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,pinnedIdx,ic)).join("")}</div></details>`:"";
     return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
   const D=document.getElementById("buyDone");
@@ -254,7 +265,7 @@ function renderToBuy(){
 
 /* ---------- item modal ---------- */
 function optCard(o,i,p,isUser,userIdx){
-  const pinned=isPinned(p.id,i); const ic=CATICON[p.category]||"🍼";
+  const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
   const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
@@ -262,7 +273,7 @@ function optCard(o,i,p,isUser,userIdx){
     ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("")
     : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View product</a>`:"";})();
   return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
-    `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pini="${i}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
+    `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pinkey="${esc(o._key)}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
     (isUser
       ?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`
       :`<button class="trk" title="Edit option" data-editbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✕</button>`)+`</div>`+
@@ -270,7 +281,7 @@ function optCard(o,i,p,isUser,userIdx){
 }
 function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=opts.filter(o=>o._orig!==undefined).length;
-  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pin=pinsOf(id).filter(i=>i<opts.length); if(pin.length){ order=[...pin, ...order.filter(i=>!pin.includes(i))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
+  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
   let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):'· avg '+inr(pi.avg)); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
     price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div>${_spark?'<div class="sparkwrap"><canvas id="mspark"></canvas></div>':''}`; }
@@ -315,7 +326,7 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
     const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
     const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(o.why?`<div class="cmpwhy">${esc(o.why)}</div>`:`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`);
     const u=o.multi?["india","uk","canada"].map(k=>{const l=safeUrl(o[k]);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join(""):(()=>{const l=singleLink(o,p);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View product</a>`:"";})();
-    return `<div class="cmpcard ${pins.includes(i)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(i)?'★ ':''}${esc(o.name)}</div>${body}<div class="cmplinks">${u}</div></div></div>`;
+    return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}</div>${body}<div class="cmplinks">${u}</div></div></div>`;
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
@@ -326,7 +337,7 @@ function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 /* ---------- actions ---------- */
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
 function setStatus(id,st){ const b=(itemById(id)||{}).status; if(st===b)delete STATUSOVR[id]; else STATUSOVR[id]=st; save("statusovr",STATUSOVR); stats(); renderDash(); openItem(id); }
-function pinOpt(id,i){ let a=pinsOf(id).slice(); a=a.includes(i)?a.filter(x=>x!==i):a.concat(i); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); stats(); renderDash(); renderPending(); openItem(id); }
+function pinOpt(id,key){ let a=pinsOf(id).slice(); a=a.includes(key)?a.filter(x=>x!==key):a.concat(key); if(a.length)PINS[id]=a; else delete PINS[id]; save("pins",PINS); refreshAll(); openItem(id); }
 function refreshAll(){ stats(); renderDash(); renderPending(); if(document.getElementById("v-tobuy"))renderToBuy(); buildNotifs(); }
 async function reloadData(){ syncToast("Refreshing prices…"); try{ await Promise.all([getFX(),loadPrices(),loadProsCons()]); const r=await getRemote(); if(r&&r.ts){applyShared(r);bumpTs(r.ts);} }catch(e){ console.warn("[refresh]",e); } refreshAll(); syncToast("Prices refreshed"); }
 function reopenIfModal(id){ if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
@@ -340,26 +351,24 @@ function setPrice(id){ const g=s=>{const el=document.getElementById(s); const n=
   const tv=g("m_target"); if(tv>0)USERTARGET[id]=Math.round(tv); else delete USERTARGET[id]; save("usertarget",USERTARGET);
   stats(); renderDash(); buildNotifs(); if(document.getElementById("v-log").classList.contains("on"))renderLog(); openItem(id); }
 function delItem(id){ if(!confirm("Remove this item?"))return; if(String(id).startsWith("u")){USER=USER.filter(x=>String(x.id)!==String(id));save("useritems",USER);}else{HIDDEN[id]=1;save("hidden",HIDDEN);} stats();renderDash();renderPending();closeModal("itemOverlay"); }
-function delOpt(id,userIdx){ if(!USEROPTS[id])return; USEROPTS[id].splice(userIdx,1); if(!USEROPTS[id].length)delete USEROPTS[id]; save("useropts",USEROPTS); refreshAll(); openItem(id); }
+function delOpt(id,userIdx){ if(!USEROPTS[id])return; const removed=USEROPTS[id][userIdx]; USEROPTS[id].splice(userIdx,1); if(!USEROPTS[id].length)delete USEROPTS[id]; save("useropts",USEROPTS);
+  if(removed){ const key="u:"+(removed.oid||removed.name); const pins=pinsOf(id).filter(x=>x!==key); if(pins.length)PINS[id]=pins; else delete PINS[id]; save("pins",PINS); }
+  refreshAll(); openItem(id); }
 // hide a built-in catalogue option (by its original name); migrate finalised-pin indices so they stay aligned
-function removeBaseOpt(id,oname){ if(!confirm("Remove this option?"))return; const p=itemById(id); if(!p)return;
-  const ri=effOptions(p).findIndex(o=>o._orig===oname); if(ri<0)return;
+function removeBaseOpt(id,oname){ if(!confirm("Remove this option?"))return;
   HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).concat(oname); save("hiddenopts",HIDDENOPTS);
-  const pins=pinsOf(id).filter(x=>x!==ri).map(x=>x>ri?x-1:x); if(pins.length)PINS[id]=pins; else delete PINS[id]; save("pins",PINS);
+  const key="b:"+oname; const pins=pinsOf(id).filter(x=>x!==key); if(pins.length)PINS[id]=pins; else delete PINS[id]; save("pins",PINS);
   refreshAll(); reopenIfModal(id); }
 function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effOptions(p).find(x=>x._orig===oname); if(!o)return;
   _edit={kind:"baseopt",id,name:oname}; _editReturn=id;
   document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p.category);
   setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
-function restoreBaseOpt(id,oname){ const p=itemById(id); if(!p)return;
-  HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS);
-  const ri=effOptions(p).findIndex(o=>o._orig===oname); if(ri>=0){ const pins=pinsOf(id).map(x=>x>=ri?x+1:x); if(pins.length)PINS[id]=pins; save("pins",PINS); }
-  refreshAll(); reopenIfModal(id); }
+function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
 
 /* ---------- pending + log ---------- */
 function renderPending(){ const w=document.getElementById("pendingList");
-  const rows=[]; allItems().forEach(p=>{ pinsOf(p.id).forEach(i=>{ const o=effOptions(p)[i]; if(o) rows.push({p,o,i}); }); });
+  const rows=[]; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o) rows.push({p,o}); }); });
   const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" data-showview="dash">Open Dashboard</button>':'')+'</div>'; return; }
   const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
@@ -407,12 +416,12 @@ function saveAdd(){
   if(!india&&!uk&&!canada){ india="https://www.amazon.in/s?k="+qq; }   // only fall back if user gave no link
   const opt={name,why:"",img:g("m_img"),india,uk,canada,multi:!!(document.getElementById("m_multi")||{}).checked};
   if(_edit){
-    if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
+    if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ opt.oid=USEROPTS[_edit.pid][_edit.idx].oid||rid(); USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
     else if(_edit.kind==="baseopt"){ const it=itemById(_edit.id); const orig=((it&&it.options)||[]).find(o=>o.name===_edit.name)||{}; (OPTOVERRIDE[_edit.id]=OPTOVERRIDE[_edit.id]||{})[_edit.name]={name,why:orig.why||"",img:g("m_img"),india,uk,canada,multi:opt.multi}; save("optoverride",OPTOVERRIDE); }
     else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.qty=g("m_qty"); it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
     _edit=null; closeModal("addOverlay"); refreshAll(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} return;
   }
-  if(parent){ (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
+  if(parent){ opt.oid=rid(); (USEROPTS[parent]=USEROPTS[parent]||[]).push(opt); save("useropts",USEROPTS); }
   else { USER.push({id:"u"+((crypto.randomUUID&&crypto.randomUUID())||Date.now()),category:g("m_cat")||"EXTRAS",item:g("m_item")||name,priority:"Later",status:"Buy",qty:g("m_qty"),best:"-",bestRegion:"india",notes:"Added by you.",owned:"",img:g("m_img"),options:[opt]}); save("useritems",USER); }
   closeModal("addOverlay"); refreshAll(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);}
 }
@@ -445,7 +454,7 @@ document.addEventListener("click",e=>{
   if((el=c("[data-showview]"))) return showView(el.dataset.showview);
   if((el=c("[data-track]"))) return toggleTrack(el.dataset.track);
   if((el=c("[data-setstatus]"))) return setStatus(el.dataset.setstatus,el.dataset.st);
-  if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,+el.dataset.pini);
+  if((el=c("[data-pin]"))) return pinOpt(el.dataset.pin,el.dataset.pinkey);
   if((el=c("[data-bought]"))) return setBought(el.dataset.bought,+el.dataset.d);
   if((el=c("[data-got]"))) return markGot(el.dataset.got);
   if((el=c("[data-saveprice]"))) return setPrice(el.dataset.saveprice);
@@ -514,6 +523,7 @@ function applyAdminUI(){
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
   await Promise.all([getFX(),loadPrices(),loadProsCons()]); await syncPull();
+  if(migrateToKeys()&&ADMIN_PW)pushState();   // convert legacy index pins → stable keys (persist once if admin)
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
   // instant cross-device sync: Supabase Realtime (push) + 5s poll fallback
