@@ -18,7 +18,7 @@ const CATICON={"CLOTHING":"👕","HYGIENE & HEALTH":"🧴","BASICS & GEAR":"🍼
 const URGENCIES=["Day 1","Day 1*","First weeks","Later"];
 const bcls={"Day 1":"day1","Day 1*":"day1","First weeks":"weeks","Later":"later","Optional":"opt","Owned":"owned","-":"opt"};
 
-let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="";
+let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="", PROSCONS={};
 let ADMIN_PW=sessionStorage.getItem("apw")||"";   // verified server-side on each write
 const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d);}catch(e){return JSON.parse(d);}};
 const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local only — never synced (2.2)
@@ -108,6 +108,7 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
   }catch(e){}
   b.textContent="📊 Live prices fill in as the GitHub Action reads each product page. Photos, plan, options and links work now.";
 }
+async function loadProsCons(){ try{ const r=await fetch("./proscons.json",{cache:"no-store"}); if(r.ok)PROSCONS=await r.json(); }catch(e){ console.warn("[proscons] load failed",e); } }
 // ₹ for a record: prefer converting the stored LOCAL price at the current FX rate
 // (so history/averages aren't polluted by old FX); fall back to legacy stored inr (3.4)
 const recInr=x=>(x.local!=null&&x.currency)?toINR(x.local,x.currency):x.inr;
@@ -219,7 +220,7 @@ function renderToBuy(){
     const priceTxt = pi?`<span class="bprice ${pi.isDeal?'deal':''}">${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}${pi.isDeal?' 🔥':''}${pi.target&&!pi.isDeal?' · target '+inr(pi.target):''}</span>`:`<span class="bprice none">no price yet</span>`;
     const bl=bestLinkFor(p), buyBtn=bl?`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}">★ Buy best</a>`:"";
     const gotBtn=need>1?`<button class="trk" data-bought="${esc(p.id)}" data-d="1">+1 bought</button>`:`<button class="trk gotit" data-got="${esc(p.id)}">Got it ✓</button>`;
-    return `<div class="buyrow" role="button" tabindex="0" data-open="${esc(p.id)}" aria-label="${esc(p.item)}"><div class="bthumb">${thumb}</div><div class="bmain"><div class="btitle">${esc(p.item)} ${qtyTag} ${badge}</div><div class="bpick">${pickName?`<b>${pickName}</b>`:'<span class="muted">no pick chosen — tap Compare</span>'} ${why}</div><div class="bmetarow">${priceTxt}</div></div><div class="bact">${buyBtn}<button class="detbtn" data-open="${esc(p.id)}">Compare</button>${gotBtn}</div></div>`;
+    return `<div class="buyrow" role="button" tabindex="0" data-open="${esc(p.id)}" aria-label="${esc(p.item)}"><div class="bthumb">${thumb}</div><div class="bmain"><div class="btitle">${esc(p.item)} ${qtyTag} ${badge}</div><div class="bpick">${pickName?`<b>${pickName}</b>`:'<span class="muted">no pick chosen — tap Compare</span>'} ${why}</div><div class="bmetarow">${priceTxt}</div></div><div class="bact">${buyBtn}<button class="detbtn" data-compare="${esc(p.id)}">Compare</button><button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div>`;
   }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
   const D=document.getElementById("buyDone");
   if(!done.length){ D.innerHTML=""; }
@@ -233,7 +234,9 @@ function optCard(o,i,p,isUser,userIdx){
   const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
   const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(i===0?`<span class="rank">★ BEST</span>`:`<span class="rank alt">ALT ${i+1}</span>`);
-  const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("");
+  const links=o.multi
+    ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("")
+    : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View product</a>`:"";})();
   return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pini="${i}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
     (isUser?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`:"")+`</div>`+
@@ -245,12 +248,12 @@ function openItem(id){
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
   let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):'· avg '+inr(pi.avg)); price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div><canvas class="spark" id="mspark"></canvas>`; }
   const tgtVal=(USERTARGET[id]!=null?USERTARGET[id]:""), lbr=latestByRegion(id), pv=r=>lbr[r]!=null?lbr[r]:"";
-  const priceEdit=`<div class="priceedit"><span class="pelbl">Prices ₹</span>`+
+  const priceEdit=`<details class="pricedetails"><summary>＋ Prices &amp; target</summary><div class="priceedit"><span class="pelbl">Prices ₹</span>`+
     `<label>🇮🇳<input id="m_price_india" inputmode="decimal" placeholder="—" value="${pv('india')}"></label>`+
     `<label>🇬🇧<input id="m_price_uk" inputmode="decimal" placeholder="—" value="${pv('uk')}"></label>`+
     `<label>🇨🇦<input id="m_price_canada" inputmode="decimal" placeholder="—" value="${pv('canada')}"></label>`+
     `<label title="Flag a deal when the cheapest price drops to/below this">🎯<input id="m_target" inputmode="decimal" placeholder="target" value="${tgtVal}"></label>`+
-    `<button class="minibtn" data-saveprice="${esc(id)}">Save</button></div>`;
+    `<button class="minibtn" data-saveprice="${esc(id)}">Save</button></div></details>`;
   const qn=effQty(p);
   const stbtns=["Buy","Owned","Confirm"].map(st=>`<button class="trk ${effStatus(p)===st?'on':''}" data-setstatus="${esc(id)}" data-st="${st}">${st==="Buy"?"To buy":st}</button>`).join("");
   const edititem=String(id).startsWith("u")?`<button class="trk" data-edititem="${esc(id)}">✎ Edit</button>`:"";
@@ -259,7 +262,7 @@ function openItem(id){
     `<div class="mhead"><div class="mimg">${imgHtml(p)}</div><div style="flex:1"><h3 id="mtitle">${esc(p.item)}</h3>`+
     `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:6px">`+
       (URGENCIES.includes(p.priority)?`<span class="b ${bcls[p.priority]||'opt'}">${p.priority}</span>`:"")+
-      `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}</div>`+
+      `<button class="trk ${isTracked(id)?'on':''}" data-track="${esc(id)}">${isTracked(id)?'Tracking ✓':'Track'}</button>${stbtns}${edititem}${effOptions(p).length>1?`<button class="trk" data-compare="${esc(id)}">⚖ Compare</button>`:""}</div>`+
     `<div class="qtyrow">Need <input class="qnum" id="m_need" inputmode="numeric" value="${neededQty(p)}" data-need="${esc(id)}" aria-label="Quantity needed"> · Bought <button class="qbtn" data-bought="${esc(id)}" data-d="-1" aria-label="Decrease bought">−</button><b id="bval">${boughtQty(p)}</b><button class="qbtn" data-bought="${esc(id)}" data-d="1" aria-label="Increase bought">+</button> <button class="trk gotit ${isDone(p)?'on':''}" data-got="${esc(id)}">${isDone(p)?'✓ Got it':'Got it'}</button></div>`+
     (p.best&&p.best!=="-"?`<div style="font-size:12.5px;color:var(--muted);margin-top:4px">Best market: <b style="color:var(--ink)">${esc(p.best)}</b></div>`:"")+price+`</div></div>`+
     `<div class="mbody">${priceEdit}${optsHtml}<button class="addopt" data-addopt="${esc(id)}">＋ Add another option/link</button>`+(p.notes&&p.notes.trim()?`<div class="notes">${esc(p.notes)}</div>`:"")+`</div>`;
@@ -275,6 +278,22 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
     s.integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4"; s.crossOrigin="anonymous";
     s.onload=()=>res(window.Chart); s.onerror=()=>{ _chartP=null; rej(new Error("chart load failed")); }; document.head.appendChild(s); });
   return _chartP; }
+
+/* ---------- compare modal (separate from item detail) ---------- */
+const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
+function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
+  const cards=opts.map((o,i)=>{ const data=pc[o.name]||{}; const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
+    const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
+    const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
+    const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
+    const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(o.why?`<div class="cmpwhy">${esc(o.why)}</div>`:`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`);
+    const u=o.multi?["india","uk","canada"].map(k=>{const l=safeUrl(o[k]);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join(""):(()=>{const l=singleLink(o,p);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View product</a>`:"";})();
+    return `<div class="cmpcard ${pins.includes(i)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(i)?'★ ':''}${esc(o.name)}</div>${body}<div class="cmplinks">${u}</div></div></div>`;
+  }).join("")||'<p class="empty">No options to compare yet.</p>';
+  const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
+  const m=document.getElementById("compareModal");
+  m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div></div>`;
+  m.setAttribute("aria-labelledby","cmptitle"); document.getElementById("compareOverlay").classList.add("show"); focusModal("compareOverlay"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
 /* ---------- actions ---------- */
@@ -372,7 +391,8 @@ function showView(v){ document.querySelectorAll(".view").forEach(x=>x.classList.
 document.addEventListener("click",e=>{
   const t=e.target, c=s=>t.closest(s);
   let el;
-  if((el=c("[data-open]"))&&!t.closest("[data-del]")&&!t.closest("a")&&!t.closest(".bestbtn")&&!t.closest("[data-got]")&&!t.closest("[data-bought]")) return openItem(el.dataset.open);
+  if((el=c("[data-compare]"))) { e.stopPropagation(); return openCompare(el.dataset.compare); }
+  if((el=c("[data-open]"))&&!t.closest("[data-del]")&&!t.closest("a")&&!t.closest(".bestbtn")&&!t.closest("[data-got]")&&!t.closest("[data-bought]")&&!t.closest("[data-compare]")) return openItem(el.dataset.open);
   if((el=c("[data-del]"))) { e.stopPropagation(); return delItem(el.dataset.del); }
   if((el=c("[data-add]"))) { e.stopPropagation(); return openAdd(el.dataset.add); }
   if((el=c("[data-stat]"))) { state.stat=state.stat===el.dataset.stat?"":el.dataset.stat; stats(); return renderDash(); }
@@ -445,7 +465,7 @@ function applyAdminUI(){
 (async()=>{
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
-  await Promise.all([getFX(),loadPrices()]); await syncPull();
+  await Promise.all([getFX(),loadPrices(),loadProsCons()]); await syncPull();
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
   // instant cross-device sync: Supabase Realtime (push) + 5s poll fallback

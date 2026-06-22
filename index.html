@@ -188,6 +188,26 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .formrow input:focus,.formrow select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
+/* compare modal */
+.pricedetails{margin:0 0 14px}
+.pricedetails>summary{cursor:pointer;font-size:13px;font-weight:560;color:var(--accent-d);list-style:none;padding:8px 12px;border:1px solid var(--line-2);border-radius:10px;display:inline-block;user-select:none}
+.pricedetails>summary::-webkit-details-marker{display:none}
+.pricedetails[open]>summary{margin-bottom:10px}
+.cmpprice{font-size:13.5px;color:var(--muted);margin:2px 0 14px}.cmpprice.muted{color:var(--faint)}
+.cmpgrid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:560px){.cmpgrid{grid-template-columns:1fr 1fr}}
+.cmpcard{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--surface-2);display:flex;gap:12px}
+.cmpcard.best{border-color:var(--accent);background:var(--accent-soft)}
+.cmpimg{width:64px;height:64px;flex:0 0 auto;border-radius:12px;overflow:hidden;background:var(--tile);border:1px solid var(--tile-line);display:flex;align-items:center;justify-content:center}
+.cmpimg img{width:100%;height:100%;object-fit:cover}.cmpimg .ph{font-size:24px;opacity:.4}
+.cmpinfo{flex:1;min-width:0}
+.cmpname{font-weight:620;font-size:14px;letter-spacing:-0.01em;margin-bottom:6px}
+.pclist{list-style:none;margin:0;padding:0;font-size:12.5px;line-height:1.5}
+.pclist .pro{color:var(--ink)}.pclist .pro::before{content:"✓ ";color:var(--deal);font-weight:700}
+.pclist .con{color:var(--muted)}.pclist .con::before{content:"✕ ";color:#b15;font-weight:700}
+.cmpwhy{font-size:12.5px;color:var(--muted)}.cmpwhy.muted{color:var(--faint)}
+.cmplinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
 /* To-Buy checklist */
 .buyhead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:6px 0 16px;flex-wrap:wrap}
 .buyh2{font-size:22px;font-weight:720;letter-spacing:-0.02em;margin:0}
@@ -304,6 +324,7 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div>
 
 <div class="overlay" id="itemOverlay"><div class="modal" id="itemModal" role="dialog" aria-modal="true"></div></div>
+<div class="overlay" id="compareOverlay"><div class="modal" id="compareModal" role="dialog" aria-modal="true"></div></div>
 <div class="overlay" id="notifOverlay"><div class="modal" style="max-width:420px" role="dialog" aria-modal="true" aria-labelledby="notifTitle"><div style="padding:18px">
   <h3 id="notifTitle" style="margin:0 0 10px"><span aria-hidden="true">🔔</span> Notifications</h3><div id="notifList"></div>
   <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><span class="minibtn" id="notifClear">Mark all read</span><span class="minibtn" id="notifClose">Close</span></div>
@@ -321,4 +342,4 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=27" defer></script></body></html>
+<script src="app.js?v=28" defer></script></body></html>
