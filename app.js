@@ -170,7 +170,7 @@ function priceInfo(id){ const tgt=+USERTARGET[id]||0; const h=effPrices(id); con
   const avg=arr.length?Math.round(arr.reduce((s,x)=>s+recInr(x),0)/arr.length):cur;
   const isDeal = tgt>0 ? cur<=tgt : (arr.length>1 && cur<avg && cur<=avg*(1-CONFIG.DEAL_THRESHOLD));
   const pct = tgt>0 ? Math.max(0,Math.round((1-cur/tgt)*100)) : (avg?Math.round((1-cur/avg)*100):0);
-  return {cur,avg,target:tgt||null,region,byReg,isDeal,pct}; }
+  return {cur,avg,target:tgt||null,region,byReg,isDeal,pct,hasAvg:arr.length>1}; }
 // "Best value" = quality that justifies its price (not just cheapest). Quality = pros−cons;
 // value = quality ÷ (price relative to your target, or the median price). Only when 2+ options.
 const _median=a=>{ a=a.slice().sort((x,y)=>x-y); const m=a.length>>1; return a.length%2?a[m]:(a[m-1]+a[m])/2; };
@@ -197,7 +197,7 @@ function cardHtml(p){
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> `+(pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:`<span class="avg">${pi.target?'target '+inr(pi.target):'avg '+inr(pi.avg)}</span>`)+`</div>`; }
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const note=pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:(pi.target?`<span class="avg">target ${inr(pi.target)}</span>`:(pi.hasAvg?`<span class="avg">avg ${inr(pi.avg)}</span>`:"")); price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> ${note}</div>`; }
   const have=p.owned?`<div class="have">✓ ${esc(p.owned)}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${esc(best.name)}</div>`:"";
   const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+
@@ -310,7 +310,7 @@ function openItem(id){
   const bestKey=bestValueKey(id);
   let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen,bestKey)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):'· avg '+inr(pi.avg)); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
+  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):(pi.hasAvg?'· avg '+inr(pi.avg):'')); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
     price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div>${_spark?'<div class="sparkwrap"><canvas id="mspark"></canvas></div>':''}`; }
   const tgtVal=(USERTARGET[id]!=null?USERTARGET[id]:""), lbr=latestByRegion(id), pv=r=>lbr[r]!=null?lbr[r]:"";
   const priceEdit=`<details class="pricedetails"><summary>＋ Prices &amp; target</summary><div class="priceedit"><span class="pelbl">Prices ₹</span>`+

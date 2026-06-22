@@ -32,15 +32,22 @@ if (!targets.length) process.exit(0);
 async function gen(t) {
   const prompt = `For the baby product "${t.name}" (used as: ${t.item}${t.cat ? ", category " + t.cat : ""}), give concise buying pros and cons for new parents choosing between options. Reply ONLY as JSON: {"pros":["..."],"cons":["..."]} with 1-2 short pros and 1 short con. No extra text.`;
   const body = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.4, maxOutputTokens: 200, responseMimeType: "application/json" } };
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
+  let j = null;
+  for (let a = 0; a < 3 && !j; a++) {
+    try {
+      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (res.ok) { j = await res.json(); break; }
+      if (res.status === 429) { console.log("  429 rate limit — waiting 60s"); await new Promise(r => setTimeout(r, 60000)); continue; }
+      console.log("  gemini error", res.status, (await res.text()).slice(0, 160)); return null;
+    } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
+  }
+  if (!j) return null;
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`,
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (!res.ok) { console.log("  gemini error", res.status, (await res.text()).slice(0, 160)); return null; }
-    const j = await res.json();
     const txt = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts[0].text || "";
     const o = JSON.parse(txt);
     if (Array.isArray(o.pros) && o.pros.length) return { pros: o.pros.slice(0, 2), cons: (o.cons || []).slice(0, 2) };
-  } catch (e) { console.log("  parse/gen fail:", e.message); }
+  } catch (e) { console.log("  parse fail:", e.message); }
   return null;
 }
 
@@ -49,7 +56,7 @@ for (const t of targets) {
   const out = await gen(t);
   if (out) { (pc[t.id] = pc[t.id] || {})[t.name] = out; n++; console.log(`ok   [${t.id}] ${t.name}`); }
   else console.log(`skip [${t.id}] ${t.name}`);
-  await new Promise(r => setTimeout(r, 1500)); // throttle well under the free 15 req/min limit
+  await new Promise(r => setTimeout(r, 4500)); // ~13 req/min, under the free 15 RPM cap
 }
 if (n) writeFileSync("proscons.json", JSON.stringify(pc, null, 2));
 console.log(`done — ${n} generated`);

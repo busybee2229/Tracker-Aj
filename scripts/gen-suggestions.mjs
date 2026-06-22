@@ -35,11 +35,18 @@ const linksFor = name => { const q = encodeURIComponent(name); return { india: `
 async function suggest(p, exclude) {
   const prompt = `You help a parent finalise baby-product purchases.\nContext: ${CONTEXT}\nThey still need more options for: "${p.item}" (category ${p.category || ""}).\nDo NOT repeat any of these already-considered products: ${exclude.join("; ") || "none"}.\nSuggest ${PER_ITEM} DIFFERENT, genuinely good, real products for this need. For each: name (brand + product), a one-line why, 2 short pros, 1 short con, and an estimated price in INR (integer).\nReply ONLY as JSON: [{"name":"","why":"","pros":["",""],"cons":[""],"price":0}]`;
   const body = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.8, maxOutputTokens: 700, responseMimeType: "application/json" } };
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
+  let j = null;
+  for (let a = 0; a < 3 && !j; a++) {
+    try {
+      const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (res.ok) { j = await res.json(); break; }
+      if (res.status === 429) { console.log("  429 rate limit — waiting 60s"); await new Promise(r => setTimeout(r, 60000)); continue; }
+      console.log("  gemini", res.status, (await res.text()).slice(0, 140)); return [];
+    } catch (e) { console.log("  net", e.message); await new Promise(r => setTimeout(r, 3000)); }
+  }
+  if (!j) return [];
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_KEY}`,
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (!res.ok) { console.log("  gemini", res.status, (await res.text()).slice(0, 140)); return []; }
-    const j = await res.json();
     const txt = j && j.candidates && j.candidates[0] && j.candidates[0].content.parts[0].text || "[]";
     const arr = JSON.parse(txt);
     return (Array.isArray(arr) ? arr : []).filter(s => s && s.name).map(s => ({
@@ -59,7 +66,7 @@ for (const p of items) {
   const exclude = [...new Set([...optionNames(p), ...prev])];
   const list = await suggest(p, exclude);
   if (list.length) { out[String(p.id)] = { ts: new Date().toISOString().slice(0, 10), seen: [...new Set([...prev, ...list.map(s => s.name)])].slice(-40), list }; n += list.length; console.log(`ok  ${p.id} ${p.item}: ${list.length} (${done}/${need})`); }
-  await new Promise(r => setTimeout(r, 1500));
+  await new Promise(r => setTimeout(r, 5000));   // ~12 req/min, under the free 15 RPM cap
 }
 writeFileSync("suggestions.json", JSON.stringify(out, null, 1));
 console.log(`done — ${n} suggestions`);
