@@ -138,6 +138,8 @@ async function loadOptData(){ try{ const r=await fetch("./optdata.json",{cache:"
 async function loadSuggest(){ try{ const r=await fetch("./suggestions.json",{cache:"no-store"}); if(r.ok)SUGGEST=await r.json(); }catch(e){ } }
 const suggList=id=>((SUGGEST[id]||{}).list)||[];
 const underFilled=p=>pinsOf(p.id).length<neededQty(p);
+// total ₹ committed = sum of each finalised pick's price (once each); tracks priced vs unpriced
+function committedTotal(){ let total=0,priced=0,count=0; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o){ count++; const v=optPriceINR(p.id,o); if(v>0){total+=v;priced++;} } }); }); return {total,priced,count,unpriced:count-priced}; }
 // pros/cons for an option: catalogue file first, else the option's own (e.g. added from a suggestion)
 const pcOf=(id,o)=>((PROSCONS[id]||{})[o._orig||o.name])||((o.pros||o.cons)?{pros:o.pros||[],cons:o.cons||[]}:{});
 // ₹ price for one option: manual option.price (₹) wins, else auto-fetched optdata (local→₹)
@@ -257,7 +259,8 @@ function renderToBuy(){
   const urg=p=>{const i=URGENCIES.indexOf(p.priority);return i<0?9:i;};
   buy.sort((a,b)=>urg(a)-urg(b)||CATS.indexOf(a.category)-CATS.indexOf(b.category)||(hasPin(b.id)?1:0)-(hasPin(a.id)?1:0));
   const total=buy.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
-  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
+  const ct=committedTotal(); const ctLine=ct.total?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
+  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled${ctLine}</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
   const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
   const L=document.getElementById("buyList");
   const card=(p,opts,i,pins,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
@@ -414,8 +417,9 @@ function renderPending(){ const w=document.getElementById("pendingList");
   const rows=[]; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o) rows.push({p,o}); }); });
   const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" data-showview="dash">Open Dashboard</button>':'')+'</div>'; return; }
-  const tot=rows.reduce((s,r)=>{const pi=priceInfo(r.p.id);return s+(pi?pi.cur*effQty(r.p):0);},0);
-  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+((tot&&isAdmin)?' · approx '+inr(tot)+' total':'')+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=safeUrl(o.img||p.img||IMAGES[p.id]||"");
+  const ct=committedTotal();
+  const totLine=(isAdmin&&ct.total)?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
+  w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+totLine+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼"; const img=safeUrl(o.img||p.img||IMAGES[p.id]||"");
     const imgEl=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
     const qtyText=(USERQTY[p.id]!=null?String(USERQTY[p.id]):(p.qty||"")).trim();
     const links=["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
