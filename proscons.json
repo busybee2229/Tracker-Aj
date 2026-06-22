@@ -141,7 +141,11 @@
   "31": {
     "Joie Litetrax Travel System": {"pros": ["Matches your Joie Litetrax 4 car seat"], "cons": ["Bulkier folded"]},
     "Graco Modes Pramette": {"pros": ["Lie-flat for newborn"], "cons": ["Heavy"]},
-    "LuvLap / R for Rabbit": {"pros": ["India value"], "cons": ["Less smooth ride"]}
+    "LuvLap / R for Rabbit": {"pros": ["India value"], "cons": ["Less smooth ride"]},
+    "Joie Muze Full Featured Baby Stroller": {"pros": ["Lie-flat recline for newborns", "Full-featured: large hood & basket"], "cons": ["Heavier than lightweight models"]},
+    "Joie Litetrax 3 (2in1) 3-Wheel Stroller": {"pros": ["All-terrain 3-wheel, smooth push", "2-in-1 carrycot option, one-hand fold"], "cons": ["Bulkier folded than travel strollers"]},
+    "Joie Nutmeg Lightweight Baby Stroller": {"pros": ["Lightweight, compact fold", "Easy for travel/city"], "cons": ["Less plush ride than Litetrax"]},
+    "Joie Mirus Baby Stroller": {"pros": ["Compact one-hand fold, cabin-friendly", "Lightweight"], "cons": ["Smaller hood/basket, firmer recline"]}
   },
   "33": {
     "Pampers Premium Care / Swaddlers NB": {"pros": ["Gentlest for day-1 skin", "Wetness indicator"], "cons": ["Premium price"]},
@@ -229,5 +233,6 @@
   "49": { "Juniors Animal Shape Playmat": {"pros": ["Cushioned tummy-time play"], "cons": ["Takes floor space"]} },
   "50": { "Convertible High Chair": {"pros": ["Grows with the child"], "cons": ["Not needed until ~6 months"]} },
   "52": { "Canva prints / posters": {"pros": ["Cheap, personalised decor"], "cons": ["Purely cosmetic"]} },
-  "53": { "Handpaint plain clothes / theme sets": {"pros": ["Personalised and fun"], "cons": ["Takes time/effort"]} }
+  "53": { "Handpaint plain clothes / theme sets": {"pros": ["Personalised and fun"], "cons": ["Takes time/effort"]} },
+  "u1782064579653": { "Kit Set": {"pros": ["Bundles several essentials in one buy"], "cons": ["May include items you won't use"]} }
 }

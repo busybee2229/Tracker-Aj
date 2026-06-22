@@ -205,7 +205,9 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .cmpimg{width:64px;height:64px;flex:0 0 auto;border-radius:12px;overflow:hidden;background:var(--tile);border:1px solid var(--tile-line);display:flex;align-items:center;justify-content:center}
 .cmpimg img{width:100%;height:100%;object-fit:cover}.cmpimg .ph{font-size:24px;opacity:.4}
 .cmpinfo{flex:1;min-width:0}
-.cmpname{font-weight:620;font-size:14px;letter-spacing:-0.01em;margin-bottom:6px}
+.cmpname{font-weight:620;font-size:14px;letter-spacing:-0.01em;margin-bottom:4px}
+.cmpprc{font-size:13.5px;font-weight:650;margin:0 0 6px}.cmpprc.none{color:var(--faint);font-weight:500}
+.cmpprc .cheap{font-size:10px;font-weight:680;color:var(--deal);background:var(--deal-soft);border-radius:980px;padding:1px 7px;margin-left:5px}
 .pclist{list-style:none;margin:0;padding:0;font-size:12.5px;line-height:1.5}
 .pclist .pro{color:var(--ink)}.pclist .pro::before{content:"✓ ";color:var(--deal);font-weight:700}
 .pclist .con{color:var(--muted)}.pclist .con::before{content:"✕ ";color:#b15;font-weight:700}
@@ -368,10 +370,11 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
   <label>Category</label><select id="m_cat"></select></div>
   <label>Recommended product / brand</label><input id="m_pick"/>
   <label>Image URL (optional)</label><input id="m_img" placeholder="https://…jpg"/>
+  <label>Price ₹ (manual — for Amazon/Next, or leave blank to auto-fetch)</label><input id="m_price_opt" inputmode="decimal" placeholder="e.g. 2499"/>
   <label>India link</label><input id="m_in"/><label>UK link</label><input id="m_uk"/><label>Canada link</label><input id="m_ca"/>
   <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--ink)"><input type="checkbox" id="m_multi" style="width:auto"/> Same product in all 3 countries (enables price comparison across markets)</label>
   <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><span class="minibtn" id="m_cancel">Cancel</span><span class="bestbtn" style="flex:0;padding:9px 18px" id="m_save">Save</span></div>
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=38" defer></script></body></html>
+<script src="app.js?v=39" defer></script></body></html>

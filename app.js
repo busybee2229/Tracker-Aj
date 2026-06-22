@@ -18,7 +18,7 @@ const CATICON={"CLOTHING":"👕","HYGIENE & HEALTH":"🧴","BASICS & GEAR":"🍼
 const URGENCIES=["Day 1","Day 1*","First weeks","Later"];
 const bcls={"Day 1":"day1","Day 1*":"day1","First weeks":"weeks","Later":"later","Optional":"opt","Owned":"owned","-":"opt"};
 
-let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="", PROSCONS={};
+let PRODUCTS=[], PRICES={}, IMAGES={}, UPDATED="", PROSCONS={}, OPTDATA={};
 let ADMIN_PW=sessionStorage.getItem("apw")||"";   // verified server-side on each write
 const LS=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d);}catch(e){return JSON.parse(d);}};
 const lset=(k,v)=>localStorage.setItem(k,JSON.stringify(v));   // device-local only — never synced (2.2)
@@ -36,9 +36,10 @@ const effStatus=p=>STATUSOVR[p.id]||p.status;
 // base catalogue options (with per-user hide + edit overrides applied, tagged _orig) then user-added options
 const rid=()=>"o"+((crypto.randomUUID&&crypto.randomUUID())||(Date.now()+""+Math.random()));
 // base catalogue options (hide + override applied, tagged _orig) then user options; every option carries a STABLE _key for pins
-const effOptions=p=>{ const ov=OPTOVERRIDE[p.id]||{}, hid=HIDDENOPTS[p.id]||[];
-  const base=(p.options||[]).filter(o=>!hid.includes(o.name)).map(o=>{ const m=ov[o.name]?Object.assign({},o,ov[o.name]):Object.assign({},o); m._orig=o.name; m._key="b:"+o.name; return m; });
-  const user=(USEROPTS[p.id]||[]).map(o=>{ const m=Object.assign({},o); m._key="u:"+(o.oid||o.name); return m; });
+const effOptions=p=>{ const ov=OPTOVERRIDE[p.id]||{}, hid=HIDDENOPTS[p.id]||[], od=OPTDATA[p.id]||{};
+  const merge=(m,name)=>{ const d=od[name]; if(d&&!m.img&&d.img)m.img=d.img; return m; };
+  const base=(p.options||[]).filter(o=>!hid.includes(o.name)).map(o=>{ const m=ov[o.name]?Object.assign({},o,ov[o.name]):Object.assign({},o); m._orig=o.name; m._key="b:"+o.name; return merge(m,o.name); });
+  const user=(USEROPTS[p.id]||[]).map(o=>{ const m=Object.assign({},o); m._key="u:"+(o.oid||o.name); return merge(m,o.name); });
   return base.concat(user); };
 const defaultQty=p=>{const m=String(p.qty||"").match(/\d+/g);return m?+m[m.length-1]:1;};  // upper bound of "5-7" → 7
 const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);   // = quantity NEEDED
@@ -133,6 +134,10 @@ async function loadPrices(){ const b=document.getElementById("livebanner");
   b.textContent="📊 Live prices fill in as the GitHub Action reads each product page. Photos, plan, options and links work now.";
 }
 async function loadProsCons(){ try{ const r=await fetch("./proscons.json",{cache:"no-store"}); if(r.ok)PROSCONS=await r.json(); }catch(e){ console.warn("[proscons] load failed",e); } }
+async function loadOptData(){ try{ const r=await fetch("./optdata.json",{cache:"no-store"}); if(r.ok)OPTDATA=await r.json(); }catch(e){ } }
+// ₹ price for one option: manual option.price (₹) wins, else auto-fetched optdata (local→₹)
+function optPriceINR(id,o){ if(o.price!=null&&o.price!==""){ const n=+o.price; if(n>0)return Math.round(n); }
+  const od=(OPTDATA[id]||{})[o._orig||o.name]; if(od&&+od.price>0)return toINR(+od.price,od.currency||"INR"); return 0; }
 // ₹ for a record: prefer converting the stored LOCAL price at the current FX rate
 // (so history/averages aren't polluted by old FX); fall back to legacy stored inr (3.4)
 const recInr=x=>(x.local!=null&&x.currency)?toINR(x.local,x.currency):x.inr;
@@ -147,15 +152,19 @@ function buyRec(byReg){ const regs=Object.keys(byReg); if(!regs.length)return nu
   const cheapest=regs.reduce((a,b)=>byReg[b]<byReg[a]?b:a);
   if(byReg.india!=null && byReg.india<=byReg[cheapest]*(1+SIMILAR_PCT)) return "india";
   return cheapest; }
-function priceInfo(id){ const h=effPrices(id); const tgt=+USERTARGET[id]||0; if(!h.length)return null;
-  const byReg=latestByRegion(id), regs=Object.keys(byReg);
-  let cur, region="";
-  if(regs.length){ region=buyRec(byReg); cur=byReg[region]; }   // recommended market (cheapest, India-preferred when similar)
+function priceInfo(id){ const tgt=+USERTARGET[id]||0; const h=effPrices(id); const byReg=latestByRegion(id);
+  const p=itemById(id); const opts=p?effOptions(p):[];
+  // candidate "current" prices: latest item-level per region + each option's own price → take the cheapest
+  const cands=[]; Object.keys(byReg).forEach(r=>cands.push({inr:byReg[r],region:r}));
+  opts.forEach(o=>{ const v=optPriceINR(id,o); if(v>0)cands.push({inr:v,region:""}); });
+  if(!cands.length&&!h.length)return null;
+  let cur,region="";
+  if(cands.length){ const best=cands.reduce((a,b)=>b.inr<a.inr?b:a); cur=best.inr; region=best.region||""; }
   else { const last=h[h.length-1]; cur=recInr(last); region=last.region||""; }
   const cut=Date.now()-CONFIG.AVG_WINDOW_DAYS*864e5; const win=h.filter(x=>x.date>=cut); const arr=win.length?win:h;
-  const avg=Math.round(arr.reduce((s,x)=>s+recInr(x),0)/arr.length);
-  const isDeal = tgt>0 ? cur<=tgt : (cur<avg && cur<=avg*(1-CONFIG.DEAL_THRESHOLD));
-  const pct = tgt>0 ? Math.max(0,Math.round((1-cur/tgt)*100)) : Math.round((1-cur/avg)*100);
+  const avg=arr.length?Math.round(arr.reduce((s,x)=>s+recInr(x),0)/arr.length):cur;
+  const isDeal = tgt>0 ? cur<=tgt : (arr.length>1 && cur<avg && cur<=avg*(1-CONFIG.DEAL_THRESHOLD));
+  const pct = tgt>0 ? Math.max(0,Math.round((1-cur/tgt)*100)) : (avg?Math.round((1-cur/avg)*100):0);
   return {cur,avg,target:tgt||null,region,byReg,isDeal,pct}; }
 
 /* ---------- dashboard ---------- */
@@ -320,13 +329,15 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
 /* ---------- compare modal (separate from item detail) ---------- */
 const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
 function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
-  const cards=opts.map((o,i)=>{ const data=pc[o._orig||o.name]||{}; const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||"");
+  const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0;
+  const cards=opts.map((o,i)=>{ const data=pc[o._orig||o.name]||{}; const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||""); const prc=optPriceINR(id,o);
     const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
     const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
     const cons=(data.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
     const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(o.why?`<div class="cmpwhy">${esc(o.why)}</div>`:`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`);
     const u=o.multi?["india","uk","canada"].map(k=>{const l=safeUrl(o[k]);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join(""):(()=>{const l=singleLink(o,p);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View product</a>`:"";})();
-    return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}</div>${body}<div class="cmplinks">${u}</div></div></div>`;
+    const prcEl=prc?`<div class="cmpprc">${inr(prc)}${prc===minP&&minP>0&&allP.length>1?' <span class="cheap">cheapest</span>':''}</div>`:`<div class="cmpprc none">no price</div>`;
+    return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}</div>${prcEl}${body}<div class="cmplinks">${u}</div></div></div>`;
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
@@ -362,7 +373,7 @@ function removeBaseOpt(id,oname){ if(!confirm("Remove this option?"))return;
 function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effOptions(p).find(x=>x._orig===oname); if(!o)return;
   _edit={kind:"baseopt",id,name:oname}; _editReturn=id;
   document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p.category);
-  setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi});
+  setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
 
@@ -404,20 +415,20 @@ function fillSelects(cat){
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
 }
 function showFields(parent,item){ const p=document.getElementById("f_parent"),i=document.getElementById("f_item"); if(p)p.style.display=parent?"":"none"; if(i)i.style.display=item?"":"none"; }
-function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; const mc=g("m_multi"); if(mc)mc.checked=!!v.multi; }
+function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; const mc=g("m_multi"); if(mc)mc.checked=!!v.multi; const mp=g("m_price_opt"); if(mp)mp.value=v.price!=null?v.price:""; }
 function openAdd(cat){ _edit=null; _editReturn=null; document.querySelector("#addOverlay h3").textContent="Add product"; showFields(true,true); fillSelects(cat); setFields({}); const mp=document.getElementById("m_parent"); mp.value=""; mp.onchange=()=>showFields(true,!mp.value); document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
-window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi}); document.getElementById("m_parent").value=pid; _editReturn=pid; document.getElementById("addOverlay").classList.add("show"); };
-window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; showFields(false,true); fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi}); document.getElementById("m_parent").value=""; _editReturn=id; document.getElementById("addOverlay").classList.add("show"); };
+window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price}); document.getElementById("m_parent").value=pid; _editReturn=pid; document.getElementById("addOverlay").classList.add("show"); };
+window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; showFields(false,true); fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price}); document.getElementById("m_parent").value=""; _editReturn=id; document.getElementById("addOverlay").classList.add("show"); };
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
   const parent=g("m_parent"), name=g("m_pick")||g("m_item"); if(!name){alert("Enter a name");return;}
   const qq=encodeURIComponent(name);
   let india=g("m_in"),uk=g("m_uk"),canada=g("m_ca");
   if(!india&&!uk&&!canada){ india="https://www.amazon.in/s?k="+qq; }   // only fall back if user gave no link
-  const opt={name,why:"",img:g("m_img"),india,uk,canada,multi:!!(document.getElementById("m_multi")||{}).checked};
+  const opt={name,why:"",img:g("m_img"),india,uk,canada,multi:!!(document.getElementById("m_multi")||{}).checked,price:g("m_price_opt")};
   if(_edit){
     if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ opt.oid=USEROPTS[_edit.pid][_edit.idx].oid||rid(); USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
-    else if(_edit.kind==="baseopt"){ const it=itemById(_edit.id); const orig=((it&&it.options)||[]).find(o=>o.name===_edit.name)||{}; (OPTOVERRIDE[_edit.id]=OPTOVERRIDE[_edit.id]||{})[_edit.name]={name,why:orig.why||"",img:g("m_img"),india,uk,canada,multi:opt.multi}; save("optoverride",OPTOVERRIDE); }
+    else if(_edit.kind==="baseopt"){ const it=itemById(_edit.id); const orig=((it&&it.options)||[]).find(o=>o.name===_edit.name)||{}; (OPTOVERRIDE[_edit.id]=OPTOVERRIDE[_edit.id]||{})[_edit.name]={name,why:orig.why||"",img:g("m_img"),india,uk,canada,multi:opt.multi,price:g("m_price_opt")}; save("optoverride",OPTOVERRIDE); }
     else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.qty=g("m_qty"); it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
     _edit=null; closeModal("addOverlay"); refreshAll(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} return;
   }
@@ -522,7 +533,7 @@ function applyAdminUI(){
 (async()=>{
   (document.getElementById("updated")||{}).textContent="loading…";
   try{ const r=await fetch("./products.json?v=5",{cache:"no-store"}); PRODUCTS=await r.json(); }catch(e){ document.getElementById("list").innerHTML='<p class="empty">Could not load products.json</p>'; return; }
-  await Promise.all([getFX(),loadPrices(),loadProsCons()]); await syncPull();
+  await Promise.all([getFX(),loadPrices(),loadProsCons(),loadOptData()]); await syncPull();
   if(migrateToKeys()&&ADMIN_PW)pushState();   // convert legacy index pins → stable keys (persist once if admin)
   stats(); renderDash(); buildNotifs(); applyAdminUI();
   if(!UPDATED)(document.getElementById("updated")||{}).textContent="loaded "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
