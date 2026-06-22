@@ -166,6 +166,17 @@ function priceInfo(id){ const tgt=+USERTARGET[id]||0; const h=effPrices(id); con
   const isDeal = tgt>0 ? cur<=tgt : (arr.length>1 && cur<avg && cur<=avg*(1-CONFIG.DEAL_THRESHOLD));
   const pct = tgt>0 ? Math.max(0,Math.round((1-cur/tgt)*100)) : (avg?Math.round((1-cur/avg)*100):0);
   return {cur,avg,target:tgt||null,region,byReg,isDeal,pct}; }
+// "Best value" = quality that justifies its price (not just cheapest). Quality = pros−cons;
+// value = quality ÷ (price relative to your target, or the median price). Only when 2+ options.
+const _median=a=>{ a=a.slice().sort((x,y)=>x-y); const m=a.length>>1; return a.length%2?a[m]:(a[m-1]+a[m])/2; };
+const _qScore=(id,o)=>{ const d=(PROSCONS[id]||{})[o._orig||o.name]||{}; return 1+((d.pros||[]).length)-((d.cons||[]).length); };
+function bestValueKey(id){ const p=itemById(id); if(!p)return null; const opts=effOptions(p); if(opts.length<2)return null;
+  const priced=opts.map(o=>({o,price:optPriceINR(id,o)})).filter(x=>x.price>0);
+  let best=null, bestScore=-Infinity;
+  if(priced.length>=2){ const tgt=+USERTARGET[id]||0, ref=tgt>0?tgt:_median(priced.map(x=>x.price));
+    priced.forEach(({o,price})=>{ const s=Math.max(0.25,_qScore(id,o))*ref/price; if(s>bestScore){bestScore=s;best=o;} }); }
+  else { opts.forEach(o=>{ const s=_qScore(id,o); if(s>bestScore){bestScore=s;best=o;} }); }
+  return best?best._key:null; }
 
 /* ---------- dashboard ---------- */
 function imgHtml(p,override){ const ic=CATICON[p.category]||"🍼"; const u=safeUrl(override||p.img||IMAGES[p.id]); return u
@@ -273,11 +284,11 @@ function renderToBuy(){
 }
 
 /* ---------- item modal ---------- */
-function optCard(o,i,p,isUser,userIdx){
+function optCard(o,i,p,isUser,userIdx,bestKey){
   const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
   const img=safeUrl((i===0?(p.img||IMAGES[p.id]||""):"")||o.img||"");
   const thumb=`<div class="optimg">${img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`}</div>`;
-  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:"";   // no presumptive BEST/ALT — only show once you've finalised
+  const rank=pinned?`<span class="rank fin">★ FINALISED</span>`:(o._key===bestKey?`<span class="rank">★ Best value</span>`:"");
   const links=o.multi
     ? ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join("")
     : (()=>{const u=singleLink(o,p);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View product</a>`:"";})();
@@ -290,7 +301,8 @@ function optCard(o,i,p,isUser,userIdx){
 }
 function openItem(id){
   const p=itemById(id); if(!p)return; const pi=priceInfo(id); const opts=effOptions(p); const baseLen=opts.filter(o=>o._orig!==undefined).length;
-  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen)).join(""); }
+  const bestKey=bestValueKey(id);
+  let optsHtml=""; if(opts.length){ let order=opts.map((_,i)=>i); const pk=pinsOf(id); const pinnedIdx=order.filter(i=>pk.includes(opts[i]._key)); if(pinnedIdx.length){ order=[...pinnedIdx, ...order.filter(i=>!pk.includes(opts[i]._key))]; } optsHtml=order.map(i=>optCard(opts[i],i,p,i>=baseLen,i-baseLen,bestKey)).join(""); }
   else if(p.owned){ optsHtml=`<div class="opt best"><div class="otop"><span class="rank">✓ OWNED</span><span class="oname">${esc(p.owned)}</span></div></div>`; }
   let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const sub=pi.isDeal?('· '+pi.pct+'% below '+(pi.target?'target':'avg')):(pi.target?'· target '+inr(pi.target):'· avg '+inr(pi.avg)); const _spv=effPrices(id).map(recInr), _spark=_spv.length>1&&new Set(_spv).size>1;
     price=`<div style="margin:6px 0"><span class="b ${pi.isDeal?'deal':'owned'}">${flag}${inr(pi.cur)} ${sub}</span></div>${_spark?'<div class="sparkwrap"><canvas id="mspark"></canvas></div>':''}`; }
@@ -329,7 +341,7 @@ function ensureChart(){ if(window.Chart)return Promise.resolve(window.Chart); if
 /* ---------- compare modal (separate from item detail) ---------- */
 const singleLink=(o,p)=>{ const br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); };
 function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOptions(p); const pc=PROSCONS[p.id]||{}; const pins=pinsOf(id);
-  const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0;
+  const allP=opts.map(o=>optPriceINR(id,o)).filter(v=>v>0); const minP=allP.length?Math.min(...allP):0; const bestKey=bestValueKey(id);
   const cards=opts.map((o,i)=>{ const data=pc[o._orig||o.name]||{}; const img=safeUrl((i===0?(p.img||IMAGES[p.id]):"")||o.img||""); const prc=optPriceINR(id,o);
     const thumb=img?`<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(CATICON[p.category]||'🍼')}">`:`<div class="ph">${CATICON[p.category]||'🍼'}</div>`;
     const pros=(data.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join("");
@@ -337,7 +349,8 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
     const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(o.why?`<div class="cmpwhy">${esc(o.why)}</div>`:`<div class="cmpwhy muted">No pros/cons yet — ask to generate.</div>`);
     const u=o.multi?["india","uk","canada"].map(k=>{const l=safeUrl(o[k]);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">${FLAG[k]} ${REGION[k]}</a>`:"";}).join(""):(()=>{const l=singleLink(o,p);return l?`<a class="lk" target="_blank" rel="noopener" href="${esc(l)}">View product</a>`:"";})();
     const prcEl=prc?`<div class="cmpprc">${inr(prc)}${prc===minP&&minP>0&&allP.length>1?' <span class="cheap">cheapest</span>':''}</div>`:`<div class="cmpprc none">no price</div>`;
-    return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}</div>${prcEl}${body}<div class="cmplinks">${u}</div></div></div>`;
+    const bv=(!pins.includes(o._key)&&o._key===bestKey)?'<span class="bestval">★ Best value</span>':"";
+    return `<div class="cmpcard ${pins.includes(o._key)?'best':''}"><div class="cmpimg">${thumb}</div><div class="cmpinfo"><div class="cmpname">${pins.includes(o._key)?'★ ':''}${esc(o.name)}${bv}</div>${prcEl}${body}<div class="cmplinks">${u}</div></div></div>`;
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
