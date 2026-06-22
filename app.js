@@ -141,6 +141,7 @@ const suggFor=p=>{ const have=new Set(effOptions(p).map(o=>o.name)); return sugg
 const underFilled=p=>pinsOf(p.id).length<neededQty(p);
 // total ₹ committed = sum of each finalised pick's price (once each); tracks priced vs unpriced
 function committedTotal(){ let total=0,priced=0,count=0; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o){ count++; const v=optPriceINR(p.id,o); if(v>0){total+=v;priced++;} } }); }); return {total,priced,count,unpriced:count-priced}; }
+function itemCommitted(p){ let t=0; const opts=effOptions(p); pinsOf(p.id).forEach(k=>{ const o=opts.find(x=>x._key===k); if(o)t+=optPriceINR(p.id,o); }); return t; }   // ₹ committed on THIS item's finalised picks
 // pros/cons for an option: catalogue file first, else the option's own (e.g. added from a suggestion)
 const pcOf=(id,o)=>((PROSCONS[id]||{})[o._orig||o.name])||((o.pros||o.cons)?{pros:o.pros||[],cons:o.cons||[]}:{});
 // ₹ price for one option: manual option.price (₹) wins, else auto-fetched optdata (local→₹)
@@ -275,7 +276,10 @@ function renderToBuy(){
   L.innerHTML = buy.length ? buy.map(p=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
     const need=neededQty(p), got=boughtQty(p), pri=p.priority||"", badge=URGENCIES.includes(pri)?`<span class="b ${bcls[pri]||'opt'}">${pri}</span>`:"";
     const qtyTag=need>1?`<span class="bqty">${got}/${need}</span>`:"";
-    const priceTxt = pi?`<span class="bprice ${pi.isDeal?'deal':''}">${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}${pi.isDeal?' 🔥':''}${pi.target&&!pi.isDeal?' · target '+inr(pi.target):''}</span>`:`<span class="bprice none">no price yet</span>`;
+    const finN=pinsOf(p.id).length, comm=finN?itemCommitted(p):0;
+    const priceTxt = finN
+      ? (comm?`<span class="bprice">${inr(comm)} committed</span>`:`<span class="bprice none">finalised — add prices</span>`)
+      : (pi?`<span class="bprice ${pi.isDeal?'deal':''}">from ${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}${pi.isDeal?' 🔥':''}${pi.target?' · target '+inr(pi.target):''}</span>`:`<span class="bprice none">no price yet</span>`);
     const bl=bestLinkFor(p), buyBtn=bl?`<a class="bestbtn" target="_blank" rel="noopener" href="${esc(bl)}">★ Buy best</a>`:"";
     const gotBtn=need>1?`<button class="trk" data-bought="${esc(p.id)}" data-d="1">+1 bought</button>`:`<button class="trk gotit" data-got="${esc(p.id)}">Got it ✓</button>`;
     const cmpBtn=opts.length>1?`<button class="detbtn" data-compare="${esc(p.id)}">⚖ Compare</button>`:"";
