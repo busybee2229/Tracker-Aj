@@ -9,7 +9,18 @@ if (!GEMINI_KEY) { console.log("No GEMINI_API_KEY set — skipping."); process.e
 
 const SUPA_URL = "https://nrpjtychwmuecmskehyj.supabase.co";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycGp0eWNod211ZWNtc2tlaHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDMyMDUsImV4cCI6MjA5NzYxOTIwNX0.g-WGgUyrHLwql4ZqcNjVvCuT1TzcNIo1z6NNIdVNE9s";
-const MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];   // try first; on 503 overload fall back to the next (gemini-2.0-flash retired Jun 2026)
+// Each model has its OWN separate daily quota on the same API key, so we spread requests
+// across many free models, ordered best-quota-first. A 429 on one just moves to the next.
+// ⚠️ Confirm exact IDs against Google AI Studio's "Get code" snippet — some may differ.
+const MODELS = [
+  "gemini-3.1-flash-lite",   // ~500/day — primary workhorse (Gemini model, supports JSON response mode)
+  "gemma-4-26b-it",          // ~1500/day — deep backup (Gemma may reject JSON mode; confirm ID)
+  "gemma-4-31b-it",          // ~1500/day — deep backup (same caveat)
+  "gemini-2.5-flash",        // ~20/day
+  "gemini-3-flash-preview",  // ~20/day — note the -preview suffix
+  "gemini-3.5-flash",        // ~20/day — confirm exact ID
+  "gemini-2.5-flash-lite"    // ~20/day
+];
 
 const products = JSON.parse(readFileSync("products.json", "utf8"));
 const pc = JSON.parse(readFileSync("proscons.json", "utf8"));
@@ -29,19 +40,23 @@ Object.entries(shared.useropts || {}).forEach(([id, arr]) => { const p = byId[id
 console.log(`${targets.length} option(s) need pros/cons`);
 if (!targets.length) process.exit(0);
 
-// call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
-let quotaHit = false;
+// call Gemini across models: a 429 (that model's daily quota) marks it done and falls through
+// to the next; 503/500 (busy) and any other error (e.g. a wrong/unsupported model ID) also try
+// the next model. We only give up once EVERY model has hit its daily 429.
+const dead = new Set();
+const allDead = () => dead.size >= MODELS.length;
 async function callGemini(body) {
-  if (quotaHit) return null;
+  if (allDead()) return null;
   for (const model of MODELS) {
+    if (dead.has(model)) continue;
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       if (res.ok) return await res.json();
-      if (res.status === 429) { console.log(`  ${model} 429 — daily free quota reached; stopping (resets midnight PT)`); quotaHit = true; return null; }
+      if (res.status === 429) { console.log(`  ${model} 429 — daily quota reached; next model (resets midnight PT)`); dead.add(model); continue; }
       if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — next model`); continue; }
-      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
-    } catch (e) { console.log("  net", e.message); }
+      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120), "— next model"); continue;
+    } catch (e) { console.log("  net", e.message, "— next model"); }
   }
   return null;
 }
@@ -61,11 +76,11 @@ async function gen(t) {
 const CAP = 25;   // gentle: at most this many per run; fills the rest on later daily runs
 let n = 0, processed = 0;
 for (const t of targets) {
-  if (quotaHit || processed >= CAP) break;
+  if (allDead() || processed >= CAP) break;
   const out = await gen(t); processed++;
   if (out) { (pc[t.id] = pc[t.id] || {})[t.name] = out; n++; console.log(`ok   [${t.id}] ${t.name}`); }
   else console.log(`skip [${t.id}] ${t.name}`);
-  await new Promise(r => setTimeout(r, 2500));
+  await new Promise(r => setTimeout(r, 5000));   // ~5s between calls to stay under per-minute (RPM) limits
 }
 if (n) writeFileSync("proscons.json", JSON.stringify(pc, null, 2));
 console.log(`done — ${n} generated`);

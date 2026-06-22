@@ -8,7 +8,18 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 // ─── EDIT THIS: your situation, so suggestions are tailored ───────────────────
 const CONTEXT = "Newborn arriving Oct/Nov (winter). Family based in India — buy in INR ₹; for higher quality they may also buy from the UK or Canada. Prefer practical, safe, well-reviewed, widely-available products.";
 const PER_ITEM = 3;            // how many fresh suggestions per under-filled item
-const MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];   // try first; on 503 overload fall back to the next (gemini-2.0-flash retired Jun 2026)
+// Each model has its OWN separate daily quota on the same API key, so we spread requests
+// across many free models, ordered best-quota-first. A 429 on one just moves to the next.
+// ⚠️ Confirm exact IDs against Google AI Studio's "Get code" snippet — some may differ.
+const MODELS = [
+  "gemini-3.1-flash-lite",   // ~500/day — primary workhorse (Gemini model, supports JSON response mode)
+  "gemma-4-26b-it",          // ~1500/day — deep backup (Gemma may reject JSON mode; confirm ID)
+  "gemma-4-31b-it",          // ~1500/day — deep backup (same caveat)
+  "gemini-2.5-flash",        // ~20/day
+  "gemini-3-flash-preview",  // ~20/day — note the -preview suffix
+  "gemini-3.5-flash",        // ~20/day — confirm exact ID
+  "gemini-2.5-flash-lite"    // ~20/day
+];
 // ──────────────────────────────────────────────────────────────────────────────
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
@@ -32,19 +43,23 @@ const optionNames = p => (p.options || []).filter(o => !((HID[p.id] || []).inclu
 
 const linksFor = name => { const q = encodeURIComponent(name); return { india: `https://www.amazon.in/s?k=${q}`, uk: `https://www.next.co.uk/search?w=${q}`, canada: `https://www.amazon.ca/s?k=${q}` }; };
 
-// call Gemini with model fallback: on 429 wait + retry same model; on 503/500 (overload) switch to the next model
-let quotaHit = false;
+// call Gemini across models: a 429 (that model's daily quota) marks it done and falls through
+// to the next; 503/500 (busy) and any other error (e.g. a wrong/unsupported model ID) also try
+// the next model. We only give up once EVERY model has hit its daily 429.
+const dead = new Set();
+const allDead = () => dead.size >= MODELS.length;
 async function callGemini(body) {
-  if (quotaHit) return null;
+  if (allDead()) return null;
   for (const model of MODELS) {
+    if (dead.has(model)) continue;
     try {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`,
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       if (res.ok) return await res.json();
-      if (res.status === 429) { console.log(`  ${model} 429 — daily free quota reached; stopping (resets midnight PT)`); quotaHit = true; return null; }
+      if (res.status === 429) { console.log(`  ${model} 429 — daily quota reached; next model (resets midnight PT)`); dead.add(model); continue; }
       if (res.status === 503 || res.status === 500) { console.log(`  ${model} ${res.status} busy — next model`); continue; }
-      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120)); return null;
-    } catch (e) { console.log("  net", e.message); }
+      console.log(`  ${model}`, res.status, (await res.text()).slice(0, 120), "— next model"); continue;
+    } catch (e) { console.log("  net", e.message, "— next model"); }
   }
   return null;
 }
@@ -68,14 +83,14 @@ const items = products.concat(USER);
 const CAP = 18;   // gentle: at most this many items per run, fills the rest on later daily runs
 let n = 0, processed = 0;
 for (const p of items) {
-  if (quotaHit || processed >= CAP) break;
+  if (allDead() || processed >= CAP) break;
   const need = neededQty(p), done = pinsOf(p.id).length;
   if (done >= need) { delete out[String(p.id)]; continue; }          // filled enough → no suggestions
   const prev = (out[String(p.id)] && out[String(p.id)].seen) || [];
   const exclude = [...new Set([...optionNames(p), ...prev])];
   const list = await suggest(p, exclude); processed++;
   if (list.length) { out[String(p.id)] = { ts: new Date().toISOString().slice(0, 10), seen: [...new Set([...prev, ...list.map(s => s.name)])].slice(-40), list }; n += list.length; console.log(`ok  ${p.id} ${p.item}: ${list.length} (${done}/${need})`); }
-  await new Promise(r => setTimeout(r, 2500));
+  await new Promise(r => setTimeout(r, 5000));   // ~5s between calls to stay under per-minute (RPM) limits
 }
 writeFileSync("suggestions.json", JSON.stringify(out, null, 1));
 console.log(`done — ${n} suggestions`);
