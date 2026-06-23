@@ -1,1164 +1,1218 @@
 {
  "1": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "H&M Cotton Jersey Sleepsuit",
    "Kyte Baby Zipper Footie",
-   "Burt's Bees Baby Organic Cotton Beekeeper Footie"
+   "Burt's Bees Baby Organic Cotton Beekeeper Footie",
+   "Little Me Footie and Hat Set",
+   "Magnetic Me Modal Footie",
+   "Aden + Anais Essentials Zip Sleepsuit"
   ],
   "list": [
    {
-    "name": "H&M Cotton Jersey Sleepsuit",
-    "why": "A high-street staple in India that offers soft, organic cotton fabric ideal for delicate newborn skin during winter.",
+    "name": "Little Me Footie and Hat Set",
+    "why": "High-quality, thick cotton fabrics perfect for Indian winters and often available via premium international shipping.",
     "pros": [
-     "Soft organic cotton",
-     "Excellent value multi-packs"
+     "Extremely soft premium cotton",
+     "Adorable, detailed designs"
     ],
     "cons": [
-     "Limited pattern availability in some regions"
+     "Often uses snaps instead of two-way zips"
     ],
-    "price": 1200,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=H%26M%20Cotton%20Jersey%20Sleepsuit",
-     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton%20Jersey%20Sleepsuit",
-     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton%20Jersey%20Sleepsuit"
+     "india": "https://www.amazon.in/s?k=Little%20Me%20Footie%20and%20Hat%20Set",
+     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Footie%20and%20Hat%20Set",
+     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Footie%20and%20Hat%20Set"
     }
    },
    {
-    "name": "Kyte Baby Zipper Footie",
-    "why": "Renowned globally for its bamboo rayon fabric, which regulates body temperature perfectly for changing winter temperatur",
+    "name": "Magnetic Me Modal Footie",
+    "why": "Features magnetic closures that make middle-of-the-night diaper changes effortless for tired parents.",
     "pros": [
-     "Buttery soft bamboo material",
-     "Great thermal regulation properties"
+     "Incredibly fast to dress/undress",
+     "Buttery soft modal fabric"
     ],
     "cons": [
-     "Higher price point due to international shipping"
+     "Expensive compared to standard sleepsuits"
     ],
-    "price": 3200,
+    "price": 3500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Zipper%20Footie",
-     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Zipper%20Footie",
-     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Zipper%20Footie"
+     "india": "https://www.amazon.in/s?k=Magnetic%20Me%20Modal%20Footie",
+     "uk": "https://www.next.co.uk/search?w=Magnetic%20Me%20Modal%20Footie",
+     "canada": "https://www.amazon.ca/s?k=Magnetic%20Me%20Modal%20Footie"
     }
    },
    {
-    "name": "Burt's Bees Baby Organic Cotton Beekeeper Footie",
-    "why": "A trusted premium brand offering GOTS-certified organic cotton with durable stitching that holds up well after multiple ",
+    "name": "Aden + Anais Essentials Zip Sleepsuit",
+    "why": "Renowned for breathable muslin-blend fabrics that regulate temperature well in varying indoor climates.",
     "pros": [
-     "GOTS-certified organic cotton",
-     "Very durable fabric quality"
+     "Excellent breathability",
+     "Durable fabric that softens with every wash"
     ],
     "cons": [
-     "Zipper can occasionally be stiff on new pairs"
+     "Limited color patterns available"
     ],
-    "price": 2500,
+    "price": 2200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Footie",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Footie",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Footie"
+     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit",
+     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit",
+     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit"
     }
    }
   ]
  },
  "2": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mori Clever Zip Bodysuit 2-pk",
    "Mothercare Bodysuits 5-pk",
    "H&M Cotton Bodysuit 5-pk",
    "Jojo Maman Bébé Baby Bodysuit with Fold-Back Mittens",
    "Next Baby Long Sleeve Mittened Bodysuits (3 Pack)",
-   "Burt's Bees Baby Organic Cotton Long Sleeve Bodysuit"
+   "Burt's Bees Baby Organic Cotton Long Sleeve Bodysuit",
+   "The Children's Place Long Sleeve Bodysuits with Mittens",
+   "Little Me Long Sleeve Mittened Bodysuit",
+   "Gap Baby Organic Cotton Foldover-Mitten Bodysuit"
   ],
   "list": [
    {
-    "name": "Jojo Maman Bébé Baby Bodysuit with Fold-Back Mittens",
-    "why": "High-quality, soft cotton designed specifically for cooler climates with integrated scratch mitts.",
+    "name": "The Children's Place Long Sleeve Bodysuits with Mittens",
+    "why": "Reliable, affordable staple available widely in North America with soft, durable cotton blend fabric.",
     "pros": [
-     "Heavyweight, durable fabric",
-     "Fold-over cuffs stay in place"
+     "Fold-over mittens are integrated securely",
+     "Retains shape well after multiple washes"
     ],
     "cons": [
-     "Higher price point than basic multipacks"
+     "Cotton is standard rather than organic"
     ],
     "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Bodysuit%20with%20Fold-Back%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Bodysuit%20with%20Fold-Back%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Bodysuit%20with%20Fold-Back%20Mittens"
+     "india": "https://www.amazon.in/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens"
     }
    },
    {
-    "name": "Next Baby Long Sleeve Mittened Bodysuits (3 Pack)",
-    "why": "Excellent value for money with consistent sizing and reliable quality for winter layering.",
+    "name": "Little Me Long Sleeve Mittened Bodysuit",
+    "why": "Premium boutique quality featuring thoughtful designs and extra-soft fabric perfect for winter comfort.",
     "pros": [
-     "Soft, hypoallergenic cotton",
-     "Easy-to-use fold-over mitten flaps"
+     "Exceptional fabric softness",
+     "High-quality snap closures"
     ],
     "cons": [
-     "Designs sell out quickly"
-    ],
-    "price": 2200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Next%20Baby%20Long%20Sleeve%20Mittened%20Bodysuits%20(3%20Pack)",
-     "uk": "https://www.next.co.uk/search?w=Next%20Baby%20Long%20Sleeve%20Mittened%20Bodysuits%20(3%20Pack)",
-     "canada": "https://www.amazon.ca/s?k=Next%20Baby%20Long%20Sleeve%20Mittened%20Bodysuits%20(3%20Pack)"
-    }
-   },
-   {
-    "name": "Burt's Bees Baby Organic Cotton Long Sleeve Bodysuit",
-    "why": "Global gold standard for organic, GOTS-certified cotton that is gentle on newborn skin.",
-    "pros": [
-     "Exceptionally soft organic fabric",
-     "Reinforced snaps for durability"
-    ],
-    "cons": [
-     "Requires international shipping or premium import"
+     "Higher price point per unit"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Long%20Sleeve%20Bodysuit",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Long%20Sleeve%20Bodysuit",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Long%20Sleeve%20Bodysuit"
+     "india": "https://www.amazon.in/s?k=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit",
+     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit",
+     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit"
+    }
+   },
+   {
+    "name": "Gap Baby Organic Cotton Foldover-Mitten Bodysuit",
+    "why": "A classic winter essential from a trusted brand known for consistent sizing and skin-friendly organic materials.",
+    "pros": [
+     "GOTS certified organic cotton",
+     "Stretchy fabric makes dressing easier"
+    ],
+    "cons": [
+     "Limited availability in physical Indian stores"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit",
+     "uk": "https://www.next.co.uk/search?w=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit",
+     "canada": "https://www.amazon.ca/s?k=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit"
     }
    }
   ]
  },
  "3": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mori Stay-on Socks 3-pk",
    "FirstCry Newborn Socks 6-pk",
    "H&M Cotton-blend Socks 5-pack",
    "GAP Baby Organic Cotton Crew Socks",
-   "Boody Baby Organic Bamboo Socks"
+   "Boody Baby Organic Bamboo Socks",
+   "Jojo Maman Bébé Stay-On Baby Socks",
+   "Little Me Newborn Bootie Socks",
+   "Zutano Stay-On Baby Booties"
   ],
   "list": [
    {
-    "name": "H&M Cotton-blend Socks 5-pack",
-    "why": "Known for soft, breathable cotton blends that fit snugly without being too tight on newborn ankles.",
+    "name": "Jojo Maman Bébé Stay-On Baby Socks",
+    "why": "Engineered with a ribbed knit and special construction to prevent them from slipping off active newborn feet.",
     "pros": [
-     "Soft elasticated cuffs",
-     "Excellent value for money"
+     "Excellent stay-on capability",
+     "Soft, high-quality cotton blend"
     ],
     "cons": [
-     "Sizes can run slightly large"
-    ],
-    "price": 800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=H%26M%20Cotton-blend%20Socks%205-pack",
-     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton-blend%20Socks%205-pack",
-     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton-blend%20Socks%205-pack"
-    }
-   },
-   {
-    "name": "GAP Baby Organic Cotton Crew Socks",
-    "why": "High-quality organic cotton that remains soft after multiple washes, perfect for sensitive winter skin.",
-    "pros": [
-     "Durable organic fabric",
-     "Stays on well during movement"
-    ],
-    "cons": [
-     "Higher price point"
+     "More expensive than basic multipacks"
     ],
     "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=GAP%20Baby%20Organic%20Cotton%20Crew%20Socks",
-     "uk": "https://www.next.co.uk/search?w=GAP%20Baby%20Organic%20Cotton%20Crew%20Socks",
-     "canada": "https://www.amazon.ca/s?k=GAP%20Baby%20Organic%20Cotton%20Crew%20Socks"
+     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks",
+     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks",
+     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks"
     }
    },
    {
-    "name": "Boody Baby Organic Bamboo Socks",
-    "why": "Bamboo viscose is naturally thermal-regulating and hypoallergenic, ideal for keeping feet cozy during Indian winters.",
+    "name": "Little Me Newborn Bootie Socks",
+    "why": "Designed specifically for newborns with a plush, sock-bootie hybrid feel that provides extra warmth for winter babies.",
     "pros": [
-     "Antibacterial properties",
-     "Silky smooth texture"
+     "Extra cozy for winter",
+     "Non-constricting elastic"
     ],
     "cons": [
-     "Requires delicate wash cycle"
+     "Bulkier than standard socks"
     ],
-    "price": 1500,
+    "price": 950,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Boody%20Baby%20Organic%20Bamboo%20Socks",
-     "uk": "https://www.next.co.uk/search?w=Boody%20Baby%20Organic%20Bamboo%20Socks",
-     "canada": "https://www.amazon.ca/s?k=Boody%20Baby%20Organic%20Bamboo%20Socks"
+     "india": "https://www.amazon.in/s?k=Little%20Me%20Newborn%20Bootie%20Socks",
+     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Newborn%20Bootie%20Socks",
+     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Newborn%20Bootie%20Socks"
+    }
+   },
+   {
+    "name": "Zutano Stay-On Baby Booties",
+    "why": "A cult-favorite in North America that uses a snap closure to ensure they never fall off, perfect for chilly Indian winte",
+    "pros": [
+     "Impossible for baby to kick off",
+     "Durable fleece options available"
+    ],
+    "cons": [
+     "Requires international shipping or import"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Zutano%20Stay-On%20Baby%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Zutano%20Stay-On%20Baby%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Zutano%20Stay-On%20Baby%20Booties"
     }
    }
   ]
  },
  "4": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mamas & Papas Welcome to the World Knitted Hat",
    "Mothercare Newborn Cotton Ribbed Beanies",
-   "Aden + Anais Essentials Cotton Muslin Knotted Baby Hat"
+   "Aden + Anais Essentials Cotton Muslin Knotted Baby Hat",
+   "Jojo Maman Bébé Jersey Cotton Baby Hat",
+   "FirstCry BabyHug Winter Woolen Cap with Ear Flaps",
+   "Gap Baby Organic Cotton Bear Ear Beanie"
   ],
   "list": [
    {
-    "name": "Mamas & Papas Welcome to the World Knitted Hat",
-    "why": "High-quality, soft cotton-blend fabric that is gentle on newborn skin and provides excellent warmth for winter.",
+    "name": "Jojo Maman Bébé Jersey Cotton Baby Hat",
+    "why": "A high-quality, soft cotton option from the UK that is perfect for layering under heavier hoods during Indian winters.",
     "pros": [
-     "Premium soft-touch fabric",
-     "Durable shape retention"
+     "Extremely soft organic cotton",
+     "Excellent shape retention after washes"
     ],
     "cons": [
-     "Available primarily via import"
+     "Requires international shipping or proxy service"
     ],
     "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Hat",
-     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Hat",
-     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Hat"
+     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat",
+     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat",
+     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat"
     }
    },
    {
-    "name": "Mothercare Newborn Cotton Ribbed Beanies",
-    "why": "Widely accessible in India, these provide a perfect snug fit that stays on a moving newborn's head.",
+    "name": "FirstCry BabyHug Winter Woolen Cap with Ear Flaps",
+    "why": "Provides essential coverage for newborn ears against chilly drafts, widely available across India.",
     "pros": [
-     "Breathable cotton material",
-     "Stretchy for growing heads"
+     "Includes protective ear flaps",
+     "Affordable and easily accessible"
     ],
     "cons": [
-     "Simple design lacks extra insulation"
+     "Synthetic material may not be as breathable as organic cotton"
     ],
-    "price": 600,
+    "price": 350,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mothercare%20Newborn%20Cotton%20Ribbed%20Beanies",
-     "uk": "https://www.next.co.uk/search?w=Mothercare%20Newborn%20Cotton%20Ribbed%20Beanies",
-     "canada": "https://www.amazon.ca/s?k=Mothercare%20Newborn%20Cotton%20Ribbed%20Beanies"
+     "india": "https://www.amazon.in/s?k=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps",
+     "uk": "https://www.next.co.uk/search?w=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps",
+     "canada": "https://www.amazon.ca/s?k=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps"
     }
    },
    {
-    "name": "Aden + Anais Essentials Cotton Muslin Knotted Baby Hat",
-    "why": "The knotted top allows for an adjustable fit, and the muslin fabric is ideal for temperature regulation.",
+    "name": "Gap Baby Organic Cotton Bear Ear Beanie",
+    "why": "A popular, durable choice available globally that offers superior warmth with a cute design for winter.",
     "pros": [
-     "Adjustable knot closure",
-     "Lightweight yet warm"
+     "Stretchy fit for growing heads",
+     "Thick, high-quality knit fabric"
     ],
     "cons": [
-     "Thin material for extreme cold"
+     "Can be slightly bulky for indoor use"
     ],
-    "price": 950,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Cotton%20Muslin%20Knotted%20Baby%20Hat",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Cotton%20Muslin%20Knotted%20Baby%20Hat",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Cotton%20Muslin%20Knotted%20Baby%20Hat"
+     "india": "https://www.amazon.in/s?k=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie",
+     "uk": "https://www.next.co.uk/search?w=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie",
+     "canada": "https://www.amazon.ca/s?k=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie"
     }
    }
   ]
  },
  "5": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mori Cellular Blanket",
    "Mamas & Papas Knitted Blanket",
    "Aden + Anais Essentials Muslin Swaddle Blanket",
    "The White Company Hydrocotton Baby Blanket",
-   "Little West Street Organic Cotton Knitted Blanket"
+   "Little West Street Organic Cotton Knitted Blanket",
+   "Snuggle Me Organic Cotton Stroller Blanket",
+   "Gro Company Gro-snug Swaddle to Sleeping Bag",
+   "Masilo Organic Cotton Muslin Quilt"
   ],
   "list": [
    {
-    "name": "Aden + Anais Essentials Muslin Swaddle Blanket",
-    "why": "Breathable cotton muslin is perfect for layering in Indian winters without causing overheating.",
+    "name": "Snuggle Me Organic Cotton Stroller Blanket",
+    "why": "Offers premium organic breathability which is ideal for layering during milder Indian winters without causing overheatin",
     "pros": [
-     "Extremely breathable",
-     "Multi-purpose usage"
+     "GOTS certified organic cotton",
+     "Excellent thermal regulation"
     ],
     "cons": [
-     "Not warm enough for extremely cold nights alone"
+     "Limited color variety"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket"
+    }
+   },
+   {
+    "name": "Gro Company Gro-snug Swaddle to Sleeping Bag",
+    "why": "A practical 2-in-1 solution that keeps the baby secure and warm during the transition from swaddling to sleeping bags.",
+    "pros": [
+     "Versatile swaddle-to-bag design",
+     "Hip-healthy ergonomic shape"
+    ],
+    "cons": [
+     "Requires sizing up as baby grows"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag",
+     "uk": "https://www.next.co.uk/search?w=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag",
+     "canada": "https://www.amazon.ca/s?k=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag"
+    }
+   },
+   {
+    "name": "Masilo Organic Cotton Muslin Quilt",
+    "why": "A high-quality, locally available option in India that provides extra warmth through its multi-layered muslin constructi",
+    "pros": [
+     "Softens with every wash",
+     "Available locally in India"
+    ],
+    "cons": [
+     "Thinner than traditional wool quilts"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket"
-    }
-   },
-   {
-    "name": "The White Company Hydrocotton Baby Blanket",
-    "why": "A premium, ultra-soft option from the UK that provides excellent insulation while remaining lightweight.",
-    "pros": [
-     "Superior fabric quality",
-     "Highly durable through washes"
-    ],
-    "cons": [
-     "Higher price point due to import"
-    ],
-    "price": 5500,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=The%20White%20Company%20Hydrocotton%20Baby%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=The%20White%20Company%20Hydrocotton%20Baby%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=The%20White%20Company%20Hydrocotton%20Baby%20Blanket"
-    }
-   },
-   {
-    "name": "Little West Street Organic Cotton Knitted Blanket",
-    "why": "A popular Indian-based premium brand offering high-quality organic cotton that is gentle on newborn skin.",
-    "pros": [
-     "Soft organic material",
-     "Attractive, classic aesthetic"
-    ],
-    "cons": [
-     "Requires delicate machine wash"
-    ],
-    "price": 2200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Organic%20Cotton%20Knitted%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Organic%20Cotton%20Knitted%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Organic%20Cotton%20Knitted%20Blanket"
+     "india": "https://www.amazon.in/s?k=Masilo%20Organic%20Cotton%20Muslin%20Quilt",
+     "uk": "https://www.next.co.uk/search?w=Masilo%20Organic%20Cotton%20Muslin%20Quilt",
+     "canada": "https://www.amazon.ca/s?k=Masilo%20Organic%20Cotton%20Muslin%20Quilt"
     }
    }
   ]
  },
  "6": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Stokke Flexi Bath",
    "Fisher-Price 4-in-1 Sling 'n Seat Tub",
-   "Skip Hop Moby Smart Sling 3-Stage Tub"
+   "Skip Hop Moby Smart Sling 3-Stage Tub",
+   "Angelcare Baby Bath Support",
+   "Summer Infant My Bath Seat",
+   "Munchkin White Hot Inflatable Safety Duck Tub"
   ],
   "list": [
    {
-    "name": "Stokke Flexi Bath",
-    "why": "A premium, space-saving foldable bathtub that is highly durable and fits newborns comfortably with an optional support i",
+    "name": "Angelcare Baby Bath Support",
+    "why": "An ergonomic, mesh-based design that drains instantly and dries quickly, preventing mold growth.",
     "pros": [
-     "Folds completely flat for easy storage",
-     "Heat-sensitive plug for temperature safety"
+     "Lightweight and easy to store",
+     "Soft-touch material is comfortable for newborn skin"
     ],
     "cons": [
-     "The newborn support insert is sold separately"
+     "Does not hold water; requires use inside a larger tub or sink"
     ],
-    "price": 6500,
+    "price": 3500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Stokke%20Flexi%20Bath",
-     "uk": "https://www.next.co.uk/search?w=Stokke%20Flexi%20Bath",
-     "canada": "https://www.amazon.ca/s?k=Stokke%20Flexi%20Bath"
+     "india": "https://www.amazon.in/s?k=Angelcare%20Baby%20Bath%20Support",
+     "uk": "https://www.next.co.uk/search?w=Angelcare%20Baby%20Bath%20Support",
+     "canada": "https://www.amazon.ca/s?k=Angelcare%20Baby%20Bath%20Support"
     }
    },
    {
-    "name": "Fisher-Price 4-in-1 Sling 'n Seat Tub",
-    "why": "A versatile tub that grows with the baby from newborn stage to toddler, featuring a soft mesh sling for safety.",
+    "name": "Summer Infant My Bath Seat",
+    "why": "Provides excellent 360-degree support for babies who are just starting to sit, ideal for later in the winter season.",
     "pros": [
-     "Includes a removable infant sling",
-     "Features a drain plug for easy cleaning"
+     "Suction cups keep it securely in place",
+     "Spacious design allows for easy cleaning"
     ],
     "cons": [
-     "Takes up significant floor space in the bathroom"
+     "Only suitable once the baby has good head and neck control"
     ],
     "price": 4200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Fisher-Price%204-in-1%20Sling%20'n%20Seat%20Tub",
-     "uk": "https://www.next.co.uk/search?w=Fisher-Price%204-in-1%20Sling%20'n%20Seat%20Tub",
-     "canada": "https://www.amazon.ca/s?k=Fisher-Price%204-in-1%20Sling%20'n%20Seat%20Tub"
+     "india": "https://www.amazon.in/s?k=Summer%20Infant%20My%20Bath%20Seat",
+     "uk": "https://www.next.co.uk/search?w=Summer%20Infant%20My%20Bath%20Seat",
+     "canada": "https://www.amazon.ca/s?k=Summer%20Infant%20My%20Bath%20Seat"
     }
    },
    {
-    "name": "Skip Hop Moby Smart Sling 3-Stage Tub",
-    "why": "An ergonomic, multi-stage tub with a dual-position mesh sling that keeps newborns secure during bath time.",
+    "name": "Munchkin White Hot Inflatable Safety Duck Tub",
+    "why": "A space-saving, portable option that is perfect for travel and features a safety sensor to prevent overheating.",
     "pros": [
-     "Non-slip interior texture for added safety",
-     "Swivel hook allows for hanging on shower heads"
+     "Compact when deflated for easy storage",
+     "Textured bottom prevents baby from slipping"
     ],
     "cons": [
-     "Sling material requires frequent washing to prevent mold"
+     "Requires manual inflation before every use"
     ],
-    "price": 5500,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub",
-     "uk": "https://www.next.co.uk/search?w=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub",
-     "canada": "https://www.amazon.ca/s?k=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub"
+     "india": "https://www.amazon.in/s?k=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub",
+     "uk": "https://www.next.co.uk/search?w=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub",
+     "canada": "https://www.amazon.ca/s?k=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub"
     }
    }
   ]
  },
  "7": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Little Unicorn Cotton Muslin 3-pk",
    "Masilo / Mulmul Organic Muslin (India)",
    "ErgoPouch Cocoon Swaddle Bag (0.2 - 2.5 TOG)",
    "SwaddleMe Original Swaddle",
-   "Nested Bean Zen Swaddle"
+   "Nested Bean Zen Swaddle",
+   "Kyte Baby Swaddle Blanket",
+   "Mamaearth Organic Cotton Swaddle Wrap",
+   "Copper Pearl Swaddle Blanket"
   ],
   "list": [
    {
-    "name": "ErgoPouch Cocoon Swaddle Bag (0.2 - 2.5 TOG)",
-    "why": "Excellent for winter versatility as it offers different thermal ratings to keep the baby warm without overheating.",
+    "name": "Kyte Baby Swaddle Blanket",
+    "why": "Crafted from ultra-soft bamboo rayon, this provides exceptional temperature regulation for a winter newborn.",
     "pros": [
-     "Organic breathable fabric",
-     "Transitions easily to a sleeping bag"
+     "Extremely soft and breathable fabric",
+     "Stretchy material makes for an easy, snug wrap"
     ],
     "cons": [
-     "Higher price point"
+     "Requires delicate washing to maintain fabric quality"
+    ],
+    "price": 3800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Swaddle%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Swaddle%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Swaddle%20Blanket"
+    }
+   },
+   {
+    "name": "Mamaearth Organic Cotton Swaddle Wrap",
+    "why": "A highly accessible, high-quality organic cotton option widely available in the Indian market.",
+    "pros": [
+     "Hypoallergenic and gentle on newborn skin",
+     "Large dimensions allow for versatile use as a nursing cover"
+    ],
+    "cons": [
+     "Fabric is thinner than premium bamboo alternatives"
+    ],
+    "price": 900,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap"
+    }
+   },
+   {
+    "name": "Copper Pearl Swaddle Blanket",
+    "why": "These premium knit swaddles offer a modern aesthetic with a unique blend of fabric that holds a tight swaddle.",
+    "pros": [
+     "Excellent stretch and recovery",
+     "Trendy, modern patterns and prints"
+    ],
+    "cons": [
+     "Can feel slightly heavy for very warm indoor environments"
     ],
     "price": 3200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=ErgoPouch%20Cocoon%20Swaddle%20Bag%20(0.2%20-%202.5%20TOG)",
-     "uk": "https://www.next.co.uk/search?w=ErgoPouch%20Cocoon%20Swaddle%20Bag%20(0.2%20-%202.5%20TOG)",
-     "canada": "https://www.amazon.ca/s?k=ErgoPouch%20Cocoon%20Swaddle%20Bag%20(0.2%20-%202.5%20TOG)"
-    }
-   },
-   {
-    "name": "SwaddleMe Original Swaddle",
-    "why": "A classic, affordable, and highly effective velcro-based swaddle that ensures a snug fit for newborns.",
-    "pros": [
-     "Very easy to use for middle-of-the-night changes",
-     "Prevents the startle reflex effectively"
-    ],
-    "cons": [
-     "Velcro can get loud or wear out over time"
-    ],
-    "price": 1800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=SwaddleMe%20Original%20Swaddle",
-     "uk": "https://www.next.co.uk/search?w=SwaddleMe%20Original%20Swaddle",
-     "canada": "https://www.amazon.ca/s?k=SwaddleMe%20Original%20Swaddle"
-    }
-   },
-   {
-    "name": "Nested Bean Zen Swaddle",
-    "why": "Features a lightly weighted chest pad designed to mimic a parent's touch to help the baby self-soothe.",
-    "pros": [
-     "Helps babies sleep longer stretches",
-     "Adjustable arm wings for different stages"
-    ],
-    "cons": [
-     "Some babies may dislike the pressure on their chest"
-    ],
-    "price": 4500,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Nested%20Bean%20Zen%20Swaddle",
-     "uk": "https://www.next.co.uk/search?w=Nested%20Bean%20Zen%20Swaddle",
-     "canada": "https://www.amazon.ca/s?k=Nested%20Bean%20Zen%20Swaddle"
+     "india": "https://www.amazon.in/s?k=Copper%20Pearl%20Swaddle%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Copper%20Pearl%20Swaddle%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Copper%20Pearl%20Swaddle%20Blanket"
     }
    }
   ]
  },
  "8": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Muslin Tree Cotton Muslin Washcloths",
    "aden + anais Essentials Washcloth Set",
-   "Bey Bee Organic Cotton Washcloths"
+   "Bey Bee Organic Cotton Washcloths",
+   "LuvLap Baby Washcloths (Pack of 6)",
+   "Burt's Bees Baby Washcloths (3-Pack)",
+   "Hudson Baby Animal Face Washcloths"
   ],
   "list": [
    {
-    "name": "Muslin Tree Cotton Muslin Washcloths",
-    "why": "Ultra-soft and breathable muslin fabric is ideal for sensitive newborn skin and gets softer with every wash.",
+    "name": "LuvLap Baby Washcloths (Pack of 6)",
+    "why": "A highly accessible, budget-friendly option in India featuring soft, absorbent cotton terry fabric suitable for daily ne",
     "pros": [
-     "Highly absorbent",
-     "Quick-drying"
+     "Highly absorbent cotton material",
+     "Easily available on major Indian e-commerce sites"
     ],
     "cons": [
-     "Can shrink slightly after multiple hot washes"
+     "Fabric can feel slightly less soft after many machine washes"
     ],
-    "price": 650,
+    "price": 350,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Muslin%20Tree%20Cotton%20Muslin%20Washcloths",
-     "uk": "https://www.next.co.uk/search?w=Muslin%20Tree%20Cotton%20Muslin%20Washcloths",
-     "canada": "https://www.amazon.ca/s?k=Muslin%20Tree%20Cotton%20Muslin%20Washcloths"
+     "india": "https://www.amazon.in/s?k=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)",
+     "uk": "https://www.next.co.uk/search?w=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)",
+     "canada": "https://www.amazon.ca/s?k=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)"
     }
    },
    {
-    "name": "aden + anais Essentials Washcloth Set",
-    "why": "A premium, globally trusted brand that offers a multi-layer weave for extra durability and gentle cleaning.",
+    "name": "Burt's Bees Baby Washcloths (3-Pack)",
+    "why": "A premium, organic cotton knit option available via international shipping that is exceptionally gentle on newborn skin.",
     "pros": [
-     "Very gentle texture",
-     "Durable quality"
+     "GOTS-certified organic cotton",
+     "Durable quality that maintains softness"
     ],
     "cons": [
-     "Higher price point than local alternatives"
+     "Higher cost due to international shipping and import duties"
     ],
-    "price": 1800,
+    "price": 2200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=aden%20%2B%20anais%20Essentials%20Washcloth%20Set",
-     "uk": "https://www.next.co.uk/search?w=aden%20%2B%20anais%20Essentials%20Washcloth%20Set",
-     "canada": "https://www.amazon.ca/s?k=aden%20%2B%20anais%20Essentials%20Washcloth%20Set"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)"
     }
    },
    {
-    "name": "Bey Bee Organic Cotton Washcloths",
-    "why": "A popular, accessible choice in India made from organic cotton, ensuring no harsh chemicals touch the baby's face.",
+    "name": "Hudson Baby Animal Face Washcloths",
+    "why": "These offer a thicker, plush texture and cute designs that are popular for their longevity and high-quality construction",
     "pros": [
-     "Hypoallergenic",
-     "Compact and travel-friendly"
+     "Thick, plush fabric is very gentle",
+     "Fun, engaging designs for bath time"
     ],
     "cons": [
-     "Limited color variety"
+     "Takes longer to air dry than thin muslin cloths"
     ],
-    "price": 450,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Bey%20Bee%20Organic%20Cotton%20Washcloths",
-     "uk": "https://www.next.co.uk/search?w=Bey%20Bee%20Organic%20Cotton%20Washcloths",
-     "canada": "https://www.amazon.ca/s?k=Bey%20Bee%20Organic%20Cotton%20Washcloths"
+     "india": "https://www.amazon.in/s?k=Hudson%20Baby%20Animal%20Face%20Washcloths",
+     "uk": "https://www.next.co.uk/search?w=Hudson%20Baby%20Animal%20Face%20Washcloths",
+     "canada": "https://www.amazon.ca/s?k=Hudson%20Baby%20Animal%20Face%20Washcloths"
     }
    }
   ]
  },
  "9": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Snuggle Me Organic Changing Pad Cover",
    "IKEA VÄDRA Changing Mat Cover",
-   "Carter's Cotton Jersey Changing Pad Cover"
+   "Carter's Cotton Jersey Changing Pad Cover",
+   "Burt's Bees Baby Organic Cotton Changing Pad Cover",
+   "Mothercare Jersey Changing Mat Cover",
+   "Little West Street Muslin Changing Pad Cover"
   ],
   "list": [
    {
-    "name": "Snuggle Me Organic Changing Pad Cover",
-    "why": "High-quality, GOTS-certified organic cotton that is gentle on newborn skin during winter months.",
+    "name": "Burt's Bees Baby Organic Cotton Changing Pad Cover",
+    "why": "Renowned for extremely soft, breathable organic cotton that is gentle on newborn skin during winter.",
     "pros": [
-     "Breathable organic material",
-     "Stretchy fit for standard pads"
+     "GOTS certified organic cotton",
+     "High-quality elastic for a snug, safe fit"
     ],
     "cons": [
-     "Requires frequent washing"
+     "Can shrink slightly if not washed according to label"
     ],
-    "price": 3200,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Snuggle%20Me%20Organic%20Changing%20Pad%20Cover",
-     "uk": "https://www.next.co.uk/search?w=Snuggle%20Me%20Organic%20Changing%20Pad%20Cover",
-     "canada": "https://www.amazon.ca/s?k=Snuggle%20Me%20Organic%20Changing%20Pad%20Cover"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover"
     }
    },
    {
-    "name": "IKEA VÄDRA Changing Mat Cover",
-    "why": "A durable, practical option that fits snugly and is designed for easy removal and machine washing.",
+    "name": "Mothercare Jersey Changing Mat Cover",
+    "why": "A widely trusted, durable option available in India that provides a cozy, warm surface for diaper changes.",
     "pros": [
-     "Very soft texture",
-     "Elasticated edges for security"
+     "Soft jersey fabric provides extra comfort",
+     "Easy to machine wash and quick drying"
     ],
     "cons": [
-     "Limited color variety"
+     "Limited color options compared to boutique brands"
     ],
-    "price": 900,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=IKEA%20V%C3%84DRA%20Changing%20Mat%20Cover",
-     "uk": "https://www.next.co.uk/search?w=IKEA%20V%C3%84DRA%20Changing%20Mat%20Cover",
-     "canada": "https://www.amazon.ca/s?k=IKEA%20V%C3%84DRA%20Changing%20Mat%20Cover"
+     "india": "https://www.amazon.in/s?k=Mothercare%20Jersey%20Changing%20Mat%20Cover",
+     "uk": "https://www.next.co.uk/search?w=Mothercare%20Jersey%20Changing%20Mat%20Cover",
+     "canada": "https://www.amazon.ca/s?k=Mothercare%20Jersey%20Changing%20Mat%20Cover"
     }
    },
    {
-    "name": "Carter's Cotton Jersey Changing Pad Cover",
-    "why": "A widely trusted, affordable, and cozy jersey-knit option that provides warmth for a newborn in cooler weather.",
+    "name": "Little West Street Muslin Changing Pad Cover",
+    "why": "Specifically designed for the Indian climate, these muslin covers are breathable yet soft enough for cooler months.",
     "pros": [
-     "Very soft fabric feel",
-     "Easy to find in global markets"
+     "Gets softer with every wash",
+     "Beautiful, aesthetic prints"
     ],
     "cons": [
-     "Can shrink slightly if tumble dried"
+     "Muslin fabric is thinner than jersey cotton"
     ],
-    "price": 1800,
+    "price": 1500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Carter's%20Cotton%20Jersey%20Changing%20Pad%20Cover",
-     "uk": "https://www.next.co.uk/search?w=Carter's%20Cotton%20Jersey%20Changing%20Pad%20Cover",
-     "canada": "https://www.amazon.ca/s?k=Carter's%20Cotton%20Jersey%20Changing%20Pad%20Cover"
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover"
     }
    }
   ]
  },
  "10": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "KeaBabies Bandana Bibs 8-pk",
    "Mushie Bandana Bibs 2-pk",
    "Mom’s Home Bandana Bibs 8-pk",
    "Aden + Anais Essentials Muslin Snap Bibs",
    "Tommee Tippee Closer to Nature Milk Feeding Bibs",
-   "The Moms Co. Organic Cotton Bibs"
+   "The Moms Co. Organic Cotton Bibs",
+   "Copper Pearl Bandana Bibs",
+   "Bibado Coverall Weaning Bib",
+   "Mamaearth Organic Cotton Bibs"
   ],
   "list": [
    {
-    "name": "Aden + Anais Essentials Muslin Snap Bibs",
-    "why": "Extremely soft, breathable cotton muslin that is gentle on newborn skin and highly absorbent for drool.",
+    "name": "Copper Pearl Bandana Bibs",
+    "why": "Renowned for their exceptional absorbency and stylish prints that double as a trendy outfit accessory.",
     "pros": [
-     "Becomes softer with every wash",
-     "Snap closure is secure and prevents accidental pulling"
+     "Highly absorbent front fabric",
+     "Adjustable nickel-free snaps"
     ],
     "cons": [
-     "Can shrink slightly if tumble dried on high heat"
+     "Higher price point than basic options"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Copper%20Pearl%20Bandana%20Bibs",
+     "uk": "https://www.next.co.uk/search?w=Copper%20Pearl%20Bandana%20Bibs",
+     "canada": "https://www.amazon.ca/s?k=Copper%20Pearl%20Bandana%20Bibs"
+    }
+   },
+   {
+    "name": "Bibado Coverall Weaning Bib",
+    "why": "Essential for the start of solid foods, this long-sleeved bib keeps the baby's clothing completely clean during messy wi",
+    "pros": [
+     "Full coverage design",
+     "Stain-resistant material"
+    ],
+    "cons": [
+     "Requires more effort to put on"
     ],
     "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Snap%20Bibs",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Muslin%20Snap%20Bibs",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Snap%20Bibs"
+     "india": "https://www.amazon.in/s?k=Bibado%20Coverall%20Weaning%20Bib",
+     "uk": "https://www.next.co.uk/search?w=Bibado%20Coverall%20Weaning%20Bib",
+     "canada": "https://www.amazon.ca/s?k=Bibado%20Coverall%20Weaning%20Bib"
     }
    },
    {
-    "name": "Tommee Tippee Closer to Nature Milk Feeding Bibs",
-    "why": "Specially designed with an absorbent neck section to soak up spills and prevent milk rash on baby's neck.",
+    "name": "Mamaearth Organic Cotton Bibs",
+    "why": "A widely available, accessible choice in India that uses skin-friendly organic cotton suitable for sensitive newborn ski",
     "pros": [
-     "Specifically shaped for newborns",
-     "Soft material prevents skin irritation"
+     "Soft breathable fabric",
+     "Easy to wash and maintain"
     ],
     "cons": [
-     "Not as trendy-looking as bandana styles"
+     "Less absorbent than multi-layer fleece-backed bibs"
     ],
-    "price": 950,
+    "price": 600,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Tommee%20Tippee%20Closer%20to%20Nature%20Milk%20Feeding%20Bibs",
-     "uk": "https://www.next.co.uk/search?w=Tommee%20Tippee%20Closer%20to%20Nature%20Milk%20Feeding%20Bibs",
-     "canada": "https://www.amazon.ca/s?k=Tommee%20Tippee%20Closer%20to%20Nature%20Milk%20Feeding%20Bibs"
-    }
-   },
-   {
-    "name": "The Moms Co. Organic Cotton Bibs",
-    "why": "High-quality GOTS-certified organic cotton, perfect for the sensitive skin of a winter-born baby in India.",
-    "pros": [
-     "Hypoallergenic and chemical-free",
-     "Excellent stitching durability"
-    ],
-    "cons": [
-     "Limited color and pattern variety"
-    ],
-    "price": 750,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=The%20Moms%20Co.%20Organic%20Cotton%20Bibs",
-     "uk": "https://www.next.co.uk/search?w=The%20Moms%20Co.%20Organic%20Cotton%20Bibs",
-     "canada": "https://www.amazon.ca/s?k=The%20Moms%20Co.%20Organic%20Cotton%20Bibs"
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Organic%20Cotton%20Bibs",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Organic%20Cotton%20Bibs",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Organic%20Cotton%20Bibs"
     }
    }
   ]
  },
  "11": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mamas & Papas Heritage Velvet Dress & Bloomer Set",
    "The Children's Place Baby Boys Formal Vest Set",
-   "Jam & Honey Baby Unisex Formal Romper"
+   "Jam & Honey Baby Unisex Formal Romper",
+   "Jojo Maman Bébé Tartan Dungaree & Shirt Set",
+   "Little West Street Baby Boy Formal Romper Set",
+   "Janie and Jack Velvet Bow Dress Set"
   ],
   "list": [
    {
-    "name": "Mamas & Papas Heritage Velvet Dress & Bloomer Set",
-    "why": "Offers a classic, premium British aesthetic perfect for winter festive occasions.",
+    "name": "Jojo Maman Bébé Tartan Dungaree & Shirt Set",
+    "why": "A classic, timeless British winter formal aesthetic that is both warm and comfortable for newborns.",
     "pros": [
-     "High-quality soft velvet fabric",
-     "Includes matching bloomers for a complete look"
+     "Soft cotton lining for sensitive skin",
+     "Traditional high-quality festive design"
     ],
     "cons": [
-     "Requires delicate hand washing"
+     "Expensive international shipping from UK"
     ],
-    "price": 4500,
+    "price": 4200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Heritage%20Velvet%20Dress%20%26%20Bloomer%20Set",
-     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Heritage%20Velvet%20Dress%20%26%20Bloomer%20Set",
-     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Heritage%20Velvet%20Dress%20%26%20Bloomer%20Set"
+     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set",
+     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set",
+     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set"
     }
    },
    {
-    "name": "The Children's Place Baby Boys Formal Vest Set",
-    "why": "A practical and stylish layered look that keeps newborns warm during winter events.",
+    "name": "Little West Street Baby Boy Formal Romper Set",
+    "why": "A premium Indian brand that offers high-quality cotton fabrics suitable for the Indian winter climate.",
     "pros": [
-     "Layered design provides extra warmth",
-     "Easy snap closures for quick diaper changes"
+     "Breathable organic cotton material",
+     "Easy-access snap buttons for diaper changes"
     ],
     "cons": [
-     "Material is slightly thicker, less ideal for warmer climates"
+     "Limited stock availability in retail stores"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=The%20Children's%20Place%20Baby%20Boys%20Formal%20Vest%20Set",
-     "uk": "https://www.next.co.uk/search?w=The%20Children's%20Place%20Baby%20Boys%20Formal%20Vest%20Set",
-     "canada": "https://www.amazon.ca/s?k=The%20Children's%20Place%20Baby%20Boys%20Formal%20Vest%20Set"
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set"
     }
    },
    {
-    "name": "Jam & Honey Baby Unisex Formal Romper",
-    "why": "A widely available, budget-friendly option that mimics formal wear while maintaining baby-friendly comfort.",
+    "name": "Janie and Jack Velvet Bow Dress Set",
+    "why": "Known for high-end boutique quality, this set provides a sophisticated look for formal winter occasions.",
     "pros": [
-     "Breathable cotton-blend fabric",
-     "Very soft on newborn skin"
+     "Exceptional fabric durability",
+     "Includes matching accessories"
     ],
     "cons": [
-     "Design is less formal than traditional multi-piece suits"
+     "Requires delicate hand washing"
     ],
-    "price": 1200,
+    "price": 6500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Jam%20%26%20Honey%20Baby%20Unisex%20Formal%20Romper",
-     "uk": "https://www.next.co.uk/search?w=Jam%20%26%20Honey%20Baby%20Unisex%20Formal%20Romper",
-     "canada": "https://www.amazon.ca/s?k=Jam%20%26%20Honey%20Baby%20Unisex%20Formal%20Romper"
+     "india": "https://www.amazon.in/s?k=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set",
+     "uk": "https://www.next.co.uk/search?w=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set",
+     "canada": "https://www.amazon.ca/s?k=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set"
     }
    }
   ]
  },
  "12": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mamas & Papas Essential Cotton Sleepsuit",
    "Kyte BABY Zipper Footie",
-   "FirstCry BabyHug Interlock Sleepsuit"
+   "FirstCry BabyHug Interlock Sleepsuit",
+   "Burt's Bees Baby Organic Cotton Beekeeper Wearable Blanket",
+   "Little Me Footie and Hat Set",
+   "SuperBottoms Organic Cotton Sleepsuit"
   ],
   "list": [
    {
-    "name": "Mamas & Papas Essential Cotton Sleepsuit",
-    "why": "High-quality, breathable organic cotton that is perfect for layering during Indian winters.",
+    "name": "Burt's Bees Baby Organic Cotton Beekeeper Wearable Blanket",
+    "why": "A safe, GOTS-certified organic cotton option that keeps babies warm during Indian winters without the risk of loose blan",
     "pros": [
-     "Extremely soft on sensitive skin",
-     "Features nickel-free poppers for safe diaper changes"
+     "Breathable organic material",
+     "Excellent durability after multiple washes"
     ],
     "cons": [
-     "Tend to run small in sizing"
+     "Higher price point due to import"
     ],
-    "price": 2200,
+    "price": 3200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Sleepsuit",
-     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Essential%20Cotton%20Sleepsuit",
-     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Sleepsuit"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket"
     }
    },
    {
-    "name": "Kyte BABY Zipper Footie",
-    "why": "Made from buttery-soft bamboo rayon which is temperature-regulating for varying indoor temperatures.",
+    "name": "Little Me Footie and Hat Set",
+    "why": "Renowned for high-quality, soft knits that provide extra warmth, making them perfect for the slightly cooler North India",
     "pros": [
-     "Stretchy fabric allows for extended wear",
-     "Double zipper design for easy night changes"
+     "Features adorable prints",
+     "Includes a matching cap for heat retention"
     ],
     "cons": [
-     "Higher price point due to import costs"
+     "Available primarily through international shipping"
     ],
-    "price": 3500,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Kyte%20BABY%20Zipper%20Footie",
-     "uk": "https://www.next.co.uk/search?w=Kyte%20BABY%20Zipper%20Footie",
-     "canada": "https://www.amazon.ca/s?k=Kyte%20BABY%20Zipper%20Footie"
+     "india": "https://www.amazon.in/s?k=Little%20Me%20Footie%20and%20Hat%20Set",
+     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Footie%20and%20Hat%20Set",
+     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Footie%20and%20Hat%20Set"
     }
    },
    {
-    "name": "FirstCry BabyHug Interlock Sleepsuit",
-    "why": "A practical, widely available Indian staple that uses thicker interlock fabric suitable for cooler nights.",
+    "name": "SuperBottoms Organic Cotton Sleepsuit",
+    "why": "A highly-rated Indian brand that uses GOTS-certified cotton, specifically designed for the Indian climate and skin sensi",
     "pros": [
-     "Excellent value for money",
-     "Easy to find across all Indian cities"
+     "Convenient snap buttons for easy diaper changes",
+     "Soft, chemical-free fabric"
     ],
     "cons": [
-     "Prints may fade slightly after multiple washes"
+     "Limited pattern variety compared to global brands"
     ],
-    "price": 800,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=FirstCry%20BabyHug%20Interlock%20Sleepsuit",
-     "uk": "https://www.next.co.uk/search?w=FirstCry%20BabyHug%20Interlock%20Sleepsuit",
-     "canada": "https://www.amazon.ca/s?k=FirstCry%20BabyHug%20Interlock%20Sleepsuit"
+     "india": "https://www.amazon.in/s?k=SuperBottoms%20Organic%20Cotton%20Sleepsuit",
+     "uk": "https://www.next.co.uk/search?w=SuperBottoms%20Organic%20Cotton%20Sleepsuit",
+     "canada": "https://www.amazon.ca/s?k=SuperBottoms%20Organic%20Cotton%20Sleepsuit"
     }
    }
   ]
  },
  "13": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "H&M Cotton Jersey Baby Blanket",
    "Aden + Anais Essentials Muslin Swaddle Blanket",
-   "FirstCry Babyhug Anti-Scratch Mittens & Booties Set"
+   "FirstCry Babyhug Anti-Scratch Mittens & Booties Set",
+   "Mamas & Papas Welcome to the World Knitted Cardigan",
+   "Kyte BABY Sleep Bag (0.5 Tog)",
+   "Carter's Baby Zip-Up Fleece Pram Suit"
   ],
   "list": [
    {
-    "name": "H&M Cotton Jersey Baby Blanket",
-    "why": "Essential for layering during Indian winters, offering breathable warmth without overheating.",
+    "name": "Mamas & Papas Welcome to the World Knitted Cardigan",
+    "why": "A high-quality, essential layering piece for Indian winters that keeps newborns cozy without overheating.",
     "pros": [
-     "Soft organic cotton fabric",
-     "Large size for versatile swaddling"
+     "Breathable cotton-rich fabric",
+     "Durable snap-button closures"
     ],
     "cons": [
-     "Requires frequent washing to maintain softness"
+     "Requires delicate hand-wash care"
     ],
-    "price": 1200,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=H%26M%20Cotton%20Jersey%20Baby%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton%20Jersey%20Baby%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton%20Jersey%20Baby%20Blanket"
+     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan",
+     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan",
+     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan"
     }
    },
    {
-    "name": "Aden + Anais Essentials Muslin Swaddle Blanket",
-    "why": "Globally acclaimed for safety and temperature regulation, perfect for wrapping newborns securely.",
+    "name": "Kyte BABY Sleep Bag (0.5 Tog)",
+    "why": "The gold standard for safe sleep, featuring ultra-soft bamboo rayon that regulates temperature effectively.",
     "pros": [
-     "Highly breathable fabric",
-     "Multi-purpose usage beyond swaddling"
+     "Incredibly soft material",
+     "Double zipper for easy diaper changes"
     ],
     "cons": [
-     "Prone to snagging if not handled carefully"
+     "Premium pricing"
     ],
-    "price": 2500,
+    "price": 4500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Swaddle%20Blanket"
+     "india": "https://www.amazon.in/s?k=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)"
     }
    },
    {
-    "name": "FirstCry Babyhug Anti-Scratch Mittens & Booties Set",
-    "why": "A practical necessity to prevent newborns from scratching themselves in the colder months.",
+    "name": "Carter's Baby Zip-Up Fleece Pram Suit",
+    "why": "Perfect for keeping the baby warm during outdoor outings in the cooler months of November.",
     "pros": [
-     "Soft elasticated wrists",
-     "Gentle skin-friendly cotton"
+     "Full coverage for warmth",
+     "Easy zip-up design"
     ],
     "cons": [
-     "Elastic can leave marks if too tight"
+     "Can feel bulky for car seat use"
     ],
-    "price": 400,
+    "price": 3200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=FirstCry%20Babyhug%20Anti-Scratch%20Mittens%20%26%20Booties%20Set",
-     "uk": "https://www.next.co.uk/search?w=FirstCry%20Babyhug%20Anti-Scratch%20Mittens%20%26%20Booties%20Set",
-     "canada": "https://www.amazon.ca/s?k=FirstCry%20Babyhug%20Anti-Scratch%20Mittens%20%26%20Booties%20Set"
+     "india": "https://www.amazon.in/s?k=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit",
+     "uk": "https://www.next.co.uk/search?w=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit",
+     "canada": "https://www.amazon.ca/s?k=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit"
     }
    }
   ]
  },
  "14": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "H&M Cotton Jersey Booties",
    "Jojo Maman Bébé Stay-On Booties",
-   "FirstCry BabyHug Soft Booties"
+   "FirstCry BabyHug Soft Booties",
+   "Zutano Unisex Baby Fleece Booties",
+   "Moromini Organic Cotton Ribbed Booties",
+   "Little West Street Cotton Baby Booties"
   ],
   "list": [
    {
-    "name": "H&M Cotton Jersey Booties",
-    "why": "Soft, breathable organic cotton that stays on well with an elasticated ankle, perfect for layering during Indian winters",
+    "name": "Zutano Unisex Baby Fleece Booties",
+    "why": "The gold standard for staying on due to their unique snap-button side closure system.",
     "pros": [
-     "Soft organic material",
-     "Secure elastic fit"
+     "Stays securely on even the wiggliest feet",
+     "Soft, warm fleece material perfect for winter"
     ],
     "cons": [
-     "Can shrink slightly if tumble dried"
+     "Higher price point compared to standard cotton socks"
     ],
-    "price": 600,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=H%26M%20Cotton%20Jersey%20Booties",
-     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton%20Jersey%20Booties",
-     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton%20Jersey%20Booties"
+     "india": "https://www.amazon.in/s?k=Zutano%20Unisex%20Baby%20Fleece%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Zutano%20Unisex%20Baby%20Fleece%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Zutano%20Unisex%20Baby%20Fleece%20Booties"
     }
    },
    {
-    "name": "Jojo Maman Bébé Stay-On Booties",
-    "why": "Renowned UK-based design featuring dual poppers to ensure they do not fall off, providing excellent warmth for newborns.",
+    "name": "Moromini Organic Cotton Ribbed Booties",
+    "why": "High-quality European craftsmanship with extra-long cuffs that keep them from slipping off.",
     "pros": [
-     "Double popper fastening",
-     "Fleece-lined for extra warmth"
+     "Excellent organic material quality",
+     "Extra-long cuffs provide a secure, cozy fit"
     ],
     "cons": [
-     "Must be imported from UK/resellers"
+     "Requires international shipping from Europe or UK"
     ],
-    "price": 1800,
+    "price": 1600,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Booties",
-     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Booties",
-     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Booties"
+     "india": "https://www.amazon.in/s?k=Moromini%20Organic%20Cotton%20Ribbed%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Moromini%20Organic%20Cotton%20Ribbed%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Moromini%20Organic%20Cotton%20Ribbed%20Booties"
     }
    },
    {
-    "name": "FirstCry BabyHug Soft Booties",
-    "why": "A highly accessible local favorite in India that offers plush, cushioned comfort suitable for cooler indoor temperatures",
+    "name": "Little West Street Cotton Baby Booties",
+    "why": "A premium Indian brand offering soft, breathable, and stylish options available locally.",
     "pros": [
-     "Widely available in India",
-     "Very budget-friendly"
+     "Soft 100% cotton fabric is gentle on newborn skin",
+     "Easily accessible within the Indian market"
     ],
     "cons": [
-     "Elastic can wear out over time"
+     "Less grip than fleece options for crawling infants"
     ],
-    "price": 250,
+    "price": 800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=FirstCry%20BabyHug%20Soft%20Booties",
-     "uk": "https://www.next.co.uk/search?w=FirstCry%20BabyHug%20Soft%20Booties",
-     "canada": "https://www.amazon.ca/s?k=FirstCry%20BabyHug%20Soft%20Booties"
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Cotton%20Baby%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Cotton%20Baby%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Cotton%20Baby%20Booties"
     }
    }
   ]
  },
  "15": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "H&M Cotton Jersey Mittens",
    "FirstCry BabyHug Scratch Mittens",
-   "Aden + Anais Essentials Muslin Mittens"
+   "Aden + Anais Essentials Muslin Mittens",
+   "Kyte Baby Scratch Mittens",
+   "Burt's Bees Baby Organic Cotton Mittens",
+   "Mamas & Papas Essential Cotton Mittens"
   ],
   "list": [
    {
-    "name": "H&M Cotton Jersey Mittens",
-    "why": "Soft, organic cotton material that is gentle on sensitive newborn skin and stays on well.",
+    "name": "Kyte Baby Scratch Mittens",
+    "why": "Made from signature bamboo rayon which is temperature-regulating, perfect for transitioning into the Indian winter.",
     "pros": [
-     "Soft organic cotton",
-     "Secure elasticated wrist"
+     "Extremely soft and gentle on sensitive skin",
+     "Stays on well due to high-quality elastic"
     ],
     "cons": [
-     "Limited availability in small Indian towns"
+     "Higher price point due to international shipping/import"
     ],
-    "price": 600,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=H%26M%20Cotton%20Jersey%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=H%26M%20Cotton%20Jersey%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=H%26M%20Cotton%20Jersey%20Mittens"
+     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Scratch%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Scratch%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Scratch%20Mittens"
     }
    },
    {
-    "name": "FirstCry BabyHug Scratch Mittens",
-    "why": "Widely available across India and designed specifically for the Indian climate and newborn size.",
+    "name": "Burt's Bees Baby Organic Cotton Mittens",
+    "why": "A gold standard for organic cotton that provides warmth without overheating, widely available in Canada and UK markets.",
     "pros": [
-     "Very affordable",
-     "Easy to find in multi-packs"
+     "100% GOTS-certified organic cotton",
+     "Durable fabric that withstands multiple washes"
     ],
     "cons": [
-     "Fabric quality is basic"
-    ],
-    "price": 250,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=FirstCry%20BabyHug%20Scratch%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=FirstCry%20BabyHug%20Scratch%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=FirstCry%20BabyHug%20Scratch%20Mittens"
-    }
-   },
-   {
-    "name": "Aden + Anais Essentials Muslin Mittens",
-    "why": "Breathable muslin fabric prevents overheating, which is useful if the baby is wrapped in heavy blankets.",
-    "pros": [
-     "Breathable fabric",
-     "Durable after multiple washes"
-    ],
-    "cons": [
-     "Higher price point"
+     "Can shrink slightly if tumble dried on high heat"
     ],
     "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Muslin%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Mittens"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens"
+    }
+   },
+   {
+    "name": "Mamas & Papas Essential Cotton Mittens",
+    "why": "Designed by a UK-based baby expert, these are practical and offer a reliable fit for newborns.",
+    "pros": [
+     "Excellent fit that doesn't slip off easily",
+     "Simple, neutral designs that match most outfits"
+    ],
+    "cons": [
+     "Less breathable than bamboo fabrics"
+    ],
+    "price": 950,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens"
     }
    }
   ]
  },
  "16": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Aden + Anais Essentials Hooded Towel",
    "The White Company Hydrocotton Hooded Baby Towel",
-   "Pottery Barn Kids Organic Cotton Hooded Towel"
+   "Pottery Barn Kids Organic Cotton Hooded Towel",
+   "Little West Street Organic Cotton Hooded Towel",
+   "Burt's Bees Baby Hooded Towel",
+   "Mothercare Hooded Baby Towel"
   ],
   "list": [
    {
-    "name": "Aden + Anais Essentials Hooded Towel",
-    "why": "Renowned for their signature soft muslin fabric that gets softer with every wash and is highly breathable for delicate n",
+    "name": "Little West Street Organic Cotton Hooded Towel",
+    "why": "A premium Indian brand offering soft, GOTS-certified organic cotton perfect for delicate newborn skin.",
     "pros": [
-     "Extremely gentle on newborn skin",
-     "Excellent moisture absorbency"
+     "Extremely soft and absorbent",
+     "Stylish and modern prints"
     ],
     "cons": [
-     "Thin material might feel less plush than terry cloth"
+     "Higher price point than local market options"
+    ],
+    "price": 1499,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel"
+    }
+   },
+   {
+    "name": "Burt's Bees Baby Hooded Towel",
+    "why": "Widely available in Canada/US markets, this towel is known for its durability and high-quality organic knit fabric.",
+    "pros": [
+     "Excellent thickness and warmth",
+     "Retains softness after multiple washes"
+    ],
+    "cons": [
+     "Limited availability in India without international shipping"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Hooded%20Towel",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Hooded%20Towel",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Hooded%20Towel"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Hooded%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Hooded%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Hooded%20Towel"
     }
    },
    {
-    "name": "The White Company Hydrocotton Hooded Baby Towel",
-    "why": "A premium UK-based choice that uses long-staple cotton for a luxurious, hotel-quality feel that stays soft after multipl",
+    "name": "Mothercare Hooded Baby Towel",
+    "why": "A trusted global staple that is easily accessible in India and offers reliable quality for everyday winter use.",
     "pros": [
-     "Superior durability",
-     "Highly absorbent hydrocotton"
+     "Very easy to source in major Indian cities",
+     "Standard size fits newborns well"
     ],
     "cons": [
-     "Higher price point due to import"
+     "Can feel slightly thinner than luxury organic brands"
     ],
-    "price": 4500,
+    "price": 999,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=The%20White%20Company%20Hydrocotton%20Hooded%20Baby%20Towel",
-     "uk": "https://www.next.co.uk/search?w=The%20White%20Company%20Hydrocotton%20Hooded%20Baby%20Towel",
-     "canada": "https://www.amazon.ca/s?k=The%20White%20Company%20Hydrocotton%20Hooded%20Baby%20Towel"
-    }
-   },
-   {
-    "name": "Pottery Barn Kids Organic Cotton Hooded Towel",
-    "why": "A trusted global standard for organic, sustainably sourced textiles that are free from harmful chemicals.",
-    "pros": [
-     "GOTS-certified organic cotton",
-     "Generous sizing for longevity"
-    ],
-    "cons": [
-     "Can be bulky to store"
-    ],
-    "price": 3800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Hooded%20Towel",
-     "uk": "https://www.next.co.uk/search?w=Pottery%20Barn%20Kids%20Organic%20Cotton%20Hooded%20Towel",
-     "canada": "https://www.amazon.ca/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Hooded%20Towel"
+     "india": "https://www.amazon.in/s?k=Mothercare%20Hooded%20Baby%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Mothercare%20Hooded%20Baby%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Mothercare%20Hooded%20Baby%20Towel"
     }
    }
   ]
  },
  "17": {
-  "ts": "2026-06-22",
+  "ts": "2026-06-23",
   "seen": [
    "Mustela Gentle Cleansing Gel",
    "Mamaearth Deep Nourishing Baby Wash",
-   "Baby Dove Rich Moisture Tip to Toe Wash"
+   "Baby Dove Rich Moisture Tip to Toe Wash",
+   "Eucerin Baby Wash & Shampoo",
+   "Pipette Baby Shampoo & Wash",
+   "The Moms Co. Baby Wash"
   ],
   "list": [
    {
-    "name": "Mustela Gentle Cleansing Gel",
-    "why": "A premium, tear-free formula enriched with avocado perseose to protect delicate newborn skin barriers.",
+    "name": "Eucerin Baby Wash & Shampoo",
+    "why": "Formulated specifically for sensitive, eczema-prone skin common in cooler, dry winter climates.",
     "pros": [
-     "Biodegradable and plant-based ingredients",
-     "Very gentle on scalp and body"
+     "Soap-free and fragrance-free",
+     "Very gentle on eyes"
     ],
     "cons": [
-     "Strong signature scent may not suit sensitive noses"
+     "Less lather than standard washes"
     ],
-    "price": 1250,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mustela%20Gentle%20Cleansing%20Gel",
-     "uk": "https://www.next.co.uk/search?w=Mustela%20Gentle%20Cleansing%20Gel",
-     "canada": "https://www.amazon.ca/s?k=Mustela%20Gentle%20Cleansing%20Gel"
-    }
-   },
-   {
-    "name": "Mamaearth Deep Nourishing Baby Wash",
-    "why": "A widely accessible, toxin-free option in India that uses natural ingredients like coconut-based cleansers and aloe vera",
-    "pros": [
-     "MadeSafe certified and free from harsh chemicals",
-     "Easy to find in most Indian retail stores"
-    ],
-    "cons": [
-     "Can be slightly drying for babies with severe eczema"
-    ],
-    "price": 350,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Mamaearth%20Deep%20Nourishing%20Baby%20Wash",
-     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Deep%20Nourishing%20Baby%20Wash",
-     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Deep%20Nourishing%20Baby%20Wash"
-    }
-   },
-   {
-    "name": "Baby Dove Rich Moisture Tip to Toe Wash",
-    "why": "Specifically designed to replenish moisture lost during bathing, which is crucial for winter-born babies.",
-    "pros": [
-     "pH-neutral and hypoallergenic",
-     "Very affordable and highly accessible"
-    ],
-    "cons": [
-     "Contains fragrance which some parents prefer to avoid"
-    ],
-    "price": 400,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Baby%20Dove%20Rich%20Moisture%20Tip%20to%20Toe%20Wash",
-     "uk": "https://www.next.co.uk/search?w=Baby%20Dove%20Rich%20Moisture%20Tip%20to%20Toe%20Wash",
-     "canada": "https://www.amazon.ca/s?k=Baby%20Dove%20Rich%20Moisture%20Tip%20to%20Toe%20Wash"
-    }
-   }
-  ]
- },
- "18": {
-  "ts": "2026-06-22",
-  "seen": [
-   "Aveeno Baby Wash & Shampoo",
-   "Cetaphil Baby Wash & Shampoo",
-   "Pipette Baby Shampoo & Wash"
-  ],
-  "list": [
-   {
-    "name": "Aveeno Baby Wash & Shampoo",
-    "why": "Formulated with natural oat extract to soothe and protect delicate, dry skin during winter months.",
-    "pros": [
-     "Tear-free formula",
-     "Excellent for sensitive skin"
-    ],
-    "cons": [
-     "Slightly medicinal scent"
-    ],
-    "price": 1200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Aveeno%20Baby%20Wash%20%26%20Shampoo",
-     "uk": "https://www.next.co.uk/search?w=Aveeno%20Baby%20Wash%20%26%20Shampoo",
-     "canada": "https://www.amazon.ca/s?k=Aveeno%20Baby%20Wash%20%26%20Shampoo"
-    }
-   },
-   {
-    "name": "Cetaphil Baby Wash & Shampoo",
-    "why": "A trusted dermatologist-recommended brand that keeps the skin barrier hydrated without harsh chemicals.",
-    "pros": [
-     "Hypoallergenic",
-     "Contains organic calendula"
-    ],
-    "cons": [
-     "Bottle pump can be flimsy"
-    ],
-    "price": 950,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Cetaphil%20Baby%20Wash%20%26%20Shampoo",
-     "uk": "https://www.next.co.uk/search?w=Cetaphil%20Baby%20Wash%20%26%20Shampoo",
-     "canada": "https://www.amazon.ca/s?k=Cetaphil%20Baby%20Wash%20%26%20Shampoo"
+     "india": "https://www.amazon.in/s?k=Eucerin%20Baby%20Wash%20%26%20Shampoo",
+     "uk": "https://www.next.co.uk/search?w=Eucerin%20Baby%20Wash%20%26%20Shampoo",
+     "canada": "https://www.amazon.ca/s?k=Eucerin%20Baby%20Wash%20%26%20Shampoo"
     }
    },
    {
     "name": "Pipette Baby Shampoo & Wash",
-    "why": "Uses squalane derived from sugarcane to mimic the natural oils of a newborn's skin.",
+    "why": "Uses sugarcane-derived squalane to mimic natural vernix, keeping newborn skin hydrated in winter.",
     "pros": [
-     "Fragrance-free options",
-     "Clean, non-toxic ingredients"
+     "Clean, non-toxic ingredients",
+     "Hypoallergenic formula"
     ],
     "cons": [
      "Harder to find in local Indian retail stores"
     ],
-    "price": 1800,
+    "price": 2200,
     "currency": "INR",
     "links": {
      "india": "https://www.amazon.in/s?k=Pipette%20Baby%20Shampoo%20%26%20Wash",
      "uk": "https://www.next.co.uk/search?w=Pipette%20Baby%20Shampoo%20%26%20Wash",
      "canada": "https://www.amazon.ca/s?k=Pipette%20Baby%20Shampoo%20%26%20Wash"
+    }
+   },
+   {
+    "name": "The Moms Co. Baby Wash",
+    "why": "A highly-rated, locally available Indian brand that uses natural, tear-free ingredients suitable for delicate skin.",
+    "pros": [
+     "Easily accessible in India",
+     "Contains organic argan and avocado oil"
+    ],
+    "cons": [
+     "Bottle pump mechanism can sometimes clog"
+    ],
+    "price": 450,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=The%20Moms%20Co.%20Baby%20Wash",
+     "uk": "https://www.next.co.uk/search?w=The%20Moms%20Co.%20Baby%20Wash",
+     "canada": "https://www.amazon.ca/s?k=The%20Moms%20Co.%20Baby%20Wash"
+    }
+   }
+  ]
+ },
+ "18": {
+  "ts": "2026-06-23",
+  "seen": [
+   "Aveeno Baby Wash & Shampoo",
+   "Cetaphil Baby Wash & Shampoo",
+   "Pipette Baby Shampoo & Wash",
+   "Baby Dove Sensitive Moisture Tip to Toe Wash",
+   "La Roche-Posay Lipikar Gel Lavant",
+   "Mamaearth Deeply Nourishing Baby Wash"
+  ],
+  "list": [
+   {
+    "name": "Baby Dove Sensitive Moisture Tip to Toe Wash",
+    "why": "Formulated with 1/4 moisturizing cream, it is exceptionally gentle for newborns in dry winter months.",
+    "pros": [
+     "Hypoallergenic and tear-free",
+     "Very affordable and widely available"
+    ],
+    "cons": [
+     "Contains fragrance which may irritate extremely sensitive skin"
+    ],
+    "price": 350,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash",
+     "uk": "https://www.next.co.uk/search?w=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash",
+     "canada": "https://www.amazon.ca/s?k=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash"
+    }
+   },
+   {
+    "name": "La Roche-Posay Lipikar Gel Lavant",
+    "why": "A premium soap-free formula designed for sensitive, dry, or eczema-prone skin, perfect for harsh winter air.",
+    "pros": [
+     "Contains Niacinamide and Shea Butter",
+     "Excellent for soothing irritated skin"
+    ],
+    "cons": [
+     "Higher price point compared to standard baby brands"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
+     "uk": "https://www.next.co.uk/search?w=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
+     "canada": "https://www.amazon.ca/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant"
+    }
+   },
+   {
+    "name": "Mamaearth Deeply Nourishing Baby Wash",
+    "why": "Infused with natural ingredients like aloe vera and jojoba oil, it is a popular, accessible choice in India.",
+    "pros": [
+     "Tear-free and toxin-free formula",
+     "Readily available in almost all retail outlets"
+    ],
+    "cons": [
+     "Not as effective for severe eczema as medical-grade brands"
+    ],
+    "price": 400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash"
     }
    }
   ]
