@@ -153,6 +153,8 @@ const underFilled=p=>pinsOf(p.id).length<neededQty(p);
 // total ₹ committed = sum of each finalised pick's price (once each); tracks priced vs unpriced
 function committedTotal(){ let total=0,priced=0,count=0; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o){ count++; const v=optPriceINR(p.id,o); if(v>0){total+=v;priced++;} } }); }); return {total,priced,count,unpriced:count-priced}; }
 function itemCommitted(p){ let t=0; const opts=effOptions(p); pinsOf(p.id).forEach(k=>{ const o=opts.find(x=>x._key===k); if(o)t+=optPriceINR(p.id,o); }); return t; }   // ₹ committed on THIS item's finalised picks
+// first item with a finalised pick that has no price yet (for the "N need a price" jump)
+function firstUnpricedId(){ let found=null; allItems().some(p=>{ const opts=effOptions(p); return pinsOf(p.id).some(k=>{ const o=opts.find(x=>x._key===k); if(o&&optPriceINR(p.id,o)<=0){found=p.id;return true;} return false; }); }); return found; }
 // pros/cons for an option: catalogue file first, else the option's own (e.g. added from a suggestion)
 const pcOf=(id,o)=>((PROSCONS[id]||{})[o._orig||o.name])||((o.pros||o.cons)?{pros:o.pros||[],cons:o.cons||[]}:{});
 // ₹ price for one option: manual option.price (₹) wins, else auto-fetched optdata (local→₹)
@@ -296,7 +298,7 @@ function renderToBuy(){
   const done=items.filter(p=>(effStatus(p)==="Buy"||effStatus(p)==="Confirm"||effStatus(p)==="Owned")&&isDone(p));
   const urg=p=>{const i=URGENCIES.indexOf(p.priority);return i<0?9:i;};
   const total=buyAll.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
-  const ct=committedTotal(); const ctLine=ct.total?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
+  const ct=committedTotal(); const ctLine=ct.total?` · ${inr(ct.total)} committed${ct.unpriced?` · <span class="needprice" data-needprice="1" role="button" tabindex="0" title="Open the first item missing a price">${ct.unpriced} need a price</span>`:''}`:"";
   document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buyAll.length} item${buyAll.length!==1?'s':''} left · ${done.length} handled${ctLine}</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div>`;
   const L=document.getElementById("buyList");
   const card=(p,opts,i,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
@@ -321,7 +323,7 @@ function renderToBuy(){
     const extraIdx=opts.map((_,i)=>i).filter(i=>!primaryIdx.includes(i));
     const primary=primaryIdx.map(i=>card(p,opts,i,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
     const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,ic)).join("")}</div></details>`:"";
-    const nSugg=underFilled(p)?suggFor(p).length:0; const ideas=nSugg?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${nSugg} ideas</button>`:"";
+    const nSugg=suggFor(p).length; const ideas=nSugg?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${nSugg} ideas</button>`:"";
     return `<section class="buyitem">${badge?`<div class="biurg">${badge}</div>`:""}<div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
   };
   if(!buy.length){
@@ -412,7 +414,7 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
-  const sgList=underFilled(p)?suggFor(p):[]; const sg=sgList.length?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${sgList.map(s=>suggCardHtml(id,s,"＋ Add to compare")).join("")}</div>`:"";
+  const sgList=suggFor(p); const sg=sgList.length?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${sgList.map(s=>suggCardHtml(id,s,"＋ Add to compare")).join("")}</div>`:"";
   m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div>${sg}</div>`;
   m.setAttribute("aria-labelledby","cmptitle"); document.getElementById("compareOverlay").classList.add("show"); focusModal("compareOverlay"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
@@ -421,7 +423,7 @@ function suggCardHtml(id,s,addLabel){ const pros=(s.pros||[]).map(x=>`<li class=
   const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(s.why?`<div class="cmpwhy">${esc(s.why)}</div>`:"");
   const links=["india","uk","canada"].map(k=>{const u=safeUrl((s.links||{})[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
   return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${body}<div class="cmplinks">${links}</div></div><button class="minibtn" data-addsugg="${esc(id)}" data-sname="${esc(s.name)}">${addLabel||"＋ Add"}</button></div>`; }
-function suggHtml(id,p){ if(!underFilled(p))return ""; const list=suggFor(p); if(!list.length)return "";
+function suggHtml(id,p){ const list=suggFor(p); if(!list.length)return "";
   return `<div class="suggwrap"><div class="suggh">💡 Suggestions to finalise — ${pinsOf(id).length}/${neededQty(p)} chosen</div>`+list.map(s=>suggCardHtml(id,s)).join("")+`</div>`; }
 
 /* ---------- actions ---------- */
@@ -467,14 +469,18 @@ function renderPending(){ const w=document.getElementById("pendingList");
   const items=rows;
   if(!items.length){ w.innerHTML='<div class="sect" style="text-align:center;padding:40px 20px"><div style="font-size:40px">🎁</div><h3 style="margin:10px 0 6px">No items finalised yet</h3><p style="color:var(--muted);margin:0 0 14px">'+(isAdmin?'Go to the Dashboard, open an item and tap ★ Finalise — it\'ll appear here for your family.':'This registry is being put together — check back soon. 💛')+'</p>'+(isAdmin?'<button class="bestbtn" style="display:inline-block;width:auto;padding:10px 20px" data-showview="dash">Open Dashboard</button>':'')+'</div>'; return; }
   const ct=committedTotal();
-  const totLine=(isAdmin&&ct.total)?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
+  const totLine=(isAdmin&&ct.total)?` · ${inr(ct.total)} committed${ct.unpriced?` · <span class="needprice" data-needprice="1" role="button" tabindex="0" title="Open the first item missing a price">${ct.unpriced} need a price</span>`:''}`:"";
   w.innerHTML='<div style="font-size:13.5px;color:var(--muted);margin:0 0 14px">'+rows.length+' little favourite'+(rows.length>1?'s':'')+totLine+'</div><div class="regwrap">'+rows.map(r=>{ const p=r.p, o=r.o; const pi=priceInfo(p.id); const ic=CATICON[p.category]||"🍼";
     const imgEl=thumbEl(optImg(p,o),ic);
     const need=neededQty(p);
-    const links=optLinks(p,o);
     const prc=optPriceINR(p.id,o);   // this pick's OWN price, not the item's cheapest
     const isDeal=!!(pi&&pi.isDeal);
-    return `<div class="regcard"><div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${need>1?`<div class="ri-qty">Qty · ${need}</div>`:""}<div class="regcardfoot"><div class="reglinks">${links}</div><span class="regprice${isDeal?' deal':''}">${prc?inr(prc):'—'}${isDeal?' 🔥':''}</span></div></div></div>`;
+    // tap the whole card to open the shop link. Multi-region picks keep per-region flags (no single destination).
+    const real=["india","uk","canada"].filter(k=>isRealLink(o[k])), multi=real.length>=2;
+    const href=multi?"":(real.length?safeUrl(o[real[0]]):singleLink(o,p));
+    const foot=`<div class="regcardfoot">${multi?`<div class="reglinks">${optLinks(p,o)}</div>`:(href?`<span class="reglink-hint" aria-hidden="true">↗</span>`:`<span></span>`)}<span class="regprice${isDeal?' deal':''}">${prc?inr(prc):'—'}${isDeal?' 🔥':''}</span></div>`;
+    const inner=`<div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${need>1?`<div class="ri-qty">Qty · ${need}</div>`:""}${foot}</div>`;
+    return href?`<a class="regcard" href="${esc(href)}" target="_blank" rel="noopener" aria-label="${esc(o.name)} — view product">${inner}</a>`:`<div class="regcard">${inner}</div>`;
   }).join('')+'</div>'; }
 function renderLog(){ document.getElementById("logMeta").textContent=UPDATED?("Auto-prices last updated "+UPDATED+" · add your own per item"):"Add India/UK/Canada prices in any item, or let the job fetch them.";
   const t=document.getElementById("logTable");
@@ -542,6 +548,7 @@ function showView(v){ document.querySelectorAll(".view").forEach(x=>x.classList.
 document.addEventListener("click",e=>{
   const t=e.target, c=s=>t.closest(s);
   let el;
+  if((el=c("[data-needprice]"))) { e.stopPropagation(); const u=firstUnpricedId(); if(u)openItem(u); return; }
   if((el=c("[data-compare]"))) { e.stopPropagation(); return openCompare(el.dataset.compare); }
   if((el=c("[data-open]"))&&!t.closest("[data-del]")&&!t.closest("a")&&!t.closest(".bestbtn")&&!t.closest("[data-got]")&&!t.closest("[data-bought]")&&!t.closest("[data-compare]")) return openItem(el.dataset.open);
   if((el=c("[data-del]"))) { e.stopPropagation(); return delItem(el.dataset.del); }

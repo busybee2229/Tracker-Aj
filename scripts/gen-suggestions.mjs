@@ -79,13 +79,17 @@ async function suggest(p, exclude) {
   } catch (e) { console.log("  parse/gen fail", e.message); return []; }
 }
 
-const items = products.concat(USER);
+// Ideas now show on EVERY item (not just under-filled). Cover items WITHOUT suggestions
+// first so all items get filled over successive runs, then refresh the rest.
+const items = products.concat(USER).slice().sort((a, b) => {
+  const A = (out[String(a.id)] && (out[String(a.id)].list || []).length) ? 1 : 0;
+  const B = (out[String(b.id)] && (out[String(b.id)].list || []).length) ? 1 : 0;
+  return A - B; });
 const CAP = 18;   // gentle: at most this many items per run, fills the rest on later daily runs
 let n = 0, processed = 0;
 for (const p of items) {
   if (allDead() || processed >= CAP) break;
   const need = neededQty(p), done = pinsOf(p.id).length;
-  if (done >= need) { delete out[String(p.id)]; continue; }          // filled enough → no suggestions
   const prev = (out[String(p.id)] && out[String(p.id)].seen) || [];
   const exclude = [...new Set([...optionNames(p), ...prev])];
   const list = await suggest(p, exclude); processed++;
