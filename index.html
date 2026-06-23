@@ -237,6 +237,14 @@ input[type=search]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .progn{font-size:12.5px;color:var(--muted);font-weight:560}
 .buytools{margin:2px 0 14px;font-size:13px;display:flex;align-items:center;gap:12px}
 .buytools .lk2{color:var(--accent-d);text-decoration:none}.buytools .lk2:hover{text-decoration:underline}
+.tobuytop{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
+.tobuytop #bq{flex:1;min-width:0}
+.adminmenu{position:relative;flex:0 0 auto}
+.menupanel{position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-2);padding:6px;z-index:30;min-width:172px;display:flex;flex-direction:column;gap:2px}
+.menupanel[hidden]{display:none}
+.menuitem{display:block;width:100%;text-align:left;background:none;border:none;border-radius:8px;padding:9px 12px;font-size:13px;color:var(--ink);cursor:pointer;text-decoration:none}
+.menuitem:hover{background:var(--surface-2)}
+.biurg{margin:0 0 8px}
 .buyrow{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;margin:10px 0;box-shadow:var(--sh-1);cursor:pointer;transition:.15s}
 .buyrow:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
 .buyrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -338,6 +346,16 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </header>
 <div class="wrap">
   <div class="view" id="v-tobuy">
+    <div class="tobuytop">
+      <input type="search" id="bq" aria-label="Search to-buy" placeholder="Search to-buy…"/>
+      <div class="adminmenu">
+        <button id="adminMenuBtn" class="minibtn" aria-haspopup="true" aria-expanded="false" title="More">⋯</button>
+        <div id="adminMenuPanel" class="menupanel" hidden>
+          <button class="menuitem" id="refreshBtn">↻ Refresh prices</button>
+          <a class="menuitem" href="https://github.com/busybee2229/Tracker-Aj/actions" target="_blank" rel="noopener">Run price job ↗</a>
+        </div>
+      </div>
+    </div>
     <div id="buyHeader"></div>
     <div id="buyList"></div>
     <div id="buyDone"></div>
@@ -391,4 +409,4 @@ body:not(.admin) #adminBtn:hover,body:not(.admin) #adminBtn:focus-visible{opacit
 </div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-<script src="app.js?v=49" defer></script></body></html>
+<script src="app.js?v=50" defer></script></body></html>

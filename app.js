@@ -28,6 +28,7 @@ let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OP
     USERPRICES=LS("userprices","{}"),USERTARGET=LS("usertarget","{}"),USERBOUGHT=LS("userbought","{}"),
     HIDDENOPTS=LS("hiddenopts","{}"),OPTOVERRIDE=LS("optoverride","{}");
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
+let OPENTB=LS("tbopen","null"); if(OPENTB===null){OPENTB={};CATS.forEach(c=>OPENTB[c]=true);}   // To-Buy category groups, collapsed-state per device
 normPins();
 
 const isTracked=id=>TRACK[id]!==false;
@@ -72,7 +73,9 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 
 const allItems=()=>PRODUCTS.filter(p=>!HIDDEN[p.id]).concat(USER.filter(p=>!HIDDEN[p.id]));
 const itemById=id=>allItems().find(p=>String(p.id)===String(id));
-const state={q:"",stat:"",deal:false,tracked:false};
+const state={q:"",stat:"",deal:false,tracked:false,bq:""};
+// shared text match for an item (used by Dashboard filter + To-Buy search)
+function itemMatches(p,q){ if(!q)return true; const s=(p.item+" "+effOptions(p).map(o=>o.name+" "+(o.why||"")).join(" ")+" "+p.category+" "+(p.owned||"")+" "+(p.kw||"")).toLowerCase(); return s.includes(String(q).toLowerCase()); }
 let NOTIFS=[], sparks=[], _lastTs=+(localStorage.getItem("lastTs")||0), _pushPending=false;
 
 /* ---------- persistence + sync ---------- */
@@ -246,7 +249,7 @@ function cardHtml(p){
     `<div class="cbody"><div class="ttl">${esc(p.item)}</div>${pk}${have}${price}</div>${foot}</div>`;
 }
 function passFilter(p){
-  if(state.q){const s=(p.item+" "+effOptions(p).map(o=>o.name+" "+(o.why||"")).join(" ")+" "+p.category+" "+(p.owned||"")).toLowerCase(); if(!s.includes(state.q.toLowerCase()))return false;}
+  if(state.q&&!itemMatches(p,state.q))return false;
   if(state.deal&&!(isTracked(p.id)&&priceInfo(p.id)?.isDeal))return false;
   if(state.tracked&&!isTracked(p.id))return false;
   if(state.stat==="day1"&&!(p.priority||"").startsWith("Day 1"))return false;
@@ -286,15 +289,15 @@ function renderDash(){
 function recOption(p){ const opts=effOptions(p); if(!opts.length)return null; const pins=pinsOf(p.id); let i=opts.findIndex(o=>pins.includes(o._key)); if(i<0)i=0; return {o:opts[i],i}; }
 function bestLinkFor(p){ const r=recOption(p); if(!r)return ""; const o=r.o, br=bestRegion(p); return safeUrl(o[br]||o.india||o.uk||o.canada||""); }
 function renderToBuy(){
+  const q=state.bq||"";
   const items=allItems().filter(p=>!HIDDEN[p.id]);
-  const buy=items.filter(isToBuy);
+  const buyAll=items.filter(isToBuy);
+  const buy=buyAll.filter(p=>itemMatches(p,q));
   const done=items.filter(p=>(effStatus(p)==="Buy"||effStatus(p)==="Confirm"||effStatus(p)==="Owned")&&isDone(p));
   const urg=p=>{const i=URGENCIES.indexOf(p.priority);return i<0?9:i;};
-  buy.sort((a,b)=>urg(a)-urg(b)||CATS.indexOf(a.category)-CATS.indexOf(b.category)||(hasPin(b.id)?1:0)-(hasPin(a.id)?1:0));
-  const total=buy.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
+  const total=buyAll.length+done.length, pctDone=total?Math.round(done.length/total*100):0;
   const ct=committedTotal(); const ctLine=ct.total?` · ${inr(ct.total)} committed${ct.unpriced?` · ${ct.unpriced} need a price`:''}`:"";
-  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buy.length} item${buy.length!==1?'s':''} left · ${done.length} handled${ctLine}</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div><div class="buytools"><button class="minibtn" id="refreshBtn">↻ Refresh</button> <a class="lk2" href="${CONFIG.REPO}/actions" target="_blank" rel="noopener">run price job ↗</a></div>`;
-  const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=reloadData;
+  document.getElementById("buyHeader").innerHTML=`<div class="buyhead"><div><h2 class="buyh2">Still to buy</h2><div class="buysub">${buyAll.length} item${buyAll.length!==1?'s':''} left · ${done.length} handled${ctLine}</div></div><div class="prog"><div class="progbar"><span style="width:${pctDone}%"></span></div><div class="progn">${pctDone}%</div></div></div>`;
   const L=document.getElementById("buyList");
   const card=(p,opts,i,ic)=>{ const o=opts[i]; const pc=pcOf(p.id,o);
     const ct=thumbEl(optImg(p,o),ic);
@@ -303,7 +306,7 @@ function renderToBuy(){
     const inner=`<div class="bicardimg">${ct}${isPick?`<span class="pickbadge">${LABEL.finalised}</span>`:''}${l?'<span class="extlink" aria-hidden="true">↗</span>':''}</div><div class="bicardname">${esc(o.name)}</div>${optPriceTag(p.id,o,'bprice')}${sub?`<div class="bicardwhy">${sub}</div>`:""}`;
     return l?`<a class="bicard ${isPick?'best':''}" href="${esc(l)}" target="_blank" rel="noopener" aria-label="${esc(o.name)} — view product">${inner}</a>`
             :`<div class="bicard ${isPick?'best':''}">${inner}</div>`; };
-  L.innerHTML = buy.length ? buy.map(p=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
+  const buyItemHtml=(p)=>{ const pi=priceInfo(p.id), ic=CATICON[p.category]||"🍼", opts=effOptions(p);
     const need=neededQty(p), got=boughtQty(p), pri=p.priority||"", badge=URGENCIES.includes(pri)?`<span class="b ${bcls[pri]||'opt'}">${pri}</span>`:"";
     const qtyTag=need>1?`<span class="bqty">${got}/${need}</span>`:"";
     const finN=pinsOf(p.id).length, comm=finN?itemCommitted(p):0;
@@ -319,8 +322,23 @@ function renderToBuy(){
     const primary=primaryIdx.map(i=>card(p,opts,i,ic)).join("")||'<div class="bicard muted">No options yet — add one in Details.</div>';
     const more=extraIdx.length?`<details class="moreopts"><summary>＋ see ${extraIdx.length} more option${extraIdx.length>1?'s':''}</summary><div class="bicards">${extraIdx.map(i=>card(p,opts,i,ic)).join("")}</div></details>`:"";
     const nSugg=underFilled(p)?suggFor(p).length:0; const ideas=nSugg?`<button class="suggchip" data-open="${esc(p.id)}">💡 ${nSugg} ideas</button>`:"";
-    return `<section class="buyitem"><div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${badge} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
-  }).join("") : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
+    return `<section class="buyitem">${badge?`<div class="biurg">${badge}</div>`:""}<div class="bihead"><div class="bihead-l"><span class="bititle">${esc(p.item)}</span> ${qtyTag} ${priceTxt} ${ideas}</div><div class="bihead-r">${buyBtn}${cmpBtn}<button class="detbtn" data-open="${esc(p.id)}">Details</button>${gotBtn}</div></div><div class="bicards">${primary}</div>${more}</section>`;
+  };
+  if(!buy.length){
+    L.innerHTML = q ? `<div class="empty">No matches for “${esc(q)}”.</div>` : '<div class="empty">🎉 Nothing left to buy. Open “All items” to add or reopen something.</div>';
+  } else {
+    let html="";
+    CATS.forEach(cat=>{ const list=buy.filter(p=>p.category===cat).sort((a,b)=>urg(a)-urg(b)||(hasPin(b.id)?1:0)-(hasPin(a.id)?1:0));
+      if(!list.length)return;
+      const open=OPENTB[cat]!==false||!!q;
+      html+=`<div class="acc tb${open?' open':''}" data-tbcat="${esc(cat)}"><div class="head" role="button" tabindex="0"><span class="chev">▶</span><h2>${CATICON[cat]} ${cat}</h2><span class="cnt">${list.length}</span></div><div class="body"><div class="buygroup">${list.map(buyItemHtml).join("")}</div></div></div>`;
+    });
+    L.innerHTML=html;
+    L.querySelectorAll(".acc.tb").forEach(acc=>{ const cat=acc.getAttribute("data-tbcat"); const head=acc.querySelector(".head");
+      const toggle=()=>{acc.classList.toggle("open");OPENTB[cat]=acc.classList.contains("open");lset("tbopen",OPENTB);};
+      head.addEventListener("click",toggle);
+      head.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}}); });
+  }
   const D=document.getElementById("buyDone");
   if(!done.length){ D.innerHTML=""; }
   else { D.innerHTML=`<div class="donehead" id="doneToggle"><span class="chev">▶</span> Done (${done.length})</div><div class="donebody" id="doneBody">`+done.map(p=>{ const r=recOption(p), nm=r?esc(r.o.name):(p.owned?esc(p.owned):""); return `<div class="donerow"><span class="dn">${esc(p.item)}${nm?` · ${nm}`:''}</span><button class="minibtn" data-got="${esc(p.id)}">Undo</button></div>`; }).join("")+`</div>`;
@@ -562,6 +580,13 @@ document.getElementById("bell").onclick=openNotifs;
 document.getElementById("notifClose").onclick=()=>closeModal("notifOverlay");
 document.getElementById("notifClear").onclick=()=>{ NOTIFS.forEach(x=>SEEN[x.key]=1); lset("seenDeals",SEEN); if(UPDATED){SEENUP=UPDATED;localStorage.setItem("seenUpdated",UPDATED);} buildNotifs(); openNotifs(); };
 let _qT=null; document.getElementById("q").oninput=e=>{state.q=e.target.value;clearTimeout(_qT);_qT=setTimeout(renderDash,150);};
+let _bqT=null; const _bq=document.getElementById("bq"); if(_bq)_bq.oninput=e=>{state.bq=e.target.value;clearTimeout(_bqT);_bqT=setTimeout(renderToBuy,150);};
+// admin "⋯" menu (Refresh / run price job)
+(function(){ const btn=document.getElementById("adminMenuBtn"), panel=document.getElementById("adminMenuPanel"); if(!btn||!panel)return;
+  const close=()=>{panel.hidden=true;btn.setAttribute("aria-expanded","false");};
+  btn.addEventListener("click",e=>{e.stopPropagation(); const open=panel.hidden; panel.hidden=!open; btn.setAttribute("aria-expanded",open?"true":"false");});
+  document.addEventListener("click",e=>{ if(!panel.hidden&&!panel.contains(e.target)&&e.target!==btn)close(); });
+  const rb=document.getElementById("refreshBtn"); if(rb)rb.onclick=()=>{close();reloadData();}; })();
 document.querySelectorAll("[data-f]").forEach(el=>el.onclick=()=>{state[el.dataset.f]=!state[el.dataset.f];el.classList.toggle("on");renderDash();});
 document.getElementById("expandAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=true);lset("accopen",OPEN);renderDash();};
 document.getElementById("collapseAll").onclick=()=>{CATS.forEach(c=>OPEN[c]=false);lset("accopen",OPEN);renderDash();};
