@@ -46,6 +46,14 @@ const effQty=p=>USERQTY[p.id]!=null?USERQTY[p.id]:defaultQty(p);   // = quantity
 const neededQty=p=>effQty(p);
 const boughtQty=p=>+USERBOUGHT[p.id]||0;
 const isDone=p=>effStatus(p)==="Owned"||(neededQty(p)>0&&boughtQty(p)>=neededQty(p));
+// pack size: units one pick provides. Parsed from the product name as a DEFAULT
+// (e.g. "5 Pack", "3-pk", "pack of 6", "2 pairs"); an explicit option.units overrides it.
+function parseUnits(name){ const s=String(name||"");
+  const m=s.match(/pack\s*of\s*(\d+)/i)||s.match(/(\d+)\s*-?\s*(?:pk|packs?|pairs?|pcs?|pieces?|count|ct)\b/i)||s.match(/(\d+)\s*x\b/i);
+  const n=m?parseInt(m[1],10):1; return n>0?n:1; }
+const optUnits=o=>{ const u=o&&o.units; return (u!=null&&u!=="")?Math.max(1,parseInt(u,10)||1):parseUnits(o&&o.name); };
+// total units across an item's finalised picks (planning view; completeness is driven by bought)
+function chosenUnits(p){ const opts=effOptions(p); return pinsOf(p.id).reduce((s,k)=>{ const o=opts.find(x=>x._key===k); return s+(o?optUnits(o):0); },0); }
 const isToBuy=p=>!HIDDEN[p.id]&&(effStatus(p)==="Buy"||effStatus(p)==="Confirm")&&!isDone(p);
 const bestRegion=p=>p.bestRegion||"india";
 const pinsOf=id=>Array.isArray(PINS[id])?PINS[id]:(PINS[id]!=null?[PINS[id]]:[]);
@@ -203,11 +211,14 @@ const optImg=(p,o)=>safeUrl((o&&o.img)||(p&&p.img)||IMAGES[p.id]||"");
 const thumbEl=(url,ic)=>url?`<img src="${esc(url)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-ph="${esc(ic)}">`:`<div class="ph">${ic}</div>`;
 // one option's own ₹ as a small tag (faint "—" when no price known yet)
 const optPriceTag=(id,o,cls)=>{ const v=optPriceINR(id,o); const c=cls||"oprice"; return v>0?`<span class="${c}">${inr(v)}</span>`:`<span class="${c} none">—</span>`; };
-// region links for one option — consistent everywhere: flags when a pick has separate
-// India/UK/Canada links, otherwise a single "View" link
-function optLinks(p,o){
-  if(o.multi){ return ["india","uk","canada"].map(k=>{const u=safeUrl(o[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join(""); }
-  const u=singleLink(o,p); return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}">View</a>`:""; }
+// a link is a REAL product link only if it isn't a search/listing page (those are useless per-region)
+const isRealLink=u=>{ const s=safeUrl(u); if(!s)return false; return !/[?&](k|q|w|query|search)=/i.test(s) && !/\/s\?|\/search\b/i.test(s); };
+// region links for one option — show per-region flags ONLY when the SAME product has a real
+// product link in 2+ regions; otherwise a single "View" to the best available link. (multi is derived, not a manual flag)
+function optLinks(p,o){ const regs=["india","uk","canada"].filter(k=>isRealLink(o[k]));
+  if(regs.length>=2){ return regs.map(k=>`<a class="lk" target="_blank" rel="noopener" href="${esc(safeUrl(o[k]))}" aria-label="${REGION[k]}">${FLAG[k]}</a>`).join(""); }
+  const one=regs.length?safeUrl(o[regs[0]]):singleLink(o,p);
+  return one?`<a class="lk" target="_blank" rel="noopener" href="${esc(one)}">View</a>`:""; }
 // pros/cons list, falling back to the one-line why
 function pcBlock(data,why){ const pros=((data&&data.pros)||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=((data&&data.cons)||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
   return (pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(why?`<div class="cmpwhy">${esc(why)}</div>`:""); }
@@ -217,7 +228,11 @@ function cardHtml(p){
   const isDeal=pi&&pi.isDeal, pinned=hasPin(p.id), pri=p.priority||"-";
   const pc=bcls[pri]||"opt", stc={Buy:"buy",Owned:"owned",Confirm:"confirm"}[effStatus(p)]||"opt";
   const opts=effOptions(p), best=opts[0], br=bestRegion(p), bl=best?(best[br]||best.india||best.uk||best.canada):"";
-  let price=""; if(pi){ const flag=pi.region&&FLAG[pi.region]?FLAG[pi.region]+" ":""; const note=pi.isDeal?`<span class="drop">▼${pi.pct}%</span>`:""; price=`<div class="pr"><span class="cur">${flag}${inr(pi.cur)}</span> ${note}</div>`; }
+  // coverage + committed instead of a single (misleading) price — see CLAUDE.md purpose
+  const need=neededQty(p), bought=boughtQty(p), comm=itemCommitted(p), hasPk=hasPin(p.id);
+  let price="";
+  if(!hasPk && !bought && effStatus(p)!=="Owned"){ price=`<div class="pr none">not chosen yet</div>`; }
+  else { const bits=[]; if(comm>0)bits.push(`<span class="cur">${inr(comm)}</span> committed`); if(need>1)bits.push(`${bought}/${need} bought`); if(bits.length)price=`<div class="pr">${bits.join(" · ")}</div>`; }
   const have=p.owned?`<div class="have">✓ ${esc(p.owned)}</div>`:"";
   const pk=(best&&best.name&&effStatus(p)!=="Owned")?`<div class="pk">${esc(best.name)}</div>`:"";
   const badges=`<div class="cbadge">`+(isDeal?`<span class="b deal">🔥</span>`:"")+(pinned?`<span class="b pinned">📌</span>`:"")+
@@ -317,8 +332,10 @@ function optCard(o,i,p,isUser,userIdx,bestKey){
   const pinned=isPinned(p.id,o._key); const ic=CATICON[p.category]||"🍼";
   const thumb=`<div class="optimg">${thumbEl(optImg(p,o),ic)}</div>`;
   const rank=pinned?`<span class="rank fin">${LABEL.finalised}</span>`:(o._key===bestKey?`<span class="rank">${LABEL.bestValue}</span>`:"");
-  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>${optPriceTag(p.id,o)}`+
+  const un=optUnits(o);
+  return `<div class="opt ${pinned?'pinned':(i===0?'best':'')}">${thumb}<div class="optmain"><div class="otop">${rank}<span class="oname">${esc(o.name)}</span>${optPriceTag(p.id,o)}${un>1?`<span class="ounits" title="pack of ${un}">×${un}</span>`:""}`+
     `<button class="pinbtn ${pinned?'on':''}" data-pin="${esc(p.id)}" data-pinkey="${esc(o._key)}">${pinned?'★ Finalised':'★ Finalise'}</button>`+
+    `<button class="trk" title="Mark a pack bought (+${un} bought)" data-bought="${esc(p.id)}" data-d="${un}">🛒 +${un}</button>`+
     (isUser
       ?`<button class="trk" title="Edit option" data-editopt="${esc(p.id)}" data-eidx="${userIdx}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delopt="${esc(p.id)}" data-optidx="${userIdx}">✕</button>`
       :`<button class="trk" title="Edit option" data-editbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✎</button><button class="trk" style="color:#b15;border-color:#e6c5c5" title="Remove option" data-delbase="${esc(p.id)}" data-oname="${esc(o._orig||o.name)}">✕</button>`)+`</div>`+
@@ -417,7 +434,7 @@ function removeBaseOpt(id,oname){ if(!confirm("Remove this option?"))return;
 function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effOptions(p).find(x=>x._orig===oname); if(!o)return;
   _edit={kind:"baseopt",id,name:oname}; _editReturn=id;
   document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p.category);
-  setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price});
+  setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,units:o.units,price:o.price});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
 function addSuggestion(id,name){ const s=suggList(id).find(x=>x.name===name); if(!s)return; const L=s.links||{};
@@ -466,20 +483,20 @@ function fillSelects(cat){
   document.getElementById("m_cat").innerHTML=CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join("");
 }
 function showFields(parent,item){ const p=document.getElementById("f_parent"),i=document.getElementById("f_item"); if(p)p.style.display=parent?"":"none"; if(i)i.style.display=item?"":"none"; }
-function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; const mc=g("m_multi"); if(mc)mc.checked=!!v.multi; const mp=g("m_price_opt"); if(mp)mp.value=v.price!=null?v.price:""; }
+function setFields(v){ const g=id=>document.getElementById(id); g("m_item").value=v.item||""; g("m_qty").value=v.qty||""; g("m_pick").value=v.pick||""; g("m_img").value=v.img||""; g("m_in").value=v.india||""; g("m_uk").value=v.uk||""; g("m_ca").value=v.canada||""; const mu=g("m_units"); if(mu)mu.value=v.units!=null?v.units:""; const mp=g("m_price_opt"); if(mp)mp.value=v.price!=null?v.price:""; }
 function openAdd(cat){ _edit=null; _editReturn=null; document.querySelector("#addOverlay h3").textContent="Add product"; showFields(true,true); fillSelects(cat); setFields({}); const mp=document.getElementById("m_parent"); mp.value=""; mp.onchange=()=>showFields(true,!mp.value); document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
-window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price}); document.getElementById("m_parent").value=pid; _editReturn=pid; document.getElementById("addOverlay").classList.add("show"); };
-window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; showFields(false,true); fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada,multi:o.multi,price:o.price}); document.getElementById("m_parent").value=""; _editReturn=id; document.getElementById("addOverlay").classList.add("show"); };
+window.editOpt=(pid,idx)=>{ const o=(USEROPTS[pid]||[])[idx]; if(!o)return; _edit={kind:"opt",pid,idx}; const p=itemById(pid); document.querySelector("#addOverlay h3").textContent="Edit option"; showFields(false,false); fillSelects(p?p.category:"EXTRAS"); setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,units:o.units,price:o.price}); document.getElementById("m_parent").value=pid; _editReturn=pid; document.getElementById("addOverlay").classList.add("show"); };
+window.editItem=(id)=>{ const p=USER.find(x=>String(x.id)===String(id)); if(!p)return; const o=(p.options||[])[0]||{}; _edit={kind:"item",id}; document.querySelector("#addOverlay h3").textContent="Edit item"; showFields(false,true); fillSelects(p.category); setFields({item:p.item,qty:p.qty,pick:o.name,img:o.img||p.img,india:o.india,uk:o.uk,canada:o.canada,units:o.units,price:o.price}); document.getElementById("m_parent").value=""; _editReturn=id; document.getElementById("addOverlay").classList.add("show"); };
 function saveAdd(){
   const g=id=>document.getElementById(id).value.trim();
   const parent=g("m_parent"), name=g("m_pick")||g("m_item"); if(!name){alert("Enter a name");return;}
   const qq=encodeURIComponent(name);
   let india=g("m_in"),uk=g("m_uk"),canada=g("m_ca");
   if(!india&&!uk&&!canada){ india="https://www.amazon.in/s?k="+qq; }   // only fall back if user gave no link
-  const opt={name,why:"",img:g("m_img"),india,uk,canada,multi:!!(document.getElementById("m_multi")||{}).checked,price:g("m_price_opt")};
+  const opt={name,why:"",img:g("m_img"),india,uk,canada,units:g("m_units"),price:g("m_price_opt")};
   if(_edit){
     if(_edit.kind==="opt" && USEROPTS[_edit.pid] && USEROPTS[_edit.pid][_edit.idx]){ opt.oid=USEROPTS[_edit.pid][_edit.idx].oid||rid(); USEROPTS[_edit.pid][_edit.idx]=opt; save("useropts",USEROPTS); }
-    else if(_edit.kind==="baseopt"){ const it=itemById(_edit.id); const orig=((it&&it.options)||[]).find(o=>o.name===_edit.name)||{}; (OPTOVERRIDE[_edit.id]=OPTOVERRIDE[_edit.id]||{})[_edit.name]={name,why:orig.why||"",img:g("m_img"),india,uk,canada,multi:opt.multi,price:g("m_price_opt")}; save("optoverride",OPTOVERRIDE); }
+    else if(_edit.kind==="baseopt"){ const it=itemById(_edit.id); const orig=((it&&it.options)||[]).find(o=>o.name===_edit.name)||{}; (OPTOVERRIDE[_edit.id]=OPTOVERRIDE[_edit.id]||{})[_edit.name]={name,why:orig.why||"",img:g("m_img"),india,uk,canada,units:g("m_units"),price:g("m_price_opt")}; save("optoverride",OPTOVERRIDE); }
     else if(_edit.kind==="item"){ const it=USER.find(x=>String(x.id)===String(_edit.id)); if(it){ it.item=g("m_item")||name; it.qty=g("m_qty"); it.img=g("m_img"); it.options=[opt]; save("useritems",USER); } }
     _edit=null; closeModal("addOverlay"); refreshAll(); if(_editReturn){const r=_editReturn;_editReturn=null;openItem(r);} return;
   }
