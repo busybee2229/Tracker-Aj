@@ -5,6 +5,7 @@ const CONFIG = { FX:{GBP:108,CAD:62,USD:85,INR:1}, DEAL_THRESHOLD:0.05, AVG_WIND
 const SUPA = { url:"https://nrpjtychwmuecmskehyj.supabase.co",
   key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycGp0eWNod211ZWNtc2tlaHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNDMyMDUsImV4cCI6MjA5NzYxOTIwNX0.g-WGgUyrHLwql4ZqcNjVvCuT1TzcNIo1z6NNIdVNE9s",
   saveFn:"https://nrpjtychwmuecmskehyj.supabase.co/functions/v1/save-state",
+  suggestFn:"https://nrpjtychwmuecmskehyj.supabase.co/functions/v1/suggest",
   h:e=>Object.assign({apikey:SUPA.key,Authorization:"Bearer "+SUPA.key},e||{}) };
 
 const FLAG={india:"🇮🇳",uk:"🇬🇧",canada:"🇨🇦"};
@@ -26,7 +27,8 @@ let TRACK=LS("track","{}"),HIDDEN=LS("hidden","{}"),USER=LS("useritems","[]"),OP
     PINS=LS("pins","{}"),SEEN=LS("seenDeals","{}"),SEENUP=localStorage.getItem("seenUpdated")||"",
     STATUSOVR=LS("statusovr","{}"),USEROPTS=LS("useropts","{}"),USERQTY=LS("userqty","{}"),
     USERPRICES=LS("userprices","{}"),USERTARGET=LS("usertarget","{}"),USERBOUGHT=LS("userbought","{}"),
-    HIDDENOPTS=LS("hiddenopts","{}"),OPTOVERRIDE=LS("optoverride","{}");
+    HIDDENOPTS=LS("hiddenopts","{}"),OPTOVERRIDE=LS("optoverride","{}"),
+    USUGGADD=LS("suggadd","{}"),USUGGHIDE=LS("sughide","{}");   // on-demand fetched suggestions / dismissed suggestion names, per item
 if(OPEN===null){OPEN={};CATS.forEach(c=>OPEN[c]=true);}
 let OPENTB=LS("tbopen","null"); if(OPENTB===null){OPENTB={};CATS.forEach(c=>OPENTB[c]=true);}   // To-Buy category groups, collapsed-state per device
 normPins();
@@ -80,7 +82,7 @@ let NOTIFS=[], sparks=[], _lastTs=+(localStorage.getItem("lastTs")||0), _pushPen
 
 /* ---------- persistence + sync ---------- */
 let _pt=null;
-function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY,userprices:USERPRICES,usertarget:USERTARGET,userbought:USERBOUGHT,hiddenopts:HIDDENOPTS,optoverride:OPTOVERRIDE}; }
+function localState(){ return {track:TRACK,hidden:HIDDEN,useritems:USER,pins:PINS,statusovr:STATUSOVR,useropts:USEROPTS,userqty:USERQTY,userprices:USERPRICES,usertarget:USERTARGET,userbought:USERBOUGHT,hiddenopts:HIDDENOPTS,optoverride:OPTOVERRIDE,suggadd:USUGGADD,sughide:USUGGHIDE}; }
 function mO(a,b){ return Object.assign({},a||{},b||{}); }
 function mItems(a,b){ const m={}; [...(a||[]),...(b||[])].forEach(x=>{ if(x&&x.id!=null)m[x.id]=x; }); return Object.values(m); }
 function mOpts(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.name||"")+"|"+(o.uk||"")+(o.india||"")+(o.canada||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
@@ -88,7 +90,7 @@ function mPins(a,b){ const out={}; const ar=v=>Array.isArray(v)?v:(v!=null?[v]:[
 // merge per-id arrays of price records, dedup by date+region+inr (for userprices)
 function mArr(a,b){ const out={}; new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{ const seen=new Set(),arr=[]; [...((a||{})[k]||[]),...((b||{})[k]||[])].forEach(o=>{ const sig=(o.date||"")+"|"+(o.region||"")+"|"+(o.inr||""); if(!seen.has(sig)){seen.add(sig);arr.push(o);} }); if(arr.length)out[k]=arr; }); return out; }
 // merge ALL synced keys (local wins on scalar maps) — used to reconcile a stale-write 409 without dropping the local edit
-function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),usertarget:mO(r.usertarget,l.usertarget),userbought:mO(r.userbought,l.userbought),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),userprices:mArr(r.userprices,l.userprices),pins:mPins(r.pins,l.pins),hiddenopts:mO(r.hiddenopts,l.hiddenopts),optoverride:mO(r.optoverride,l.optoverride)}; }
+function mergeState(r,l){ r=r||{}; l=l||{}; return {track:mO(r.track,l.track),hidden:mO(r.hidden,l.hidden),statusovr:mO(r.statusovr,l.statusovr),userqty:mO(r.userqty,l.userqty),usertarget:mO(r.usertarget,l.usertarget),userbought:mO(r.userbought,l.userbought),useritems:mItems(r.useritems,l.useritems),useropts:mOpts(r.useropts,l.useropts),userprices:mArr(r.userprices,l.userprices),pins:mPins(r.pins,l.pins),hiddenopts:mO(r.hiddenopts,l.hiddenopts),optoverride:mO(r.optoverride,l.optoverride),suggadd:mOpts(r.suggadd,l.suggadd),sughide:mPins(r.sughide,l.sughide)}; }
 async function getRemote(){ try{ const r=await fetch(SUPA.url+"/rest/v1/tracker_state?id=eq.shared&select=data",{headers:SUPA.h(),cache:"no-store"}); if(!r.ok)return {}; const j=await r.json(); return (j&&j[0]&&j[0].data)||{}; }catch(e){ return {}; } }
 let _recovering=false;
 async function recoverAdminPw(){ if(_recovering||ADMIN_PW)return; _recovering=true;
@@ -119,11 +121,11 @@ function syncToast(msg){ let el=document.getElementById("syncToast");
     document.body.appendChild(el); }
   el.textContent=msg; el.style.display="block"; clearTimeout(_toastT); _toastT=setTimeout(()=>el.style.display="none",4000); }
 function applyShared(d){ if(!d||typeof d!=="object")return;
-  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};USERBOUGHT=d.userbought||{};HIDDENOPTS=d.hiddenopts||{};OPTOVERRIDE=d.optoverride||{};
-  localStorage.setItem("hiddenopts",JSON.stringify(HIDDENOPTS));localStorage.setItem("optoverride",JSON.stringify(OPTOVERRIDE));
+  TRACK=d.track||{};HIDDEN=d.hidden||{};USER=d.useritems||[];PINS=d.pins||{};STATUSOVR=d.statusovr||{};USEROPTS=d.useropts||{};USERQTY=d.userqty||{};USERPRICES=d.userprices||{};USERTARGET=d.usertarget||{};USERBOUGHT=d.userbought||{};HIDDENOPTS=d.hiddenopts||{};OPTOVERRIDE=d.optoverride||{};USUGGADD=d.suggadd||{};USUGGHIDE=d.sughide||{};
+  localStorage.setItem("hiddenopts",JSON.stringify(HIDDENOPTS));localStorage.setItem("optoverride",JSON.stringify(OPTOVERRIDE));localStorage.setItem("suggadd",JSON.stringify(USUGGADD));localStorage.setItem("sughide",JSON.stringify(USUGGHIDE));
   localStorage.setItem("track",JSON.stringify(TRACK));localStorage.setItem("hidden",JSON.stringify(HIDDEN));localStorage.setItem("useritems",JSON.stringify(USER));localStorage.setItem("pins",JSON.stringify(PINS));localStorage.setItem("statusovr",JSON.stringify(STATUSOVR));localStorage.setItem("useropts",JSON.stringify(USEROPTS));localStorage.setItem("userqty",JSON.stringify(USERQTY));localStorage.setItem("userprices",JSON.stringify(USERPRICES));localStorage.setItem("usertarget",JSON.stringify(USERTARGET));localStorage.setItem("userbought",JSON.stringify(USERBOUGHT));
   normPins(); migrateToKeys(); }
-function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length||Object.keys(r.userbought||{}).length||Object.keys(r.hiddenopts||{}).length||Object.keys(r.optoverride||{}).length); }
+function hasData(r){ return r && (Object.keys(r.pins||{}).length||(r.useritems||[]).length||Object.keys(r.useropts||{}).length||Object.keys(r.track||{}).length||Object.keys(r.statusovr||{}).length||Object.keys(r.userqty||{}).length||Object.keys(r.hidden||{}).length||Object.keys(r.userprices||{}).length||Object.keys(r.usertarget||{}).length||Object.keys(r.userbought||{}).length||Object.keys(r.hiddenopts||{}).length||Object.keys(r.optoverride||{}).length||Object.keys(r.suggadd||{}).length||Object.keys(r.sughide||{}).length); }
 function bumpTs(t){ _lastTs=t; localStorage.setItem("lastTs",_lastTs); }
 async function syncPull(){ if(!SUPA.url)return; const r=await getRemote(); const rt=r.ts||0;
   if(rt>_lastTs && hasData(r)){ applyShared(r); bumpTs(rt); }
@@ -148,7 +150,12 @@ async function loadProsCons(){ try{ const r=await fetch("./proscons.json",{cache
 async function loadOptData(){ try{ const r=await fetch("./optdata.json",{cache:"no-store"}); if(r.ok)OPTDATA=await r.json(); }catch(e){ } }
 async function loadSuggest(){ try{ const r=await fetch("./suggestions.json",{cache:"no-store"}); if(r.ok)SUGGEST=await r.json(); }catch(e){ } }
 const suggList=id=>((SUGGEST[id]||{}).list)||[];
-const suggFor=p=>{ const have=new Set(effOptions(p).map(o=>o.name)); return suggList(p.id).filter(s=>!have.has(s.name)); };  // hide suggestions already added as options
+// merged suggestions: on-demand fetched (freshest) + daily file, minus ones already added as options or dismissed; deduped by name
+const suggFor=p=>{ const have=new Set(effOptions(p).map(o=>o.name.toLowerCase())); const hid=new Set((USUGGHIDE[p.id]||[]).map(s=>String(s).toLowerCase()));
+  const seen=new Set(), out=[];
+  [...(USUGGADD[p.id]||[]), ...suggList(p.id)].forEach(s=>{ if(!s||!s.name)return; const k=String(s.name).toLowerCase(); if(have.has(k)||hid.has(k)||seen.has(k))return; seen.add(k); out.push(s); });
+  return out; };
+const suggSeenNames=p=>{ const a=[]; effOptions(p).forEach(o=>a.push(o.name)); (USUGGADD[p.id]||[]).forEach(s=>s&&s.name&&a.push(s.name)); suggList(p.id).forEach(s=>s&&s.name&&a.push(s.name)); (USUGGHIDE[p.id]||[]).forEach(n=>a.push(n)); ((SUGGEST[p.id]||{}).seen||[]).forEach(n=>a.push(n)); return [...new Set(a)]; };
 const underFilled=p=>pinsOf(p.id).length<neededQty(p);
 // total ₹ committed = sum of each finalised pick's price (once each); tracks priced vs unpriced
 function committedTotal(){ let total=0,priced=0,count=0; allItems().forEach(p=>{ const opts=effOptions(p); pinsOf(p.id).forEach(key=>{ const o=opts.find(x=>x._key===key); if(o){ count++; const v=optPriceINR(p.id,o); if(v>0){total+=v;priced++;} } }); }); return {total,priced,count,unpriced:count-priced}; }
@@ -414,17 +421,19 @@ function openCompare(id){ const p=itemById(id); if(!p)return; const opts=effOpti
   }).join("")||'<p class="empty">No options to compare yet.</p>';
   const pi=priceInfo(id); const head=pi?`<div class="cmpprice">Best price: <b>${pi.region&&FLAG[pi.region]?FLAG[pi.region]+' ':''}${inr(pi.cur)}</b>${pi.target?` · target ${inr(pi.target)}`:''}${pi.isDeal?' · 🔥 deal':''}</div>`:`<div class="cmpprice muted">No price tracked yet — add one in the item.</div>`;
   const m=document.getElementById("compareModal");
-  const sgList=suggFor(p); const sg=sgList.length?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen</div><div class="suggwrap">${sgList.map(s=>suggCardHtml(id,s,"＋ Add to compare")).join("")}</div>`:"";
+  const sgList=suggFor(p); const busy=_suggBusy[id];
+  const sg=sgList.length?`<div class="suggh" style="margin-top:18px">💡 More to consider — ${pinsOf(id).length}/${neededQty(p)} chosen${busy?' <span class="suggbusy">✨ finding a fresh one…</span>':''}</div><div class="suggwrap">${sgList.map(s=>suggCardHtml(id,s,"＋ Add to compare")).join("")}</div>`:(isAdmin?`<div class="suggwrap" style="margin-top:18px"><button class="minibtn" data-getideas="${esc(id)}" ${busy?'disabled':''}>${busy?'✨ finding ideas…':'💡 Get AI ideas'}</button></div>`:"");
   m.innerHTML=`<button class="mclose" data-close="compareOverlay" aria-label="Close">×</button><div class="mbody"><h3 id="cmptitle">Compare · ${esc(p.item)}</h3>${head}<div class="cmpgrid">${cards}</div>${sg}</div>`;
   m.setAttribute("aria-labelledby","cmptitle"); document.getElementById("compareOverlay").classList.add("show"); focusModal("compareOverlay"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 // suggestions strip (shown when finalised < needed) — review & "Add" to compare/finalise
-function suggCardHtml(id,s,addLabel){ const pros=(s.pros||[]).map(x=>`<li class="pro">${esc(x)}</li>`).join(""); const cons=(s.cons||[]).map(x=>`<li class="con">${esc(x)}</li>`).join("");
-  const body=(pros||cons)?`<ul class="pclist">${pros}${cons}</ul>`:(s.why?`<div class="cmpwhy">${esc(s.why)}</div>`:"");
+function suggCardHtml(id,s,addLabel){
   const links=["india","uk","canada"].map(k=>{const u=safeUrl((s.links||{})[k]);return u?`<a class="lk" target="_blank" rel="noopener" href="${esc(u)}" aria-label="${REGION[k]}">${FLAG[k]}</a>`:"";}).join("");
-  return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${body}<div class="cmplinks">${links}</div></div><button class="minibtn" data-addsugg="${esc(id)}" data-sname="${esc(s.name)}">${addLabel||"＋ Add"}</button></div>`; }
-function suggHtml(id,p){ const list=suggFor(p); if(!list.length)return "";
-  return `<div class="suggwrap"><div class="suggh">💡 Suggestions to finalise — ${pinsOf(id).length}/${neededQty(p)} chosen</div>`+list.map(s=>suggCardHtml(id,s)).join("")+`</div>`; }
+  const rm=isAdmin?`<button class="suggrm" title="Not this — show me another" data-rmsugg="${esc(id)}" data-sname="${esc(s.name)}">✕</button>`:"";
+  return `<div class="suggcard"><div class="suggmain"><div class="suggname">${esc(s.name)}${s.price?` · <b>${inr(s.price)}</b>`:""}</div>${pcBlock(s,s.why)}<div class="cmplinks">${links}</div></div><div class="suggacts"><button class="minibtn" data-addsugg="${esc(id)}" data-sname="${esc(s.name)}">${addLabel||"＋ Add"}</button>${rm}</div></div>`; }
+function suggHtml(id,p){ const list=suggFor(p); const busy=_suggBusy[id];
+  if(!list.length){ return isAdmin?`<div class="suggwrap"><button class="minibtn" data-getideas="${esc(id)}" ${busy?'disabled':''}>${busy?'✨ finding ideas…':'💡 Get AI ideas'}</button></div>`:""; }
+  return `<div class="suggwrap"><div class="suggh">💡 Ideas — ${pinsOf(id).length}/${neededQty(p)} chosen${busy?' <span class="suggbusy">✨ finding a fresh one…</span>':''}</div>`+list.map(s=>suggCardHtml(id,s)).join("")+`</div>`; }
 
 /* ---------- actions ---------- */
 function toggleTrack(id){ TRACK[id]=isTracked(id)?false:true; save("track",TRACK); stats(); renderDash(); if(document.getElementById("itemOverlay").classList.contains("show"))openItem(id); }
@@ -457,11 +466,33 @@ function editBaseOpt(id,oname){ const p=itemById(id); if(!p)return; const o=effO
   setFields({pick:o.name,img:o.img,india:o.india,uk:o.uk,canada:o.canada,units:o.units,price:o.price});
   document.getElementById("m_parent").value=id; document.getElementById("addOverlay").classList.add("show"); focusModal("addOverlay"); }
 function restoreBaseOpt(id,oname){ HIDDENOPTS[id]=(HIDDENOPTS[id]||[]).filter(n=>n!==oname); if(!HIDDENOPTS[id].length)delete HIDDENOPTS[id]; save("hiddenopts",HIDDENOPTS); refreshAll(); reopenIfModal(id); }
-function addSuggestion(id,name){ const s=suggList(id).find(x=>x.name===name); if(!s)return; const L=s.links||{};
-  const o={oid:rid(),name:s.name,why:s.why||"",img:"",india:L.india||"",uk:L.uk||"",canada:L.canada||"",multi:false,price:s.price?String(s.price):"",pros:s.pros||[],cons:s.cons||[]};
+function addSuggestion(id,name){ const p=itemById(id); const s=(p?suggFor(p):[]).find(x=>x.name===name); if(!s)return; const L=s.links||{};
+  const o={oid:rid(),name:s.name,why:s.why||"",img:"",india:L.india||"",uk:L.uk||"",canada:L.canada||"",price:s.price?String(s.price):"",pros:s.pros||[],cons:s.cons||[]};
   (USEROPTS[id]=USEROPTS[id]||[]).push(o); save("useropts",USEROPTS);
   const cmpO=document.getElementById("compareOverlay").classList.contains("show"); refreshAll();
   if(cmpO)openCompare(id); else reopenIfModal(id); }
+/* ---------- on-demand AI suggestions (suggest Edge Function) ---------- */
+let _suggBusy={};
+function rerenderSugg(id){ refreshAll(); if(document.getElementById("compareOverlay").classList.contains("show"))openCompare(id); else reopenIfModal(id); }
+function addFetched(id,list){ if(!list||!list.length)return; const arr=(USUGGADD[id]||[]).slice();
+  list.forEach(s=>{ if(s&&s.name&&!arr.some(x=>String(x.name).toLowerCase()===String(s.name).toLowerCase()))arr.push(s); });
+  USUGGADD[id]=arr; save("suggadd",USUGGADD); }
+async function fetchSuggestionsFor(id,n){ const p=itemById(id); if(!p)return {list:[]}; if(!ADMIN_PW){ if(isAdmin)recoverAdminPw(); return {list:[],err:"login"}; }
+  try{ const r=await fetch(SUPA.suggestFn,{method:"POST",headers:SUPA.h({"Content-Type":"application/json"}),body:JSON.stringify({password:ADMIN_PW,item:p.item,category:p.category||"",exclude:suggSeenNames(p),n:n||1})});
+    if(r.status===401){ syncToast("Log in again to fetch ideas."); return {list:[],err:"auth"}; }
+    if(!r.ok){ syncToast(r.status===503?"AI busy — try again in a bit.":"Couldn't fetch ideas."); return {list:[],err:"http"}; }
+    const j=await r.json(); return {list:Array.isArray(j.list)?j.list:[]}; }
+  catch(e){ syncToast("Offline — couldn't fetch ideas."); return {list:[],err:"net"}; } }
+async function removeSuggestion(id,name){   // dismiss + fetch a fresh replacement right away
+  const hid=(USUGGHIDE[id]||[]).slice(); if(!hid.includes(name))hid.push(name); USUGGHIDE[id]=hid;
+  if(USUGGADD[id])USUGGADD[id]=USUGGADD[id].filter(s=>String(s.name)!==String(name));
+  save("sughide",USUGGHIDE); save("suggadd",USUGGADD);
+  _suggBusy[id]=true; rerenderSugg(id);
+  const {list}=await fetchSuggestionsFor(id,1); addFetched(id,list);
+  _suggBusy[id]=false; rerenderSugg(id); }
+async function getIdeas(id){ _suggBusy[id]=true; rerenderSugg(id);
+  const {list}=await fetchSuggestionsFor(id,3); addFetched(id,list);
+  _suggBusy[id]=false; rerenderSugg(id); }
 
 /* ---------- pending + log ---------- */
 function renderPending(){ const w=document.getElementById("pendingList");
@@ -478,7 +509,7 @@ function renderPending(){ const w=document.getElementById("pendingList");
     // tap the whole card to open the shop link. Multi-region picks keep per-region flags (no single destination).
     const real=["india","uk","canada"].filter(k=>isRealLink(o[k])), multi=real.length>=2;
     const href=multi?"":(real.length?safeUrl(o[real[0]]):singleLink(o,p));
-    const foot=`<div class="regcardfoot">${multi?`<div class="reglinks">${optLinks(p,o)}</div>`:(href?`<span class="reglink-hint" aria-hidden="true">↗</span>`:`<span></span>`)}<span class="regprice${isDeal?' deal':''}">${prc?inr(prc):'—'}${isDeal?' 🔥':''}</span></div>`;
+    const foot=`<div class="regcardfoot">${multi?`<div class="reglinks">${optLinks(p,o)}</div>`:`<span></span>`}<span class="regprice${isDeal?' deal':''}">${prc?inr(prc):'—'}${isDeal?' 🔥':''}</span></div>`;
     const inner=`<div class="regimg">${imgEl}</div><div class="regcardbody"><div class="ri-brand">${esc(o.name)}</div><div class="ri-pick">${esc(p.item)}</div>${need>1?`<div class="ri-qty">Qty · ${need}</div>`:""}${foot}</div>`;
     return href?`<a class="regcard" href="${esc(href)}" target="_blank" rel="noopener" aria-label="${esc(o.name)} — view product">${inner}</a>`:`<div class="regcard">${inner}</div>`;
   }).join('')+'</div>'; }
@@ -568,6 +599,8 @@ document.addEventListener("click",e=>{
   if((el=c("[data-editbase]"))) return editBaseOpt(el.dataset.editbase,el.dataset.oname);
   if((el=c("[data-restoreopt]"))) return restoreBaseOpt(el.dataset.restoreopt,el.dataset.oname);
   if((el=c("[data-addsugg]"))) return addSuggestion(el.dataset.addsugg,el.dataset.sname);
+  if((el=c("[data-rmsugg]"))) { e.stopPropagation(); return removeSuggestion(el.dataset.rmsugg,el.dataset.sname); }
+  if((el=c("[data-getideas]"))) { e.stopPropagation(); return getIdeas(el.dataset.getideas); }
   if((el=c("[data-edititem]"))) return editItem(el.dataset.edititem);
   if((el=c("[data-addopt]"))) { const p=itemById(el.dataset.addopt); openAdd(p?p.category:"EXTRAS"); _editReturn=el.dataset.addopt; document.getElementById("m_parent").value=el.dataset.addopt; showFields(true,false); return; }
   if((el=c("[data-jump]"))) { const t=document.getElementById(el.dataset.jump); if(t){ t.classList.add("open"); const ci=+el.dataset.jump.replace("cat",""); if(CATS[ci])OPEN[CATS[ci]]=true; t.scrollIntoView({behavior:"smooth",block:"start"}); } return; }

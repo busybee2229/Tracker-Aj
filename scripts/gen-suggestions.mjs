@@ -36,6 +36,7 @@ try { const r = await fetch(SUPA_URL + "/rest/v1/tracker_state?id=eq.shared&sele
   shared = ((await r.json())[0] || {}).data || {}; } catch (e) { console.log("supabase read failed", e.message); }
 
 const PINS = shared.pins || {}, UQ = shared.userqty || {}, UO = shared.useropts || {}, HID = shared.hiddenopts || {}, USER = shared.useritems || [];
+const SUGHIDE = shared.sughide || {}, SUGGADD = shared.suggadd || {};   // dismissed names + on-demand fetched (don't re-suggest these)
 USER.forEach(p => byId[String(p.id)] = p);
 const pinsOf = id => Array.isArray(PINS[id]) ? PINS[id] : (PINS[id] != null ? [PINS[id]] : []);
 const neededQty = p => { if (UQ[p.id] != null) return +UQ[p.id]; const m = String(p.qty || "").match(/\d+/g); return m ? +m[m.length - 1] : 1; };
@@ -85,13 +86,14 @@ const items = products.concat(USER).slice().sort((a, b) => {
   const A = (out[String(a.id)] && (out[String(a.id)].list || []).length) ? 1 : 0;
   const B = (out[String(b.id)] && (out[String(b.id)].list || []).length) ? 1 : 0;
   return A - B; });
-const CAP = 18;   // gentle: at most this many items per run, fills the rest on later daily runs
+const CAP = 60;   // covers all items in one run (gemini-3.1-flash-lite ~500/day, 15 RPM; ~57 items at 5s = ~12/min)
 let n = 0, processed = 0;
 for (const p of items) {
   if (allDead() || processed >= CAP) break;
   const need = neededQty(p), done = pinsOf(p.id).length;
   const prev = (out[String(p.id)] && out[String(p.id)].seen) || [];
-  const exclude = [...new Set([...optionNames(p), ...prev])];
+  const dismissed = (SUGHIDE[String(p.id)] || []), fetched = (SUGGADD[String(p.id)] || []).map(s => s && s.name).filter(Boolean);
+  const exclude = [...new Set([...optionNames(p), ...prev, ...dismissed, ...fetched])];
   const list = await suggest(p, exclude); processed++;
   if (list.length) { out[String(p.id)] = { ts: new Date().toISOString().slice(0, 10), seen: [...new Set([...prev, ...list.map(s => s.name)])].slice(-40), list }; n += list.length; console.log(`ok  ${p.id} ${p.item}: ${list.length} (${done}/${need})`); }
   await new Promise(r => setTimeout(r, 5000));   // ~5s between calls to stay under per-minute (RPM) limits
