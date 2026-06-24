@@ -1,73 +1,76 @@
 {
  "1": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "H&M Cotton Jersey Sleepsuit",
    "Kyte Baby Zipper Footie",
    "Burt's Bees Baby Organic Cotton Beekeeper Footie",
    "Little Me Footie and Hat Set",
    "Magnetic Me Modal Footie",
-   "Aden + Anais Essentials Zip Sleepsuit"
+   "Aden + Anais Essentials Zip Sleepsuit",
+   "Bonds Baby Zip Wondersuit",
+   "Little Sleepies Bamboo Zip Romper",
+   "Petit Bateau Cotton Sleepsuit"
   ],
   "list": [
    {
-    "name": "Little Me Footie and Hat Set",
-    "why": "High-quality, thick cotton fabrics perfect for Indian winters and often available via premium international shipping.",
+    "name": "Bonds Baby Zip Wondersuit",
+    "why": "An Australian cult-favorite known for its incredibly soft, stretchy fabric that grows with the baby and features clever ",
     "pros": [
-     "Extremely soft premium cotton",
-     "Adorable, detailed designs"
+     "Extremely durable fabric",
+     "Fold-over mittens and booties for extra warmth"
     ],
     "cons": [
-     "Often uses snaps instead of two-way zips"
-    ],
-    "price": 2800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Little%20Me%20Footie%20and%20Hat%20Set",
-     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Footie%20and%20Hat%20Set",
-     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Footie%20and%20Hat%20Set"
-    }
-   },
-   {
-    "name": "Magnetic Me Modal Footie",
-    "why": "Features magnetic closures that make middle-of-the-night diaper changes effortless for tired parents.",
-    "pros": [
-     "Incredibly fast to dress/undress",
-     "Buttery soft modal fabric"
-    ],
-    "cons": [
-     "Expensive compared to standard sleepsuits"
-    ],
-    "price": 3500,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Magnetic%20Me%20Modal%20Footie",
-     "uk": "https://www.next.co.uk/search?w=Magnetic%20Me%20Modal%20Footie",
-     "canada": "https://www.amazon.ca/s?k=Magnetic%20Me%20Modal%20Footie"
-    }
-   },
-   {
-    "name": "Aden + Anais Essentials Zip Sleepsuit",
-    "why": "Renowned for breathable muslin-blend fabrics that regulate temperature well in varying indoor climates.",
-    "pros": [
-     "Excellent breathability",
-     "Durable fabric that softens with every wash"
-    ],
-    "cons": [
-     "Limited color patterns available"
+     "Pricing can be high when importing to India"
     ],
     "price": 2200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit",
-     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit",
-     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Zip%20Sleepsuit"
+     "india": "https://www.amazon.in/s?k=Bonds%20Baby%20Zip%20Wondersuit",
+     "uk": "https://www.next.co.uk/search?w=Bonds%20Baby%20Zip%20Wondersuit",
+     "canada": "https://www.amazon.ca/s?k=Bonds%20Baby%20Zip%20Wondersuit"
+    }
+   },
+   {
+    "name": "Little Sleepies Bamboo Zip Romper",
+    "why": "Made from buttery-soft bamboo viscose, these are temperature-regulating and perfect for the transition into cooler winte",
+    "pros": [
+     "Naturally temperature-regulating",
+     "Fold-over footies allow for extended wear"
+    ],
+    "cons": [
+     "Requires delicate laundry care"
+    ],
+    "price": 2800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Little%20Sleepies%20Bamboo%20Zip%20Romper",
+     "uk": "https://www.next.co.uk/search?w=Little%20Sleepies%20Bamboo%20Zip%20Romper",
+     "canada": "https://www.amazon.ca/s?k=Little%20Sleepies%20Bamboo%20Zip%20Romper"
+    }
+   },
+   {
+    "name": "Petit Bateau Cotton Sleepsuit",
+    "why": "A classic French brand offering superior cotton quality that retains its shape and softness through repeated heavy-duty ",
+    "pros": [
+     "High-quality thick cotton",
+     "Excellent fit and construction"
+    ],
+    "cons": [
+     "Often features poppers rather than zips"
+    ],
+    "price": 3500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Petit%20Bateau%20Cotton%20Sleepsuit",
+     "uk": "https://www.next.co.uk/search?w=Petit%20Bateau%20Cotton%20Sleepsuit",
+     "canada": "https://www.amazon.ca/s?k=Petit%20Bateau%20Cotton%20Sleepsuit"
     }
    }
   ]
  },
  "2": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mori Clever Zip Bodysuit 2-pk",
    "Mothercare Bodysuits 5-pk",
@@ -77,67 +80,70 @@
    "Burt's Bees Baby Organic Cotton Long Sleeve Bodysuit",
    "The Children's Place Long Sleeve Bodysuits with Mittens",
    "Little Me Long Sleeve Mittened Bodysuit",
-   "Gap Baby Organic Cotton Foldover-Mitten Bodysuit"
+   "Gap Baby Organic Cotton Foldover-Mitten Bodysuit",
+   "Petit Bateau Long-Sleeved Bodysuit in Cotton Knit",
+   "Kyte Baby Long Sleeve Bodysuit with Fold-Over Mittens",
+   "First Steps (by Amazon) Long Sleeve Bodysuit Pack"
   ],
   "list": [
    {
-    "name": "The Children's Place Long Sleeve Bodysuits with Mittens",
-    "why": "Reliable, affordable staple available widely in North America with soft, durable cotton blend fabric.",
+    "name": "Petit Bateau Long-Sleeved Bodysuit in Cotton Knit",
+    "why": "Renowned for exceptional French quality and softness that withstands frequent washing during the cold winter months.",
     "pros": [
-     "Fold-over mittens are integrated securely",
-     "Retains shape well after multiple washes"
+     "Extremely durable fabric",
+     "Signature soft ribbed cotton"
     ],
     "cons": [
-     "Cotton is standard rather than organic"
+     "Higher price point due to premium material"
     ],
-    "price": 1800,
+    "price": 3200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuits%20with%20Mittens"
+     "india": "https://www.amazon.in/s?k=Petit%20Bateau%20Long-Sleeved%20Bodysuit%20in%20Cotton%20Knit",
+     "uk": "https://www.next.co.uk/search?w=Petit%20Bateau%20Long-Sleeved%20Bodysuit%20in%20Cotton%20Knit",
+     "canada": "https://www.amazon.ca/s?k=Petit%20Bateau%20Long-Sleeved%20Bodysuit%20in%20Cotton%20Knit"
     }
    },
    {
-    "name": "Little Me Long Sleeve Mittened Bodysuit",
-    "why": "Premium boutique quality featuring thoughtful designs and extra-soft fabric perfect for winter comfort.",
+    "name": "Kyte Baby Long Sleeve Bodysuit with Fold-Over Mittens",
+    "why": "Made from bamboo rayon, which is temperature-regulating and ideal for newborns needing comfort in fluctuating indoor tem",
     "pros": [
-     "Exceptional fabric softness",
-     "High-quality snap closures"
+     "Buttery soft hypoallergenic fabric",
+     "Excellent moisture-wicking properties"
     ],
     "cons": [
-     "Higher price point per unit"
+     "Requires delicate laundry care"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit",
-     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit",
-     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Long%20Sleeve%20Mittened%20Bodysuit"
+     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Long%20Sleeve%20Bodysuit%20with%20Fold-Over%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Long%20Sleeve%20Bodysuit%20with%20Fold-Over%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Long%20Sleeve%20Bodysuit%20with%20Fold-Over%20Mittens"
     }
    },
    {
-    "name": "Gap Baby Organic Cotton Foldover-Mitten Bodysuit",
-    "why": "A classic winter essential from a trusted brand known for consistent sizing and skin-friendly organic materials.",
+    "name": "First Steps (by Amazon) Long Sleeve Bodysuit Pack",
+    "why": "A practical, high-value option widely available in India that features essential mitten cuffs for protecting newborns fr",
     "pros": [
-     "GOTS certified organic cotton",
-     "Stretchy fabric makes dressing easier"
+     "Affordable multi-pack value",
+     "Soft breathable cotton material"
     ],
     "cons": [
-     "Limited availability in physical Indian stores"
+     "Designs are basic and utilitarian"
     ],
-    "price": 2200,
+    "price": 999,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit",
-     "uk": "https://www.next.co.uk/search?w=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit",
-     "canada": "https://www.amazon.ca/s?k=Gap%20Baby%20Organic%20Cotton%20Foldover-Mitten%20Bodysuit"
+     "india": "https://www.amazon.in/s?k=First%20Steps%20(by%20Amazon)%20Long%20Sleeve%20Bodysuit%20Pack",
+     "uk": "https://www.next.co.uk/search?w=First%20Steps%20(by%20Amazon)%20Long%20Sleeve%20Bodysuit%20Pack",
+     "canada": "https://www.amazon.ca/s?k=First%20Steps%20(by%20Amazon)%20Long%20Sleeve%20Bodysuit%20Pack"
     }
    }
   ]
  },
  "3": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mori Stay-on Socks 3-pk",
    "FirstCry Newborn Socks 6-pk",
@@ -146,134 +152,140 @@
    "Boody Baby Organic Bamboo Socks",
    "Jojo Maman Bébé Stay-On Baby Socks",
    "Little Me Newborn Bootie Socks",
-   "Zutano Stay-On Baby Booties"
+   "Zutano Stay-On Baby Booties",
+   "Hanna Andersson Baby Stay-Put Socks",
+   "Touched by Nature Organic Cotton Socks",
+   "Mini Boden Baby Socks 3-Pack"
   ],
   "list": [
    {
-    "name": "Jojo Maman Bébé Stay-On Baby Socks",
-    "why": "Engineered with a ribbed knit and special construction to prevent them from slipping off active newborn feet.",
+    "name": "Hanna Andersson Baby Stay-Put Socks",
+    "why": "Renowned for their exceptional durability and unique design that prevents them from slipping off active newborn feet.",
     "pros": [
-     "Excellent stay-on capability",
-     "Soft, high-quality cotton blend"
+     "Superior elastic cuff design",
+     "High-quality thick organic cotton"
     ],
     "cons": [
-     "More expensive than basic multipacks"
-    ],
-    "price": 1200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks",
-     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks",
-     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Stay-On%20Baby%20Socks"
-    }
-   },
-   {
-    "name": "Little Me Newborn Bootie Socks",
-    "why": "Designed specifically for newborns with a plush, sock-bootie hybrid feel that provides extra warmth for winter babies.",
-    "pros": [
-     "Extra cozy for winter",
-     "Non-constricting elastic"
-    ],
-    "cons": [
-     "Bulkier than standard socks"
-    ],
-    "price": 950,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Little%20Me%20Newborn%20Bootie%20Socks",
-     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Newborn%20Bootie%20Socks",
-     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Newborn%20Bootie%20Socks"
-    }
-   },
-   {
-    "name": "Zutano Stay-On Baby Booties",
-    "why": "A cult-favorite in North America that uses a snap closure to ensure they never fall off, perfect for chilly Indian winte",
-    "pros": [
-     "Impossible for baby to kick off",
-     "Durable fleece options available"
-    ],
-    "cons": [
-     "Requires international shipping or import"
+     "Higher price point than standard multi-packs"
     ],
     "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Zutano%20Stay-On%20Baby%20Booties",
-     "uk": "https://www.next.co.uk/search?w=Zutano%20Stay-On%20Baby%20Booties",
-     "canada": "https://www.amazon.ca/s?k=Zutano%20Stay-On%20Baby%20Booties"
+     "india": "https://www.amazon.in/s?k=Hanna%20Andersson%20Baby%20Stay-Put%20Socks",
+     "uk": "https://www.next.co.uk/search?w=Hanna%20Andersson%20Baby%20Stay-Put%20Socks",
+     "canada": "https://www.amazon.ca/s?k=Hanna%20Andersson%20Baby%20Stay-Put%20Socks"
+    }
+   },
+   {
+    "name": "Touched by Nature Organic Cotton Socks",
+    "why": "An affordable yet high-quality option that offers great breathability and softness for sensitive winter skin.",
+    "pros": [
+     "Certified organic materials",
+     "Excellent value for a multipack"
+    ],
+    "cons": [
+     "Elastic can sometimes be slightly tight on chunky ankles"
+    ],
+    "price": 950,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Touched%20by%20Nature%20Organic%20Cotton%20Socks",
+     "uk": "https://www.next.co.uk/search?w=Touched%20by%20Nature%20Organic%20Cotton%20Socks",
+     "canada": "https://www.amazon.ca/s?k=Touched%20by%20Nature%20Organic%20Cotton%20Socks"
+    }
+   },
+   {
+    "name": "Mini Boden Baby Socks 3-Pack",
+    "why": "Features charming designs with reinforced heels and toes, making them both stylish and long-lasting for winter layering.",
+    "pros": [
+     "Whimsical patterns and vibrant colors",
+     "Very soft texture even after multiple washes"
+    ],
+    "cons": [
+     "Limited availability in India, usually requires international shipping"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mini%20Boden%20Baby%20Socks%203-Pack",
+     "uk": "https://www.next.co.uk/search?w=Mini%20Boden%20Baby%20Socks%203-Pack",
+     "canada": "https://www.amazon.ca/s?k=Mini%20Boden%20Baby%20Socks%203-Pack"
     }
    }
   ]
  },
  "4": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mamas & Papas Welcome to the World Knitted Hat",
    "Mothercare Newborn Cotton Ribbed Beanies",
    "Aden + Anais Essentials Cotton Muslin Knotted Baby Hat",
    "Jojo Maman Bébé Jersey Cotton Baby Hat",
    "FirstCry BabyHug Winter Woolen Cap with Ear Flaps",
-   "Gap Baby Organic Cotton Bear Ear Beanie"
+   "Gap Baby Organic Cotton Bear Ear Beanie",
+   "Kyte Baby Ribbed Beanie",
+   "Marks & Spencer Pure Cotton Embroidered Hats",
+   "Burt's Bees Baby Organic Cotton Knot Top Hat"
   ],
   "list": [
    {
-    "name": "Jojo Maman Bébé Jersey Cotton Baby Hat",
-    "why": "A high-quality, soft cotton option from the UK that is perfect for layering under heavier hoods during Indian winters.",
+    "name": "Kyte Baby Ribbed Beanie",
+    "why": "Ultra-soft bamboo rayon fabric that is gentle on sensitive newborn skin and offers excellent thermal regulation for wint",
     "pros": [
-     "Extremely soft organic cotton",
-     "Excellent shape retention after washes"
+     "Extremely soft and stretchy",
+     "Excellent moisture-wicking properties"
     ],
     "cons": [
-     "Requires international shipping or proxy service"
-    ],
-    "price": 1200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat",
-     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat",
-     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Jersey%20Cotton%20Baby%20Hat"
-    }
-   },
-   {
-    "name": "FirstCry BabyHug Winter Woolen Cap with Ear Flaps",
-    "why": "Provides essential coverage for newborn ears against chilly drafts, widely available across India.",
-    "pros": [
-     "Includes protective ear flaps",
-     "Affordable and easily accessible"
-    ],
-    "cons": [
-     "Synthetic material may not be as breathable as organic cotton"
-    ],
-    "price": 350,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps",
-     "uk": "https://www.next.co.uk/search?w=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps",
-     "canada": "https://www.amazon.ca/s?k=FirstCry%20BabyHug%20Winter%20Woolen%20Cap%20with%20Ear%20Flaps"
-    }
-   },
-   {
-    "name": "Gap Baby Organic Cotton Bear Ear Beanie",
-    "why": "A popular, durable choice available globally that offers superior warmth with a cute design for winter.",
-    "pros": [
-     "Stretchy fit for growing heads",
-     "Thick, high-quality knit fabric"
-    ],
-    "cons": [
-     "Can be slightly bulky for indoor use"
+     "Requires delicate washing"
     ],
     "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie",
-     "uk": "https://www.next.co.uk/search?w=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie",
-     "canada": "https://www.amazon.ca/s?k=Gap%20Baby%20Organic%20Cotton%20Bear%20Ear%20Beanie"
+     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Ribbed%20Beanie",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Ribbed%20Beanie",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Ribbed%20Beanie"
+    }
+   },
+   {
+    "name": "Marks & Spencer Pure Cotton Embroidered Hats",
+    "why": "A reliable, widely available staple that provides consistent warmth and high-street quality.",
+    "pros": [
+     "High-quality durable cotton",
+     "Secure fit for newborns"
+    ],
+    "cons": [
+     "Limited color variety"
+    ],
+    "price": 999,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Embroidered%20Hats",
+     "uk": "https://www.next.co.uk/search?w=Marks%20%26%20Spencer%20Pure%20Cotton%20Embroidered%20Hats",
+     "canada": "https://www.amazon.ca/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Embroidered%20Hats"
+    }
+   },
+   {
+    "name": "Burt's Bees Baby Organic Cotton Knot Top Hat",
+    "why": "Features a classic knotted design made from 100% GOTS-certified organic cotton for breathable warmth.",
+    "pros": [
+     "Hypoallergenic material",
+     "Adjustable knot for custom fit"
+    ],
+    "cons": [
+     "Can shrink slightly if tumble dried"
+    ],
+    "price": 1500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knot%20Top%20Hat",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knot%20Top%20Hat",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knot%20Top%20Hat"
     }
    }
   ]
  },
  "5": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mori Cellular Blanket",
    "Mamas & Papas Knitted Blanket",
@@ -282,134 +294,140 @@
    "Little West Street Organic Cotton Knitted Blanket",
    "Snuggle Me Organic Cotton Stroller Blanket",
    "Gro Company Gro-snug Swaddle to Sleeping Bag",
-   "Masilo Organic Cotton Muslin Quilt"
+   "Masilo Organic Cotton Muslin Quilt",
+   "SuperBottoms Organic Cotton Muslin Swaddle/Blanket",
+   "ErgoPouch Organic Cotton Jersey Blanket",
+   "Burt's Bees Baby Organic Cotton Knit Blanket"
   ],
   "list": [
    {
-    "name": "Snuggle Me Organic Cotton Stroller Blanket",
-    "why": "Offers premium organic breathability which is ideal for layering during milder Indian winters without causing overheatin",
+    "name": "SuperBottoms Organic Cotton Muslin Swaddle/Blanket",
+    "why": "A trusted Indian brand focusing on breathable, GOTS-certified organic cotton perfect for the mild Indian winter.",
+    "pros": [
+     "Extremely soft and lightweight",
+     "Highly absorbent and quick-drying"
+    ],
+    "cons": [
+     "Not suitable for extremely cold climates"
+    ],
+    "price": 800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=SuperBottoms%20Organic%20Cotton%20Muslin%20Swaddle%2FBlanket",
+     "uk": "https://www.next.co.uk/search?w=SuperBottoms%20Organic%20Cotton%20Muslin%20Swaddle%2FBlanket",
+     "canada": "https://www.amazon.ca/s?k=SuperBottoms%20Organic%20Cotton%20Muslin%20Swaddle%2FBlanket"
+    }
+   },
+   {
+    "name": "ErgoPouch Organic Cotton Jersey Blanket",
+    "why": "Known for high-quality, non-toxic materials, this blanket provides extra warmth with a gentle stretch.",
     "pros": [
      "GOTS certified organic cotton",
-     "Excellent thermal regulation"
+     "Excellent durability after multiple washes"
     ],
     "cons": [
-     "Limited color variety"
+     "Higher price point compared to local alternatives"
     ],
-    "price": 4500,
+    "price": 3500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Snuggle%20Me%20Organic%20Cotton%20Stroller%20Blanket"
+     "india": "https://www.amazon.in/s?k=ErgoPouch%20Organic%20Cotton%20Jersey%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=ErgoPouch%20Organic%20Cotton%20Jersey%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=ErgoPouch%20Organic%20Cotton%20Jersey%20Blanket"
     }
    },
    {
-    "name": "Gro Company Gro-snug Swaddle to Sleeping Bag",
-    "why": "A practical 2-in-1 solution that keeps the baby secure and warm during the transition from swaddling to sleeping bags.",
+    "name": "Burt's Bees Baby Organic Cotton Knit Blanket",
+    "why": "A globally recognized brand offering a classic, high-quality knit texture that adds warmth without overheating.",
     "pros": [
-     "Versatile swaddle-to-bag design",
-     "Hip-healthy ergonomic shape"
+     "Breathable organic knit fabric",
+     "Very gentle on sensitive newborn skin"
     ],
     "cons": [
-     "Requires sizing up as baby grows"
-    ],
-    "price": 3200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag",
-     "uk": "https://www.next.co.uk/search?w=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag",
-     "canada": "https://www.amazon.ca/s?k=Gro%20Company%20Gro-snug%20Swaddle%20to%20Sleeping%20Bag"
-    }
-   },
-   {
-    "name": "Masilo Organic Cotton Muslin Quilt",
-    "why": "A high-quality, locally available option in India that provides extra warmth through its multi-layered muslin constructi",
-    "pros": [
-     "Softens with every wash",
-     "Available locally in India"
-    ],
-    "cons": [
-     "Thinner than traditional wool quilts"
+     "Knit fabric can snag if caught on sharp objects"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Masilo%20Organic%20Cotton%20Muslin%20Quilt",
-     "uk": "https://www.next.co.uk/search?w=Masilo%20Organic%20Cotton%20Muslin%20Quilt",
-     "canada": "https://www.amazon.ca/s?k=Masilo%20Organic%20Cotton%20Muslin%20Quilt"
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knit%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knit%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Knit%20Blanket"
     }
    }
   ]
  },
  "6": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Stokke Flexi Bath",
    "Fisher-Price 4-in-1 Sling 'n Seat Tub",
    "Skip Hop Moby Smart Sling 3-Stage Tub",
    "Angelcare Baby Bath Support",
    "Summer Infant My Bath Seat",
-   "Munchkin White Hot Inflatable Safety Duck Tub"
+   "Munchkin White Hot Inflatable Safety Duck Tub",
+   "Shnuggle Baby Bath Tub",
+   "Primo EuroBath",
+   "Puj Tub"
   ],
   "list": [
    {
-    "name": "Angelcare Baby Bath Support",
-    "why": "An ergonomic, mesh-based design that drains instantly and dries quickly, preventing mold growth.",
+    "name": "Shnuggle Baby Bath Tub",
+    "why": "Designed to mimic the womb, it provides a supportive upright position that makes bathing newborns much easier for parent",
     "pros": [
-     "Lightweight and easy to store",
-     "Soft-touch material is comfortable for newborn skin"
+     "Compact footprint saves space",
+     "Features a bum bump to support the baby"
     ],
     "cons": [
-     "Does not hold water; requires use inside a larger tub or sink"
+     "Cannot be used for a long duration as the baby grows"
     ],
     "price": 3500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Angelcare%20Baby%20Bath%20Support",
-     "uk": "https://www.next.co.uk/search?w=Angelcare%20Baby%20Bath%20Support",
-     "canada": "https://www.amazon.ca/s?k=Angelcare%20Baby%20Bath%20Support"
+     "india": "https://www.amazon.in/s?k=Shnuggle%20Baby%20Bath%20Tub",
+     "uk": "https://www.next.co.uk/search?w=Shnuggle%20Baby%20Bath%20Tub",
+     "canada": "https://www.amazon.ca/s?k=Shnuggle%20Baby%20Bath%20Tub"
     }
    },
    {
-    "name": "Summer Infant My Bath Seat",
-    "why": "Provides excellent 360-degree support for babies who are just starting to sit, ideal for later in the winter season.",
+    "name": "Primo EuroBath",
+    "why": "A spacious, ergonomic tub that is highly durable and accommodates babies from birth up to two years.",
     "pros": [
-     "Suction cups keep it securely in place",
-     "Spacious design allows for easy cleaning"
+     "Large size prevents splashing",
+     "Two-position design for newborns and sitters"
     ],
     "cons": [
-     "Only suitable once the baby has good head and neck control"
+     "Takes up significant storage space"
+    ],
+    "price": 5500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Primo%20EuroBath",
+     "uk": "https://www.next.co.uk/search?w=Primo%20EuroBath",
+     "canada": "https://www.amazon.ca/s?k=Primo%20EuroBath"
+    }
+   },
+   {
+    "name": "Puj Tub",
+    "why": "A soft, foldable foam tub that fits perfectly into standard bathroom sinks for a comfortable, elevated washing experienc",
+    "pros": [
+     "Stores flat easily",
+     "Cradles baby securely in a warm sink"
+    ],
+    "cons": [
+     "Only compatible with certain sink shapes"
     ],
     "price": 4200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Summer%20Infant%20My%20Bath%20Seat",
-     "uk": "https://www.next.co.uk/search?w=Summer%20Infant%20My%20Bath%20Seat",
-     "canada": "https://www.amazon.ca/s?k=Summer%20Infant%20My%20Bath%20Seat"
-    }
-   },
-   {
-    "name": "Munchkin White Hot Inflatable Safety Duck Tub",
-    "why": "A space-saving, portable option that is perfect for travel and features a safety sensor to prevent overheating.",
-    "pros": [
-     "Compact when deflated for easy storage",
-     "Textured bottom prevents baby from slipping"
-    ],
-    "cons": [
-     "Requires manual inflation before every use"
-    ],
-    "price": 2800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub",
-     "uk": "https://www.next.co.uk/search?w=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub",
-     "canada": "https://www.amazon.ca/s?k=Munchkin%20White%20Hot%20Inflatable%20Safety%20Duck%20Tub"
+     "india": "https://www.amazon.in/s?k=Puj%20Tub",
+     "uk": "https://www.next.co.uk/search?w=Puj%20Tub",
+     "canada": "https://www.amazon.ca/s?k=Puj%20Tub"
     }
    }
   ]
  },
  "7": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Little Unicorn Cotton Muslin 3-pk",
    "Masilo / Mulmul Organic Muslin (India)",
@@ -418,201 +436,210 @@
    "Nested Bean Zen Swaddle",
    "Kyte Baby Swaddle Blanket",
    "Mamaearth Organic Cotton Swaddle Wrap",
-   "Copper Pearl Swaddle Blanket"
+   "Copper Pearl Swaddle Blanket",
+   "The Ollie World The Ollie Swaddle",
+   "Snuggle Me Organic Swaddle Blanket",
+   "SwaddleDesigns Ultimate Receiving Blanket"
   ],
   "list": [
    {
-    "name": "Kyte Baby Swaddle Blanket",
-    "why": "Crafted from ultra-soft bamboo rayon, this provides exceptional temperature regulation for a winter newborn.",
+    "name": "The Ollie World The Ollie Swaddle",
+    "why": "A customizable, moisture-wicking swaddle that grows with the baby and prevents overheating during mild Indian winters.",
     "pros": [
-     "Extremely soft and breathable fabric",
-     "Stretchy material makes for an easy, snug wrap"
+     "Highly adjustable fit",
+     "Easy bottom access for diaper changes"
     ],
     "cons": [
-     "Requires delicate washing to maintain fabric quality"
+     "Expensive compared to standard wraps"
+    ],
+    "price": 6200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=The%20Ollie%20World%20The%20Ollie%20Swaddle",
+     "uk": "https://www.next.co.uk/search?w=The%20Ollie%20World%20The%20Ollie%20Swaddle",
+     "canada": "https://www.amazon.ca/s?k=The%20Ollie%20World%20The%20Ollie%20Swaddle"
+    }
+   },
+   {
+    "name": "Snuggle Me Organic Swaddle Blanket",
+    "why": "Premium GOTS-certified organic cotton that is exceptionally breathable and gentle on newborn skin.",
+    "pros": [
+     "Luxuriously soft fabric",
+     "Multi-purpose usage beyond swaddling"
+    ],
+    "cons": [
+     "Requires learning the traditional wrapping technique"
     ],
     "price": 3800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Swaddle%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Swaddle%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Swaddle%20Blanket"
+     "india": "https://www.amazon.in/s?k=Snuggle%20Me%20Organic%20Swaddle%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=Snuggle%20Me%20Organic%20Swaddle%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=Snuggle%20Me%20Organic%20Swaddle%20Blanket"
     }
    },
    {
-    "name": "Mamaearth Organic Cotton Swaddle Wrap",
-    "why": "A highly accessible, high-quality organic cotton option widely available in the Indian market.",
+    "name": "SwaddleDesigns Ultimate Receiving Blanket",
+    "why": "A classic, generously sized cotton flannel swaddle that provides extra warmth for late autumn/winter nights.",
     "pros": [
-     "Hypoallergenic and gentle on newborn skin",
-     "Large dimensions allow for versatile use as a nursing cover"
+     "Durable, high-quality flannel",
+     "Excellent size for easy wrapping"
     ],
     "cons": [
-     "Fabric is thinner than premium bamboo alternatives"
+     "Fabric is thicker so less suitable for warm days"
     ],
-    "price": 900,
+    "price": 2400,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap",
-     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap",
-     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Organic%20Cotton%20Swaddle%20Wrap"
-    }
-   },
-   {
-    "name": "Copper Pearl Swaddle Blanket",
-    "why": "These premium knit swaddles offer a modern aesthetic with a unique blend of fabric that holds a tight swaddle.",
-    "pros": [
-     "Excellent stretch and recovery",
-     "Trendy, modern patterns and prints"
-    ],
-    "cons": [
-     "Can feel slightly heavy for very warm indoor environments"
-    ],
-    "price": 3200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Copper%20Pearl%20Swaddle%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Copper%20Pearl%20Swaddle%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Copper%20Pearl%20Swaddle%20Blanket"
+     "india": "https://www.amazon.in/s?k=SwaddleDesigns%20Ultimate%20Receiving%20Blanket",
+     "uk": "https://www.next.co.uk/search?w=SwaddleDesigns%20Ultimate%20Receiving%20Blanket",
+     "canada": "https://www.amazon.ca/s?k=SwaddleDesigns%20Ultimate%20Receiving%20Blanket"
     }
    }
   ]
  },
  "8": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Muslin Tree Cotton Muslin Washcloths",
    "aden + anais Essentials Washcloth Set",
    "Bey Bee Organic Cotton Washcloths",
    "LuvLap Baby Washcloths (Pack of 6)",
    "Burt's Bees Baby Washcloths (3-Pack)",
-   "Hudson Baby Animal Face Washcloths"
+   "Hudson Baby Animal Face Washcloths",
+   "Kyte Baby Washcloths",
+   "Little West Street Muslin Washcloths",
+   "Gerber Organic Cotton Washcloths"
   ],
   "list": [
    {
-    "name": "LuvLap Baby Washcloths (Pack of 6)",
-    "why": "A highly accessible, budget-friendly option in India featuring soft, absorbent cotton terry fabric suitable for daily ne",
+    "name": "Kyte Baby Washcloths",
+    "why": "Made from ultra-soft bamboo rayon, these are exceptionally gentle on newborn skin during colder months.",
     "pros": [
-     "Highly absorbent cotton material",
-     "Easily available on major Indian e-commerce sites"
+     "Extremely soft and absorbent",
+     "Sustainable bamboo fabric"
     ],
     "cons": [
-     "Fabric can feel slightly less soft after many machine washes"
+     "Requires delicate machine wash to maintain texture"
     ],
-    "price": 350,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)",
-     "uk": "https://www.next.co.uk/search?w=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)",
-     "canada": "https://www.amazon.ca/s?k=LuvLap%20Baby%20Washcloths%20(Pack%20of%206)"
+     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Washcloths",
+     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Washcloths",
+     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Washcloths"
     }
    },
    {
-    "name": "Burt's Bees Baby Washcloths (3-Pack)",
-    "why": "A premium, organic cotton knit option available via international shipping that is exceptionally gentle on newborn skin.",
+    "name": "Little West Street Muslin Washcloths",
+    "why": "A premium Indian brand that offers high-quality, breathable organic cotton muslin that gets softer with every wash.",
     "pros": [
-     "GOTS-certified organic cotton",
-     "Durable quality that maintains softness"
+     "Lightweight and quick-drying",
+     "Sophisticated, timeless prints"
     ],
     "cons": [
-     "Higher cost due to international shipping and import duties"
+     "Can shrink slightly if tumble dried on high heat"
     ],
-    "price": 2200,
+    "price": 950,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Washcloths%20(3-Pack)"
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Muslin%20Washcloths",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Muslin%20Washcloths",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Muslin%20Washcloths"
     }
    },
    {
-    "name": "Hudson Baby Animal Face Washcloths",
-    "why": "These offer a thicker, plush texture and cute designs that are popular for their longevity and high-quality construction",
+    "name": "Gerber Organic Cotton Washcloths",
+    "why": "A classic, durable choice that is widely available and provides excellent value for everyday newborn care.",
     "pros": [
-     "Thick, plush fabric is very gentle",
-     "Fun, engaging designs for bath time"
+     "Highly durable construction",
+     "GOTS-certified organic cotton"
     ],
     "cons": [
-     "Takes longer to air dry than thin muslin cloths"
+     "Texture is slightly less plush than bamboo alternatives"
     ],
-    "price": 1200,
+    "price": 750,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Hudson%20Baby%20Animal%20Face%20Washcloths",
-     "uk": "https://www.next.co.uk/search?w=Hudson%20Baby%20Animal%20Face%20Washcloths",
-     "canada": "https://www.amazon.ca/s?k=Hudson%20Baby%20Animal%20Face%20Washcloths"
+     "india": "https://www.amazon.in/s?k=Gerber%20Organic%20Cotton%20Washcloths",
+     "uk": "https://www.next.co.uk/search?w=Gerber%20Organic%20Cotton%20Washcloths",
+     "canada": "https://www.amazon.ca/s?k=Gerber%20Organic%20Cotton%20Washcloths"
     }
    }
   ]
  },
  "9": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Snuggle Me Organic Changing Pad Cover",
    "IKEA VÄDRA Changing Mat Cover",
    "Carter's Cotton Jersey Changing Pad Cover",
    "Burt's Bees Baby Organic Cotton Changing Pad Cover",
    "Mothercare Jersey Changing Mat Cover",
-   "Little West Street Muslin Changing Pad Cover"
+   "Little West Street Muslin Changing Pad Cover",
+   "Pottery Barn Kids Organic Cotton Changing Pad Cover",
+   "Aden + Anais Essentials Muslin Changing Pad Cover",
+   "Mamaearth Bamboo Changing Mat Sheet"
   ],
   "list": [
    {
-    "name": "Burt's Bees Baby Organic Cotton Changing Pad Cover",
-    "why": "Renowned for extremely soft, breathable organic cotton that is gentle on newborn skin during winter.",
+    "name": "Pottery Barn Kids Organic Cotton Changing Pad Cover",
+    "why": "Offers superior fabric quality and softness, perfect for a newborn's delicate skin during the cooler winter months.",
     "pros": [
-     "GOTS certified organic cotton",
-     "High-quality elastic for a snug, safe fit"
+     "Exceptionally soft organic material",
+     "Durable elastic for a snug fit"
     ],
     "cons": [
-     "Can shrink slightly if not washed according to label"
+     "Higher price point compared to standard cotton"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Changing%20Pad%20Cover",
+     "uk": "https://www.next.co.uk/search?w=Pottery%20Barn%20Kids%20Organic%20Cotton%20Changing%20Pad%20Cover",
+     "canada": "https://www.amazon.ca/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Changing%20Pad%20Cover"
+    }
+   },
+   {
+    "name": "Aden + Anais Essentials Muslin Changing Pad Cover",
+    "why": "Known for breathability and becoming softer with every wash, which is ideal for repeated use.",
+    "pros": [
+     "Highly breathable fabric",
+     "Easy to machine wash and dry"
+    ],
+    "cons": [
+     "Muslin can be prone to slight snagging"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Changing%20Pad%20Cover"
+     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Changing%20Pad%20Cover",
+     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Muslin%20Changing%20Pad%20Cover",
+     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Muslin%20Changing%20Pad%20Cover"
     }
    },
    {
-    "name": "Mothercare Jersey Changing Mat Cover",
-    "why": "A widely trusted, durable option available in India that provides a cozy, warm surface for diaper changes.",
+    "name": "Mamaearth Bamboo Changing Mat Sheet",
+    "why": "A practical, locally available Indian option that provides a waterproof layer with eco-friendly bamboo fabric.",
     "pros": [
-     "Soft jersey fabric provides extra comfort",
-     "Easy to machine wash and quick drying"
+     "Waterproof base layer",
+     "Naturally hypoallergenic bamboo fibers"
     ],
     "cons": [
-     "Limited color options compared to boutique brands"
+     "Limited aesthetic patterns available"
     ],
-    "price": 1200,
+    "price": 999,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mothercare%20Jersey%20Changing%20Mat%20Cover",
-     "uk": "https://www.next.co.uk/search?w=Mothercare%20Jersey%20Changing%20Mat%20Cover",
-     "canada": "https://www.amazon.ca/s?k=Mothercare%20Jersey%20Changing%20Mat%20Cover"
-    }
-   },
-   {
-    "name": "Little West Street Muslin Changing Pad Cover",
-    "why": "Specifically designed for the Indian climate, these muslin covers are breathable yet soft enough for cooler months.",
-    "pros": [
-     "Gets softer with every wash",
-     "Beautiful, aesthetic prints"
-    ],
-    "cons": [
-     "Muslin fabric is thinner than jersey cotton"
-    ],
-    "price": 1500,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover",
-     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover",
-     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Muslin%20Changing%20Pad%20Cover"
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Bamboo%20Changing%20Mat%20Sheet",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Bamboo%20Changing%20Mat%20Sheet",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Bamboo%20Changing%20Mat%20Sheet"
     }
    }
   ]
  },
  "10": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "KeaBabies Bandana Bibs 8-pk",
    "Mushie Bandana Bibs 2-pk",
@@ -622,487 +649,581 @@
    "The Moms Co. Organic Cotton Bibs",
    "Copper Pearl Bandana Bibs",
    "Bibado Coverall Weaning Bib",
-   "Mamaearth Organic Cotton Bibs"
+   "Mamaearth Organic Cotton Bibs",
+   "Liewood Neil Silicone Bib 2-Pack",
+   "Bumkins SuperBib",
+   "Little West Street Organic Cotton Embroidered Bibs"
   ],
   "list": [
    {
-    "name": "Copper Pearl Bandana Bibs",
-    "why": "Renowned for their exceptional absorbency and stylish prints that double as a trendy outfit accessory.",
+    "name": "Liewood Neil Silicone Bib 2-Pack",
+    "why": "High-quality, food-grade silicone that is easy to clean and features a deep front pocket for messy eaters.",
     "pros": [
-     "Highly absorbent front fabric",
-     "Adjustable nickel-free snaps"
+     "Dishwasher safe",
+     "Adjustable neck strap"
     ],
     "cons": [
-     "Higher price point than basic options"
+     "Bulkier for storage"
     ],
-    "price": 2200,
+    "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Copper%20Pearl%20Bandana%20Bibs",
-     "uk": "https://www.next.co.uk/search?w=Copper%20Pearl%20Bandana%20Bibs",
-     "canada": "https://www.amazon.ca/s?k=Copper%20Pearl%20Bandana%20Bibs"
+     "india": "https://www.amazon.in/s?k=Liewood%20Neil%20Silicone%20Bib%202-Pack",
+     "uk": "https://www.next.co.uk/search?w=Liewood%20Neil%20Silicone%20Bib%202-Pack",
+     "canada": "https://www.amazon.ca/s?k=Liewood%20Neil%20Silicone%20Bib%202-Pack"
     }
    },
    {
-    "name": "Bibado Coverall Weaning Bib",
-    "why": "Essential for the start of solid foods, this long-sleeved bib keeps the baby's clothing completely clean during messy wi",
+    "name": "Bumkins SuperBib",
+    "why": "A lightweight, waterproof, and stain-resistant fabric bib perfect for newborns transitioning to messy solids.",
     "pros": [
-     "Full coverage design",
-     "Stain-resistant material"
+     "Quick drying material",
+     "Machine washable"
     ],
     "cons": [
-     "Requires more effort to put on"
+     "Fabric is not as soft as cotton"
     ],
-    "price": 1800,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Bibado%20Coverall%20Weaning%20Bib",
-     "uk": "https://www.next.co.uk/search?w=Bibado%20Coverall%20Weaning%20Bib",
-     "canada": "https://www.amazon.ca/s?k=Bibado%20Coverall%20Weaning%20Bib"
+     "india": "https://www.amazon.in/s?k=Bumkins%20SuperBib",
+     "uk": "https://www.next.co.uk/search?w=Bumkins%20SuperBib",
+     "canada": "https://www.amazon.ca/s?k=Bumkins%20SuperBib"
     }
    },
    {
-    "name": "Mamaearth Organic Cotton Bibs",
-    "why": "A widely available, accessible choice in India that uses skin-friendly organic cotton suitable for sensitive newborn ski",
+    "name": "Little West Street Organic Cotton Embroidered Bibs",
+    "why": "Offers a premium, soft feel with beautiful embroidery, ideal for keeping a newborn clean during milk feeds.",
     "pros": [
-     "Soft breathable fabric",
-     "Easy to wash and maintain"
+     "Ultra-soft organic cotton",
+     "Very durable stitching"
     ],
     "cons": [
-     "Less absorbent than multi-layer fleece-backed bibs"
+     "Requires hand washing for longevity"
     ],
-    "price": 600,
+    "price": 950,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamaearth%20Organic%20Cotton%20Bibs",
-     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Organic%20Cotton%20Bibs",
-     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Organic%20Cotton%20Bibs"
+     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Organic%20Cotton%20Embroidered%20Bibs",
+     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Organic%20Cotton%20Embroidered%20Bibs",
+     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Organic%20Cotton%20Embroidered%20Bibs"
     }
    }
   ]
  },
  "11": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mamas & Papas Heritage Velvet Dress & Bloomer Set",
    "The Children's Place Baby Boys Formal Vest Set",
    "Jam & Honey Baby Unisex Formal Romper",
    "Jojo Maman Bébé Tartan Dungaree & Shirt Set",
    "Little West Street Baby Boy Formal Romper Set",
-   "Janie and Jack Velvet Bow Dress Set"
+   "Janie and Jack Velvet Bow Dress Set",
+   "Ralph Lauren Baby Cable-Knit Cotton Cardigan & Pant Set",
+   "PatPat Baby Boy Gentleman Pattern Long-Sleeve Romper",
+   "H&M Baby Wool-Blend Dress & Tights Set"
   ],
   "list": [
    {
-    "name": "Jojo Maman Bébé Tartan Dungaree & Shirt Set",
-    "why": "A classic, timeless British winter formal aesthetic that is both warm and comfortable for newborns.",
+    "name": "Ralph Lauren Baby Cable-Knit Cotton Cardigan & Pant Set",
+    "why": "Offers a timeless, premium look perfect for winter layering while ensuring the baby stays warm and comfortable.",
     "pros": [
-     "Soft cotton lining for sensitive skin",
-     "Traditional high-quality festive design"
+     "High-quality breathable cotton",
+     "Sophisticated aesthetic"
     ],
     "cons": [
-     "Expensive international shipping from UK"
+     "Higher price point"
     ],
-    "price": 4200,
+    "price": 8500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set",
-     "uk": "https://www.next.co.uk/search?w=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set",
-     "canada": "https://www.amazon.ca/s?k=Jojo%20Maman%20B%C3%A9b%C3%A9%20Tartan%20Dungaree%20%26%20Shirt%20Set"
+     "india": "https://www.amazon.in/s?k=Ralph%20Lauren%20Baby%20Cable-Knit%20Cotton%20Cardigan%20%26%20Pant%20Set",
+     "uk": "https://www.next.co.uk/search?w=Ralph%20Lauren%20Baby%20Cable-Knit%20Cotton%20Cardigan%20%26%20Pant%20Set",
+     "canada": "https://www.amazon.ca/s?k=Ralph%20Lauren%20Baby%20Cable-Knit%20Cotton%20Cardigan%20%26%20Pant%20Set"
     }
    },
    {
-    "name": "Little West Street Baby Boy Formal Romper Set",
-    "why": "A premium Indian brand that offers high-quality cotton fabrics suitable for the Indian winter climate.",
+    "name": "PatPat Baby Boy Gentleman Pattern Long-Sleeve Romper",
+    "why": "A practical one-piece design that mimics a formal suit, ideal for winter events where comfort and ease of diaper changes",
     "pros": [
-     "Breathable organic cotton material",
-     "Easy-access snap buttons for diaper changes"
+     "Convenient snap closures",
+     "Soft, stretchy material"
     ],
     "cons": [
-     "Limited stock availability in retail stores"
+     "Sizing can run small"
     ],
-    "price": 2800,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set",
-     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set",
-     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Baby%20Boy%20Formal%20Romper%20Set"
+     "india": "https://www.amazon.in/s?k=PatPat%20Baby%20Boy%20Gentleman%20Pattern%20Long-Sleeve%20Romper",
+     "uk": "https://www.next.co.uk/search?w=PatPat%20Baby%20Boy%20Gentleman%20Pattern%20Long-Sleeve%20Romper",
+     "canada": "https://www.amazon.ca/s?k=PatPat%20Baby%20Boy%20Gentleman%20Pattern%20Long-Sleeve%20Romper"
     }
    },
    {
-    "name": "Janie and Jack Velvet Bow Dress Set",
-    "why": "Known for high-end boutique quality, this set provides a sophisticated look for formal winter occasions.",
+    "name": "H&M Baby Wool-Blend Dress & Tights Set",
+    "why": "A winter-ready formal choice that combines a festive, elegant look with the warmth of a wool-blend fabric.",
     "pros": [
-     "Exceptional fabric durability",
-     "Includes matching accessories"
+     "Includes coordinating tights",
+     "Soft inner lining for sensitive skin"
     ],
     "cons": [
-     "Requires delicate hand washing"
+     "Requires delicate hand-washing"
     ],
-    "price": 6500,
+    "price": 2499,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set",
-     "uk": "https://www.next.co.uk/search?w=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set",
-     "canada": "https://www.amazon.ca/s?k=Janie%20and%20Jack%20Velvet%20Bow%20Dress%20Set"
+     "india": "https://www.amazon.in/s?k=H%26M%20Baby%20Wool-Blend%20Dress%20%26%20Tights%20Set",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20Baby%20Wool-Blend%20Dress%20%26%20Tights%20Set",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20Baby%20Wool-Blend%20Dress%20%26%20Tights%20Set"
     }
    }
   ]
  },
  "12": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mamas & Papas Essential Cotton Sleepsuit",
    "Kyte BABY Zipper Footie",
    "FirstCry BabyHug Interlock Sleepsuit",
    "Burt's Bees Baby Organic Cotton Beekeeper Wearable Blanket",
    "Little Me Footie and Hat Set",
-   "SuperBottoms Organic Cotton Sleepsuit"
+   "SuperBottoms Organic Cotton Sleepsuit",
+   "Aden + Anais Essentials Easy-Zip Sleepsuit",
+   "Marks & Spencer Pure Cotton Sleepsuits (3-Pack)",
+   "Magnetic Me Modal Footie"
   ],
   "list": [
    {
-    "name": "Burt's Bees Baby Organic Cotton Beekeeper Wearable Blanket",
-    "why": "A safe, GOTS-certified organic cotton option that keeps babies warm during Indian winters without the risk of loose blan",
+    "name": "Aden + Anais Essentials Easy-Zip Sleepsuit",
+    "why": "The muslin fabric is breathable yet cozy for mild Indian winters and features a two-way zipper for quick changes.",
     "pros": [
-     "Breathable organic material",
-     "Excellent durability after multiple washes"
+     "Breathable cotton muslin fabric",
+     "Two-way zipper design"
     ],
     "cons": [
-     "Higher price point due to import"
-    ],
-    "price": 3200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Beekeeper%20Wearable%20Blanket"
-    }
-   },
-   {
-    "name": "Little Me Footie and Hat Set",
-    "why": "Renowned for high-quality, soft knits that provide extra warmth, making them perfect for the slightly cooler North India",
-    "pros": [
-     "Features adorable prints",
-     "Includes a matching cap for heat retention"
-    ],
-    "cons": [
-     "Available primarily through international shipping"
+     "Fabric can feel slightly rougher than jersey cotton"
     ],
     "price": 2800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Little%20Me%20Footie%20and%20Hat%20Set",
-     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Footie%20and%20Hat%20Set",
-     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Footie%20and%20Hat%20Set"
+     "india": "https://www.amazon.in/s?k=Aden%20%2B%20Anais%20Essentials%20Easy-Zip%20Sleepsuit",
+     "uk": "https://www.next.co.uk/search?w=Aden%20%2B%20Anais%20Essentials%20Easy-Zip%20Sleepsuit",
+     "canada": "https://www.amazon.ca/s?k=Aden%20%2B%20Anais%20Essentials%20Easy-Zip%20Sleepsuit"
     }
    },
    {
-    "name": "SuperBottoms Organic Cotton Sleepsuit",
-    "why": "A highly-rated Indian brand that uses GOTS-certified cotton, specifically designed for the Indian climate and skin sensi",
+    "name": "Marks & Spencer Pure Cotton Sleepsuits (3-Pack)",
+    "why": "A staple for UK-based quality that offers excellent durability and softness for newborn skin through repeated washes.",
     "pros": [
-     "Convenient snap buttons for easy diaper changes",
-     "Soft, chemical-free fabric"
+     "High-quality, durable pure cotton",
+     "Integrated scratch mitts on smaller sizes"
     ],
     "cons": [
-     "Limited pattern variety compared to global brands"
+     "Sizes can run slightly small"
     ],
-    "price": 1200,
+    "price": 2200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=SuperBottoms%20Organic%20Cotton%20Sleepsuit",
-     "uk": "https://www.next.co.uk/search?w=SuperBottoms%20Organic%20Cotton%20Sleepsuit",
-     "canada": "https://www.amazon.ca/s?k=SuperBottoms%20Organic%20Cotton%20Sleepsuit"
+     "india": "https://www.amazon.in/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Sleepsuits%20(3-Pack)",
+     "uk": "https://www.next.co.uk/search?w=Marks%20%26%20Spencer%20Pure%20Cotton%20Sleepsuits%20(3-Pack)",
+     "canada": "https://www.amazon.ca/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Sleepsuits%20(3-Pack)"
+    }
+   },
+   {
+    "name": "Magnetic Me Modal Footie",
+    "why": "The magnetic fastener system is a game-changer for middle-of-the-night diaper changes in the cold.",
+    "pros": [
+     "Magnetic closures for effortless dressing",
+     "Buttery soft modal fabric"
+    ],
+    "cons": [
+     "Magnets require careful handling during machine washing"
+    ],
+    "price": 3500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Magnetic%20Me%20Modal%20Footie",
+     "uk": "https://www.next.co.uk/search?w=Magnetic%20Me%20Modal%20Footie",
+     "canada": "https://www.amazon.ca/s?k=Magnetic%20Me%20Modal%20Footie"
     }
    }
   ]
  },
  "13": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "H&M Cotton Jersey Baby Blanket",
    "Aden + Anais Essentials Muslin Swaddle Blanket",
    "FirstCry Babyhug Anti-Scratch Mittens & Booties Set",
    "Mamas & Papas Welcome to the World Knitted Cardigan",
    "Kyte BABY Sleep Bag (0.5 Tog)",
-   "Carter's Baby Zip-Up Fleece Pram Suit"
+   "Carter's Baby Zip-Up Fleece Pram Suit",
+   "The Children's Place Long Sleeve Bodysuit Multi-Pack",
+   "JoJo Maman Bébé Baby Cotton Ribbed Tights",
+   "Maxomorra Organic Cotton Baby Hat"
   ],
   "list": [
    {
-    "name": "Mamas & Papas Welcome to the World Knitted Cardigan",
-    "why": "A high-quality, essential layering piece for Indian winters that keeps newborns cozy without overheating.",
+    "name": "The Children's Place Long Sleeve Bodysuit Multi-Pack",
+    "why": "Essential base layers that are durable, soft, and easy to layer under winter clothes for Indian newborn winters.",
     "pros": [
-     "Breathable cotton-rich fabric",
-     "Durable snap-button closures"
+     "Reliable snap closures",
+     "Soft cotton fabric"
     ],
     "cons": [
-     "Requires delicate hand-wash care"
+     "Standard fit can be wide for very slim babies"
     ],
-    "price": 2800,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan",
-     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan",
-     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Knitted%20Cardigan"
+     "india": "https://www.amazon.in/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuit%20Multi-Pack",
+     "uk": "https://www.next.co.uk/search?w=The%20Children's%20Place%20Long%20Sleeve%20Bodysuit%20Multi-Pack",
+     "canada": "https://www.amazon.ca/s?k=The%20Children's%20Place%20Long%20Sleeve%20Bodysuit%20Multi-Pack"
     }
    },
    {
-    "name": "Kyte BABY Sleep Bag (0.5 Tog)",
-    "why": "The gold standard for safe sleep, featuring ultra-soft bamboo rayon that regulates temperature effectively.",
+    "name": "JoJo Maman Bébé Baby Cotton Ribbed Tights",
+    "why": "Crucial for keeping legs warm in India's cooler months; they stay up well and provide extra insulation.",
     "pros": [
-     "Incredibly soft material",
-     "Double zipper for easy diaper changes"
+     "Excellent quality cotton",
+     "Non-restrictive waistband"
     ],
     "cons": [
-     "Premium pricing"
+     "Can shrink slightly if tumble dried"
     ],
-    "price": 4500,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)",
-     "uk": "https://www.next.co.uk/search?w=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)",
-     "canada": "https://www.amazon.ca/s?k=Kyte%20BABY%20Sleep%20Bag%20(0.5%20Tog)"
+     "india": "https://www.amazon.in/s?k=JoJo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Cotton%20Ribbed%20Tights",
+     "uk": "https://www.next.co.uk/search?w=JoJo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Cotton%20Ribbed%20Tights",
+     "canada": "https://www.amazon.ca/s?k=JoJo%20Maman%20B%C3%A9b%C3%A9%20Baby%20Cotton%20Ribbed%20Tights"
     }
    },
    {
-    "name": "Carter's Baby Zip-Up Fleece Pram Suit",
-    "why": "Perfect for keeping the baby warm during outdoor outings in the cooler months of November.",
+    "name": "Maxomorra Organic Cotton Baby Hat",
+    "why": "High-quality, GOTS-certified organic cotton keeps a newborn's head warm without causing overheating.",
     "pros": [
-     "Full coverage for warmth",
-     "Easy zip-up design"
+     "Soft flat-lock seams",
+     "Breathable organic material"
     ],
     "cons": [
-     "Can feel bulky for car seat use"
+     "Limited availability in local Indian retail"
     ],
-    "price": 3200,
+    "price": 950,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit",
-     "uk": "https://www.next.co.uk/search?w=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit",
-     "canada": "https://www.amazon.ca/s?k=Carter's%20Baby%20Zip-Up%20Fleece%20Pram%20Suit"
+     "india": "https://www.amazon.in/s?k=Maxomorra%20Organic%20Cotton%20Baby%20Hat",
+     "uk": "https://www.next.co.uk/search?w=Maxomorra%20Organic%20Cotton%20Baby%20Hat",
+     "canada": "https://www.amazon.ca/s?k=Maxomorra%20Organic%20Cotton%20Baby%20Hat"
     }
    }
   ]
  },
  "14": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "H&M Cotton Jersey Booties",
    "Jojo Maman Bébé Stay-On Booties",
    "FirstCry BabyHug Soft Booties",
    "Zutano Unisex Baby Fleece Booties",
    "Moromini Organic Cotton Ribbed Booties",
-   "Little West Street Cotton Baby Booties"
+   "Little West Street Cotton Baby Booties",
+   "Stonz Baby Booties",
+   "Hanna Andersson Baby Moccasins",
+   "Maxomorra Organic Cotton Velour Booties"
   ],
   "list": [
    {
-    "name": "Zutano Unisex Baby Fleece Booties",
-    "why": "The gold standard for staying on due to their unique snap-button side closure system.",
+    "name": "Stonz Baby Booties",
+    "why": "The gold standard for Canadian winters, featuring a water-resistant shell and fleece lining that fits over regular socks",
     "pros": [
-     "Stays securely on even the wiggliest feet",
-     "Soft, warm fleece material perfect for winter"
+     "Wind and water resistant",
+     "Adjustable toggles ensure they stay on"
     ],
     "cons": [
-     "Higher price point compared to standard cotton socks"
+     "Bulky for indoor use"
     ],
-    "price": 2800,
+    "price": 3200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Zutano%20Unisex%20Baby%20Fleece%20Booties",
-     "uk": "https://www.next.co.uk/search?w=Zutano%20Unisex%20Baby%20Fleece%20Booties",
-     "canada": "https://www.amazon.ca/s?k=Zutano%20Unisex%20Baby%20Fleece%20Booties"
+     "india": "https://www.amazon.in/s?k=Stonz%20Baby%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Stonz%20Baby%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Stonz%20Baby%20Booties"
     }
    },
    {
-    "name": "Moromini Organic Cotton Ribbed Booties",
-    "why": "High-quality European craftsmanship with extra-long cuffs that keep them from slipping off.",
+    "name": "Hanna Andersson Baby Moccasins",
+    "why": "Premium organic cotton construction with a signature design that mimics the comfort of socks while providing more durabi",
     "pros": [
-     "Excellent organic material quality",
-     "Extra-long cuffs provide a secure, cozy fit"
+     "OEKO-TEX certified organic fabric",
+     "Very gentle on sensitive newborn skin"
+    ],
+    "cons": [
+     "Higher price point for a basic item"
+    ],
+    "price": 2400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Hanna%20Andersson%20Baby%20Moccasins",
+     "uk": "https://www.next.co.uk/search?w=Hanna%20Andersson%20Baby%20Moccasins",
+     "canada": "https://www.amazon.ca/s?k=Hanna%20Andersson%20Baby%20Moccasins"
+    }
+   },
+   {
+    "name": "Maxomorra Organic Cotton Velour Booties",
+    "why": "A popular European choice known for soft, high-quality velour fabric that provides extra warmth during the colder Indian",
+    "pros": [
+     "Excellent heat retention",
+     "Fun, vibrant patterns"
     ],
     "cons": [
      "Requires international shipping from Europe or UK"
     ],
-    "price": 1600,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Moromini%20Organic%20Cotton%20Ribbed%20Booties",
-     "uk": "https://www.next.co.uk/search?w=Moromini%20Organic%20Cotton%20Ribbed%20Booties",
-     "canada": "https://www.amazon.ca/s?k=Moromini%20Organic%20Cotton%20Ribbed%20Booties"
-    }
-   },
-   {
-    "name": "Little West Street Cotton Baby Booties",
-    "why": "A premium Indian brand offering soft, breathable, and stylish options available locally.",
-    "pros": [
-     "Soft 100% cotton fabric is gentle on newborn skin",
-     "Easily accessible within the Indian market"
-    ],
-    "cons": [
-     "Less grip than fleece options for crawling infants"
-    ],
-    "price": 800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Cotton%20Baby%20Booties",
-     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Cotton%20Baby%20Booties",
-     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Cotton%20Baby%20Booties"
+     "india": "https://www.amazon.in/s?k=Maxomorra%20Organic%20Cotton%20Velour%20Booties",
+     "uk": "https://www.next.co.uk/search?w=Maxomorra%20Organic%20Cotton%20Velour%20Booties",
+     "canada": "https://www.amazon.ca/s?k=Maxomorra%20Organic%20Cotton%20Velour%20Booties"
     }
    }
   ]
  },
  "15": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "H&M Cotton Jersey Mittens",
    "FirstCry BabyHug Scratch Mittens",
    "Aden + Anais Essentials Muslin Mittens",
    "Kyte Baby Scratch Mittens",
    "Burt's Bees Baby Organic Cotton Mittens",
-   "Mamas & Papas Essential Cotton Mittens"
+   "Mamas & Papas Essential Cotton Mittens",
+   "Little Me Cotton Scratch Mittens",
+   "Magnetic Me Modal Scratch Mittens",
+   "Touched by Nature Organic Cotton Mittens"
   ],
   "list": [
    {
-    "name": "Kyte Baby Scratch Mittens",
-    "why": "Made from signature bamboo rayon which is temperature-regulating, perfect for transitioning into the Indian winter.",
+    "name": "Little Me Cotton Scratch Mittens",
+    "why": "Known for soft, high-quality fabrics that withstand frequent washing, essential for winter newborns.",
     "pros": [
-     "Extremely soft and gentle on sensitive skin",
-     "Stays on well due to high-quality elastic"
+     "Ultra-soft cotton",
+     "Durable stitching"
     ],
     "cons": [
-     "Higher price point due to international shipping/import"
-    ],
-    "price": 1800,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Kyte%20Baby%20Scratch%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=Kyte%20Baby%20Scratch%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=Kyte%20Baby%20Scratch%20Mittens"
-    }
-   },
-   {
-    "name": "Burt's Bees Baby Organic Cotton Mittens",
-    "why": "A gold standard for organic cotton that provides warmth without overheating, widely available in Canada and UK markets.",
-    "pros": [
-     "100% GOTS-certified organic cotton",
-     "Durable fabric that withstands multiple washes"
-    ],
-    "cons": [
-     "Can shrink slightly if tumble dried on high heat"
-    ],
-    "price": 1200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Organic%20Cotton%20Mittens"
-    }
-   },
-   {
-    "name": "Mamas & Papas Essential Cotton Mittens",
-    "why": "Designed by a UK-based baby expert, these are practical and offer a reliable fit for newborns.",
-    "pros": [
-     "Excellent fit that doesn't slip off easily",
-     "Simple, neutral designs that match most outfits"
-    ],
-    "cons": [
-     "Less breathable than bamboo fabrics"
+     "Elastic can be slightly tight on some babies"
     ],
     "price": 950,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens",
-     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens",
-     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Essential%20Cotton%20Mittens"
+     "india": "https://www.amazon.in/s?k=Little%20Me%20Cotton%20Scratch%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Little%20Me%20Cotton%20Scratch%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Little%20Me%20Cotton%20Scratch%20Mittens"
+    }
+   },
+   {
+    "name": "Magnetic Me Modal Scratch Mittens",
+    "why": "Features sustainable, buttery-soft modal fabric that provides optimal temperature regulation for winter babies.",
+    "pros": [
+     "Breathable material",
+     "Very gentle on sensitive skin"
+    ],
+    "cons": [
+     "Higher price point"
+    ],
+    "price": 1400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Magnetic%20Me%20Modal%20Scratch%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Magnetic%20Me%20Modal%20Scratch%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Magnetic%20Me%20Modal%20Scratch%20Mittens"
+    }
+   },
+   {
+    "name": "Touched by Nature Organic Cotton Mittens",
+    "why": "Offers an affordable, GOTS-certified organic cotton option that is widely accessible for international shipping.",
+    "pros": [
+     "Organic and chemical-free",
+     "Generous fit"
+    ],
+    "cons": [
+     "Limited color variety"
+    ],
+    "price": 750,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Touched%20by%20Nature%20Organic%20Cotton%20Mittens",
+     "uk": "https://www.next.co.uk/search?w=Touched%20by%20Nature%20Organic%20Cotton%20Mittens",
+     "canada": "https://www.amazon.ca/s?k=Touched%20by%20Nature%20Organic%20Cotton%20Mittens"
     }
    }
   ]
  },
  "16": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Aden + Anais Essentials Hooded Towel",
    "The White Company Hydrocotton Hooded Baby Towel",
    "Pottery Barn Kids Organic Cotton Hooded Towel",
    "Little West Street Organic Cotton Hooded Towel",
    "Burt's Bees Baby Hooded Towel",
-   "Mothercare Hooded Baby Towel"
+   "Mothercare Hooded Baby Towel",
+   "Liewood Agnete Cuddle Cloth Hooded Towel",
+   "Marks & Spencer Pure Cotton Hooded Towel",
+   "Hudson Baby Animal Face Hooded Towel"
   ],
   "list": [
    {
-    "name": "Little West Street Organic Cotton Hooded Towel",
-    "why": "A premium Indian brand offering soft, GOTS-certified organic cotton perfect for delicate newborn skin.",
+    "name": "Liewood Agnete Cuddle Cloth Hooded Towel",
+    "why": "Crafted from soft, high-quality organic cotton terry, perfect for sensitive newborn skin in cooler weather.",
     "pros": [
      "Extremely soft and absorbent",
-     "Stylish and modern prints"
+     "Durable high-quality fabric"
     ],
     "cons": [
-     "Higher price point than local market options"
+     "Higher price point due to import"
     ],
-    "price": 1499,
+    "price": 4500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel",
-     "uk": "https://www.next.co.uk/search?w=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel",
-     "canada": "https://www.amazon.ca/s?k=Little%20West%20Street%20Organic%20Cotton%20Hooded%20Towel"
+     "india": "https://www.amazon.in/s?k=Liewood%20Agnete%20Cuddle%20Cloth%20Hooded%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Liewood%20Agnete%20Cuddle%20Cloth%20Hooded%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Liewood%20Agnete%20Cuddle%20Cloth%20Hooded%20Towel"
     }
    },
    {
-    "name": "Burt's Bees Baby Hooded Towel",
-    "why": "Widely available in Canada/US markets, this towel is known for its durability and high-quality organic knit fabric.",
+    "name": "Marks & Spencer Pure Cotton Hooded Towel",
+    "why": "A reliable, widely available choice that balances comfort with excellent wash-and-wear durability.",
     "pros": [
-     "Excellent thickness and warmth",
+     "Thick, cozy material",
      "Retains softness after multiple washes"
     ],
     "cons": [
-     "Limited availability in India without international shipping"
+     "Limited design variety"
     ],
-    "price": 2800,
+    "price": 1200,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Hooded%20Towel",
-     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Hooded%20Towel",
-     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Hooded%20Towel"
+     "india": "https://www.amazon.in/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Hooded%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Marks%20%26%20Spencer%20Pure%20Cotton%20Hooded%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Marks%20%26%20Spencer%20Pure%20Cotton%20Hooded%20Towel"
     }
    },
    {
-    "name": "Mothercare Hooded Baby Towel",
-    "why": "A trusted global staple that is easily accessible in India and offers reliable quality for everyday winter use.",
+    "name": "Hudson Baby Animal Face Hooded Towel",
+    "why": "Excellent value-for-money option that provides extra warmth with its playful, thick-hooded design.",
     "pros": [
-     "Very easy to source in major Indian cities",
-     "Standard size fits newborns well"
+     "Generous sizing for longevity",
+     "Very soft texture"
     ],
     "cons": [
-     "Can feel slightly thinner than luxury organic brands"
+     "Synthetic blend may be less breathable"
     ],
-    "price": 999,
+    "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mothercare%20Hooded%20Baby%20Towel",
-     "uk": "https://www.next.co.uk/search?w=Mothercare%20Hooded%20Baby%20Towel",
-     "canada": "https://www.amazon.ca/s?k=Mothercare%20Hooded%20Baby%20Towel"
+     "india": "https://www.amazon.in/s?k=Hudson%20Baby%20Animal%20Face%20Hooded%20Towel",
+     "uk": "https://www.next.co.uk/search?w=Hudson%20Baby%20Animal%20Face%20Hooded%20Towel",
+     "canada": "https://www.amazon.ca/s?k=Hudson%20Baby%20Animal%20Face%20Hooded%20Towel"
     }
    }
   ]
  },
  "17": {
-  "ts": "2026-06-23",
+  "ts": "2026-06-24",
   "seen": [
    "Mustela Gentle Cleansing Gel",
    "Mamaearth Deep Nourishing Baby Wash",
    "Baby Dove Rich Moisture Tip to Toe Wash",
    "Eucerin Baby Wash & Shampoo",
    "Pipette Baby Shampoo & Wash",
-   "The Moms Co. Baby Wash"
+   "The Moms Co. Baby Wash",
+   "Burt's Bees Baby Shampoo & Wash",
+   "La Roche-Posay Lipikar Gel Lavant",
+   "Johnson's Baby CottonTouch Top-to-Toe Wash & Shampoo"
+  ],
+  "list": [
+   {
+    "name": "Burt's Bees Baby Shampoo & Wash",
+    "why": "A tear-free, plant-based formula that is gentle on newborn skin and naturally scented.",
+    "pros": [
+     "99.9% natural origin",
+     "Pediatrician tested"
+    ],
+    "cons": [
+     "Slightly stronger natural fragrance than unscented alternatives"
+    ],
+    "price": 1400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash"
+    }
+   },
+   {
+    "name": "La Roche-Posay Lipikar Gel Lavant",
+    "why": "Highly recommended by dermatologists for newborns with sensitive or eczema-prone skin.",
+    "pros": [
+     "Soap-free and paraben-free",
+     "Helps restore the skin barrier"
+    ],
+    "cons": [
+     "Premium price point"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
+     "uk": "https://www.next.co.uk/search?w=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
+     "canada": "https://www.amazon.ca/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant"
+    }
+   },
+   {
+    "name": "Johnson's Baby CottonTouch Top-to-Toe Wash & Shampoo",
+    "why": "Specifically designed for the delicate nature of newborn skin, mixing real cotton with a light, airy lather.",
+    "pros": [
+     "Ultra-light and easy to rinse",
+     "Hypoallergenic and pH balanced"
+    ],
+    "cons": [
+     "Contains some synthetic ingredients compared to organic brands"
+    ],
+    "price": 450,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Wash%20%26%20Shampoo",
+     "uk": "https://www.next.co.uk/search?w=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Wash%20%26%20Shampoo",
+     "canada": "https://www.amazon.ca/s?k=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Wash%20%26%20Shampoo"
+    }
+   }
+  ]
+ },
+ "18": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Aveeno Baby Wash & Shampoo",
+   "Cetaphil Baby Wash & Shampoo",
+   "Pipette Baby Shampoo & Wash",
+   "Baby Dove Sensitive Moisture Tip to Toe Wash",
+   "La Roche-Posay Lipikar Gel Lavant",
+   "Mamaearth Deeply Nourishing Baby Wash",
+   "Eucerin Baby Wash & Shampoo",
+   "Johnson's Baby CottonTouch Top-to-Toe Bath",
+   "Burt's Bees Baby Shampoo & Wash"
   ],
   "list": [
    {
     "name": "Eucerin Baby Wash & Shampoo",
-    "why": "Formulated specifically for sensitive, eczema-prone skin common in cooler, dry winter climates.",
+    "why": "A fragrance-free, soap-free formula specifically designed for babies with highly sensitive or eczema-prone skin.",
     "pros": [
-     "Soap-free and fragrance-free",
-     "Very gentle on eyes"
+     "Non-irritating and tear-free",
+     "Excellent for dry winter skin"
     ],
     "cons": [
-     "Less lather than standard washes"
+     "Does not produce a rich lather"
     ],
     "price": 1800,
     "currency": "INR",
@@ -1113,106 +1234,2663 @@
     }
    },
    {
-    "name": "Pipette Baby Shampoo & Wash",
-    "why": "Uses sugarcane-derived squalane to mimic natural vernix, keeping newborn skin hydrated in winter.",
+    "name": "Johnson's Baby CottonTouch Top-to-Toe Bath",
+    "why": "Formulated with real cotton, this ultra-light cleanser is designed for a newborn's delicate skin barrier.",
     "pros": [
-     "Clean, non-toxic ingredients",
-     "Hypoallergenic formula"
+     "Very gentle and rinses off easily",
+     "Clinically proven to be mild"
     ],
     "cons": [
-     "Harder to find in local Indian retail stores"
-    ],
-    "price": 2200,
-    "currency": "INR",
-    "links": {
-     "india": "https://www.amazon.in/s?k=Pipette%20Baby%20Shampoo%20%26%20Wash",
-     "uk": "https://www.next.co.uk/search?w=Pipette%20Baby%20Shampoo%20%26%20Wash",
-     "canada": "https://www.amazon.ca/s?k=Pipette%20Baby%20Shampoo%20%26%20Wash"
-    }
-   },
-   {
-    "name": "The Moms Co. Baby Wash",
-    "why": "A highly-rated, locally available Indian brand that uses natural, tear-free ingredients suitable for delicate skin.",
-    "pros": [
-     "Easily accessible in India",
-     "Contains organic argan and avocado oil"
-    ],
-    "cons": [
-     "Bottle pump mechanism can sometimes clog"
+     "Contains mild fragrance"
     ],
     "price": 450,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=The%20Moms%20Co.%20Baby%20Wash",
-     "uk": "https://www.next.co.uk/search?w=The%20Moms%20Co.%20Baby%20Wash",
-     "canada": "https://www.amazon.ca/s?k=The%20Moms%20Co.%20Baby%20Wash"
+     "india": "https://www.amazon.in/s?k=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Bath",
+     "uk": "https://www.next.co.uk/search?w=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Bath",
+     "canada": "https://www.amazon.ca/s?k=Johnson's%20Baby%20CottonTouch%20Top-to-Toe%20Bath"
+    }
+   },
+   {
+    "name": "Burt's Bees Baby Shampoo & Wash",
+    "why": "A plant-based, natural origin formula that is tear-free and keeps the skin moisturized during harsh winter months.",
+    "pros": [
+     "99.9% natural origin ingredients",
+     "Sulfate-free and phthalate-free"
+    ],
+    "cons": [
+     "Pump dispenser can be stiff"
+    ],
+    "price": 1600,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Shampoo%20%26%20Wash"
     }
    }
   ]
  },
- "18": {
-  "ts": "2026-06-23",
+ "19": {
+  "ts": "2026-06-24",
   "seen": [
-   "Aveeno Baby Wash & Shampoo",
-   "Cetaphil Baby Wash & Shampoo",
-   "Pipette Baby Shampoo & Wash",
-   "Baby Dove Sensitive Moisture Tip to Toe Wash",
-   "La Roche-Posay Lipikar Gel Lavant",
-   "Mamaearth Deeply Nourishing Baby Wash"
+   "Mamaearth Deep Nourishing Baby Lotion",
+   "Mustela Hydra Bébé Body Lotion",
+   "Sebamed Baby Massage Oil"
   ],
   "list": [
    {
-    "name": "Baby Dove Sensitive Moisture Tip to Toe Wash",
-    "why": "Formulated with 1/4 moisturizing cream, it is exceptionally gentle for newborns in dry winter months.",
+    "name": "Mamaearth Deep Nourishing Baby Lotion",
+    "why": "A popular, widely available Indian brand formulated with natural ingredients specifically for delicate newborn skin.",
     "pros": [
-     "Hypoallergenic and tear-free",
-     "Very affordable and widely available"
+     "Enriched with Shea butter and Cocoa butter",
+     "Dermatologically tested and toxin-free"
     ],
     "cons": [
      "Contains fragrance which may irritate extremely sensitive skin"
     ],
-    "price": 350,
+    "price": 300,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash",
-     "uk": "https://www.next.co.uk/search?w=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash",
-     "canada": "https://www.amazon.ca/s?k=Baby%20Dove%20Sensitive%20Moisture%20Tip%20to%20Toe%20Wash"
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Deep%20Nourishing%20Baby%20Lotion",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Deep%20Nourishing%20Baby%20Lotion",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Deep%20Nourishing%20Baby%20Lotion"
     }
    },
    {
-    "name": "La Roche-Posay Lipikar Gel Lavant",
-    "why": "A premium soap-free formula designed for sensitive, dry, or eczema-prone skin, perfect for harsh winter air.",
+    "name": "Mustela Hydra Bébé Body Lotion",
+    "why": "A premium French skincare staple widely available in India and internationally, known for high safety standards.",
     "pros": [
-     "Contains Niacinamide and Shea Butter",
-     "Excellent for soothing irritated skin"
+     "Contains 97% plant-based ingredients",
+     "Provides long-lasting hydration for winter dryness"
     ],
     "cons": [
-     "Higher price point compared to standard baby brands"
+     "Higher price point compared to local brands"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mustela%20Hydra%20B%C3%A9b%C3%A9%20Body%20Lotion",
+     "uk": "https://www.next.co.uk/search?w=Mustela%20Hydra%20B%C3%A9b%C3%A9%20Body%20Lotion",
+     "canada": "https://www.amazon.ca/s?k=Mustela%20Hydra%20B%C3%A9b%C3%A9%20Body%20Lotion"
+    }
+   },
+   {
+    "name": "Sebamed Baby Massage Oil",
+    "why": "A clinically proven pH-balanced formula that is gentle enough for newborns and ideal for massage.",
+    "pros": [
+     "Supports the development of the skin's acid mantle",
+     "Non-greasy and absorbs easily"
+    ],
+    "cons": [
+     "Bottle design can be prone to leaking if not stored upright"
+    ],
+    "price": 650,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Sebamed%20Baby%20Massage%20Oil",
+     "uk": "https://www.next.co.uk/search?w=Sebamed%20Baby%20Massage%20Oil",
+     "canada": "https://www.amazon.ca/s?k=Sebamed%20Baby%20Massage%20Oil"
+    }
+   }
+  ]
+ },
+ "20": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Mamaearth Dusting Powder for Babies",
+   "Burt's Bees Baby Dusting Powder",
+   "Sebamed Baby Powder"
+  ],
+  "list": [
+   {
+    "name": "Mamaearth Dusting Powder for Babies",
+    "why": "A popular, talc-free option in India that uses natural cornstarch to absorb moisture without irritating sensitive newbor",
+    "pros": [
+     "Talc-free formula",
+     "Contains organic oatmeal and lavender"
+    ],
+    "cons": [
+     "Scent may be too strong for some newborns"
+    ],
+    "price": 250,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamaearth%20Dusting%20Powder%20for%20Babies",
+     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Dusting%20Powder%20for%20Babies",
+     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Dusting%20Powder%20for%20Babies"
+    }
+   },
+   {
+    "name": "Burt's Bees Baby Dusting Powder",
+    "why": "A highly-rated international favorite that uses natural ingredients like cornstarch and kaolin clay to keep baby dry.",
+    "pros": [
+     "100% natural origin",
+     "Very gentle on skin folds"
+    ],
+    "cons": [
+     "Expensive due to import costs"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Dusting%20Powder",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Dusting%20Powder",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Dusting%20Powder"
+    }
+   },
+   {
+    "name": "Sebamed Baby Powder",
+    "why": "Dermatologically tested with a pH of 5.5, it helps maintain the skin's natural acid mantle, ideal for Indian winter clim",
+    "pros": [
+     "Clinical pH 5.5 balance",
+     "Reduces friction effectively"
+    ],
+    "cons": [
+     "Container design can make it messy to apply"
+    ],
+    "price": 450,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Sebamed%20Baby%20Powder",
+     "uk": "https://www.next.co.uk/search?w=Sebamed%20Baby%20Powder",
+     "canada": "https://www.amazon.ca/s?k=Sebamed%20Baby%20Powder"
+    }
+   }
+  ]
+ },
+ "21": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Burt's Bees Baby Bee Diaper Ointment",
+   "Aquaphor Baby Healing Ointment",
+   "Mustela Diaper Rash Cream 1 2 3"
+  ],
+  "list": [
+   {
+    "name": "Burt's Bees Baby Bee Diaper Ointment",
+    "why": "A 100% natural, pediatrician-tested formula that uses zinc oxide to create a moisture-wicking barrier.",
+    "pros": [
+     "Natural ingredients",
+     "Non-irritating"
+    ],
+    "cons": [
+     "Can be difficult to wash off"
+    ],
+    "price": 1400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Bee%20Diaper%20Ointment",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Bee%20Diaper%20Ointment",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Bee%20Diaper%20Ointment"
+    }
+   },
+   {
+    "name": "Aquaphor Baby Healing Ointment",
+    "why": "Highly versatile multi-purpose ointment that creates an ideal environment for healing sensitive, irritated skin.",
+    "pros": [
+     "Fragrance-free",
+     "Very fast-acting"
+    ],
+    "cons": [
+     "Greasy texture"
+    ],
+    "price": 1100,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Aquaphor%20Baby%20Healing%20Ointment",
+     "uk": "https://www.next.co.uk/search?w=Aquaphor%20Baby%20Healing%20Ointment",
+     "canada": "https://www.amazon.ca/s?k=Aquaphor%20Baby%20Healing%20Ointment"
+    }
+   },
+   {
+    "name": "Mustela Diaper Rash Cream 1 2 3",
+    "why": "A scientifically backed formula that prevents, relieves, and recovers skin from diaper rash with avocado perseose.",
+    "pros": [
+     "High natural origin content",
+     "Easy to apply and wipe off"
+    ],
+    "cons": [
+     "Contains fragrance"
+    ],
+    "price": 950,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mustela%20Diaper%20Rash%20Cream%201%202%203",
+     "uk": "https://www.next.co.uk/search?w=Mustela%20Diaper%20Rash%20Cream%201%202%203",
+     "canada": "https://www.amazon.ca/s?k=Mustela%20Diaper%20Rash%20Cream%201%202%203"
+    }
+   }
+  ]
+ },
+ "22": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Huggies Natural Care Sensitive Baby Wipes",
+   "Johnson's Baby CottonTouch Wipes",
+   "The Honest Company Baby Wipes (Fragrance-Free)"
+  ],
+  "list": [
+   {
+    "name": "Huggies Natural Care Sensitive Baby Wipes",
+    "why": "Highly reliable, plant-based wipes that are fragrance-free and gentle on newborn skin.",
+    "pros": [
+     "Hypoallergenic and dermatologist tested",
+     "Thick texture for effective cleaning"
+    ],
+    "cons": [
+     "Can be slightly harder to pull out individually"
+    ],
+    "price": 450,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Huggies%20Natural%20Care%20Sensitive%20Baby%20Wipes",
+     "uk": "https://www.next.co.uk/search?w=Huggies%20Natural%20Care%20Sensitive%20Baby%20Wipes",
+     "canada": "https://www.amazon.ca/s?k=Huggies%20Natural%20Care%20Sensitive%20Baby%20Wipes"
+    }
+   },
+   {
+    "name": "Johnson's Baby CottonTouch Wipes",
+    "why": "Specially designed for the delicate skin of newborns with a water-based formula.",
+    "pros": [
+     "Infused with real cotton",
+     "Very soft on sensitive skin"
+    ],
+    "cons": [
+     "Contains a very light fragrance which some parents avoid"
+    ],
+    "price": 300,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Johnson's%20Baby%20CottonTouch%20Wipes",
+     "uk": "https://www.next.co.uk/search?w=Johnson's%20Baby%20CottonTouch%20Wipes",
+     "canada": "https://www.amazon.ca/s?k=Johnson's%20Baby%20CottonTouch%20Wipes"
+    }
+   },
+   {
+    "name": "The Honest Company Baby Wipes (Fragrance-Free)",
+    "why": "A premium, chemical-conscious option widely trusted for pure, plant-based ingredients.",
+    "pros": [
+     "Compostable and biodegradable material",
+     "Free from parabens and chlorine"
+    ],
+    "cons": [
+     "Higher price point due to premium materials"
+    ],
+    "price": 850,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=The%20Honest%20Company%20Baby%20Wipes%20(Fragrance-Free)",
+     "uk": "https://www.next.co.uk/search?w=The%20Honest%20Company%20Baby%20Wipes%20(Fragrance-Free)",
+     "canada": "https://www.amazon.ca/s?k=The%20Honest%20Company%20Baby%20Wipes%20(Fragrance-Free)"
+    }
+   }
+  ]
+ },
+ "23": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Safety 1st Steady Grip Infant Grooming Kit",
+   "Tommee Tippee Closer to Nature Healthcare Kit",
+   "Baby Dove Baby Care Essentials Kit"
+  ],
+  "list": [
+   {
+    "name": "Safety 1st Steady Grip Infant Grooming Kit",
+    "why": "A trusted, no-nonsense classic that includes all core essentials in a convenient travel case.",
+    "pros": [
+     "Ergonomic handle on the nail clippers for stability",
+     "Soft-bristled brush is gentle on newborn scalps"
+    ],
+    "cons": [
+     "The nasal aspirator is basic compared to high-end suction devices"
     ],
     "price": 1800,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
-     "uk": "https://www.next.co.uk/search?w=La%20Roche-Posay%20Lipikar%20Gel%20Lavant",
-     "canada": "https://www.amazon.ca/s?k=La%20Roche-Posay%20Lipikar%20Gel%20Lavant"
+     "india": "https://www.amazon.in/s?k=Safety%201st%20Steady%20Grip%20Infant%20Grooming%20Kit",
+     "uk": "https://www.next.co.uk/search?w=Safety%201st%20Steady%20Grip%20Infant%20Grooming%20Kit",
+     "canada": "https://www.amazon.ca/s?k=Safety%201st%20Steady%20Grip%20Infant%20Grooming%20Kit"
     }
    },
    {
-    "name": "Mamaearth Deeply Nourishing Baby Wash",
-    "why": "Infused with natural ingredients like aloe vera and jojoba oil, it is a popular, accessible choice in India.",
+    "name": "Tommee Tippee Closer to Nature Healthcare Kit",
+    "why": "A comprehensive, high-quality set that covers health monitoring alongside basic grooming.",
     "pros": [
-     "Tear-free and toxin-free formula",
-     "Readily available in almost all retail outlets"
+     "Includes a digital oral thermometer",
+     "Compact, organized case perfect for storage or travel"
     ],
     "cons": [
-     "Not as effective for severe eczema as medical-grade brands"
+     "Contains a few items like the medicine dropper that many parents find less useful"
     ],
-    "price": 400,
+    "price": 2500,
     "currency": "INR",
     "links": {
-     "india": "https://www.amazon.in/s?k=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash",
-     "uk": "https://www.next.co.uk/search?w=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash",
-     "canada": "https://www.amazon.ca/s?k=Mamaearth%20Deeply%20Nourishing%20Baby%20Wash"
+     "india": "https://www.amazon.in/s?k=Tommee%20Tippee%20Closer%20to%20Nature%20Healthcare%20Kit",
+     "uk": "https://www.next.co.uk/search?w=Tommee%20Tippee%20Closer%20to%20Nature%20Healthcare%20Kit",
+     "canada": "https://www.amazon.ca/s?k=Tommee%20Tippee%20Closer%20to%20Nature%20Healthcare%20Kit"
+    }
+   },
+   {
+    "name": "Baby Dove Baby Care Essentials Kit",
+    "why": "Focuses on high-quality grooming tools paired with pediatrician-recommended gentle skincare.",
+    "pros": [
+     "Combines hygiene tools with trusted hypoallergenic wash products",
+     "Excellent for gift-giving and new parent starters"
+    ],
+    "cons": [
+     "Tool variety is more limited than dedicated full-scale grooming kits"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Baby%20Dove%20Baby%20Care%20Essentials%20Kit",
+     "uk": "https://www.next.co.uk/search?w=Baby%20Dove%20Baby%20Care%20Essentials%20Kit",
+     "canada": "https://www.amazon.ca/s?k=Baby%20Dove%20Baby%20Care%20Essentials%20Kit"
+    }
+   }
+  ]
+ },
+ "24": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Withings Thermo Smart Temporal Thermometer",
+   "InfraRed Baby Forehead Thermometer (iHealth No-Touch)",
+   "Beurer FT 90 Non-Contact Fever Thermometer"
+  ],
+  "list": [
+   {
+    "name": "Withings Thermo Smart Temporal Thermometer",
+    "why": "A non-invasive, medically-approved temporal artery thermometer that uses 16 infrared sensors for high accuracy without w",
+    "pros": [
+     "No skin contact required",
+     "Syncs with smartphone app"
+    ],
+    "cons": [
+     "Requires high-quality AAA batteries"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Withings%20Thermo%20Smart%20Temporal%20Thermometer",
+     "uk": "https://www.next.co.uk/search?w=Withings%20Thermo%20Smart%20Temporal%20Thermometer",
+     "canada": "https://www.amazon.ca/s?k=Withings%20Thermo%20Smart%20Temporal%20Thermometer"
+    }
+   },
+   {
+    "name": "InfraRed Baby Forehead Thermometer (iHealth No-Touch)",
+    "why": "A highly-rated, user-friendly device designed specifically for infants, providing readings in one second with vibration ",
+    "pros": [
+     "Silent mode for sleeping babies",
+     "Very easy to operate"
+    ],
+    "cons": [
+     "Requires consistent distance to be accurate"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=InfraRed%20Baby%20Forehead%20Thermometer%20(iHealth%20No-Touch)",
+     "uk": "https://www.next.co.uk/search?w=InfraRed%20Baby%20Forehead%20Thermometer%20(iHealth%20No-Touch)",
+     "canada": "https://www.amazon.ca/s?k=InfraRed%20Baby%20Forehead%20Thermometer%20(iHealth%20No-Touch)"
+    }
+   },
+   {
+    "name": "Beurer FT 90 Non-Contact Fever Thermometer",
+    "why": "A reliable German-engineered device that measures temperature hygienically and safely without skin contact, perfect for ",
+    "pros": [
+     "Large, easy-to-read backlit display",
+     "Fever alarm with indicator light"
+    ],
+    "cons": [
+     "Can be bulky compared to pen-style models"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Beurer%20FT%2090%20Non-Contact%20Fever%20Thermometer",
+     "uk": "https://www.next.co.uk/search?w=Beurer%20FT%2090%20Non-Contact%20Fever%20Thermometer",
+     "canada": "https://www.amazon.ca/s?k=Beurer%20FT%2090%20Non-Contact%20Fever%20Thermometer"
+    }
+   }
+  ]
+ },
+ "25": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Seventh Generation Hand Sanitizer Spray",
+   "Himalaya PureHands Hand Sanitizer",
+   "Mustela Sanitizing Spray"
+  ],
+  "list": [
+   {
+    "name": "Seventh Generation Hand Sanitizer Spray",
+    "why": "A plant-based, fragrance-free formula that effectively kills 99.99% of germs without harsh chemicals.",
+    "pros": [
+     "No synthetic fragrances or dyes",
+     "Non-drying formula"
+    ],
+    "cons": [
+     "Availability primarily through international import channels"
+    ],
+    "price": 850,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Seventh%20Generation%20Hand%20Sanitizer%20Spray",
+     "uk": "https://www.next.co.uk/search?w=Seventh%20Generation%20Hand%20Sanitizer%20Spray",
+     "canada": "https://www.amazon.ca/s?k=Seventh%20Generation%20Hand%20Sanitizer%20Spray"
+    }
+   },
+   {
+    "name": "Himalaya PureHands Hand Sanitizer",
+    "why": "A trusted, widely available Indian brand using herbal ingredients like Coriander and Usheera.",
+    "pros": [
+     "Very affordable and easily accessible",
+     "Contains moisturizing extracts"
+    ],
+    "cons": [
+     "Contains alcohol which may be drying for very sensitive newborn-adjacent skin"
+    ],
+    "price": 150,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Himalaya%20PureHands%20Hand%20Sanitizer",
+     "uk": "https://www.next.co.uk/search?w=Himalaya%20PureHands%20Hand%20Sanitizer",
+     "canada": "https://www.amazon.ca/s?k=Himalaya%20PureHands%20Hand%20Sanitizer"
+    }
+   },
+   {
+    "name": "Mustela Sanitizing Spray",
+    "why": "A high-quality, dermatologically tested brand specifically formulated for babies and children.",
+    "pros": [
+     "High safety profile for sensitive skin",
+     "Rinse-free and non-sticky"
+    ],
+    "cons": [
+     "Higher price point compared to domestic options"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mustela%20Sanitizing%20Spray",
+     "uk": "https://www.next.co.uk/search?w=Mustela%20Sanitizing%20Spray",
+     "canada": "https://www.amazon.ca/s?k=Mustela%20Sanitizing%20Spray"
+    }
+   }
+  ]
+ },
+ "26": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Braun ThermoScan 7 Ear Thermometer",
+   "FridaBaby NoseFrida Snotsucker",
+   "Little Remedies Gas Relief Drops"
+  ],
+  "list": [
+   {
+    "name": "Braun ThermoScan 7 Ear Thermometer",
+    "why": "Widely considered the gold standard for accurate, non-invasive temperature readings in newborns.",
+    "pros": [
+     "Age-adjustable guidance",
+     "High clinical accuracy"
+    ],
+    "cons": [
+     "Requires frequent replacement of disposable lens filters"
+    ],
+    "price": 6500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Braun%20ThermoScan%207%20Ear%20Thermometer",
+     "uk": "https://www.next.co.uk/search?w=Braun%20ThermoScan%207%20Ear%20Thermometer",
+     "canada": "https://www.amazon.ca/s?k=Braun%20ThermoScan%207%20Ear%20Thermometer"
+    }
+   },
+   {
+    "name": "FridaBaby NoseFrida Snotsucker",
+    "why": "A hygienic, highly effective manual aspirator that clears congested newborn noses better than bulbs.",
+    "pros": [
+     "Easy to clean",
+     "Non-invasive design"
+    ],
+    "cons": [
+     "Can be intimidating for first-time parents to use"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=FridaBaby%20NoseFrida%20Snotsucker",
+     "uk": "https://www.next.co.uk/search?w=FridaBaby%20NoseFrida%20Snotsucker",
+     "canada": "https://www.amazon.ca/s?k=FridaBaby%20NoseFrida%20Snotsucker"
+    }
+   },
+   {
+    "name": "Little Remedies Gas Relief Drops",
+    "why": "A trusted, safe, and widely recommended solution for relieving infant gas and colic symptoms.",
+    "pros": [
+     "Simethicone-based effectiveness",
+     "Free from artificial dyes and alcohol"
+    ],
+    "cons": [
+     "Requires consistent dosing as per pediatrician's guidance"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Little%20Remedies%20Gas%20Relief%20Drops",
+     "uk": "https://www.next.co.uk/search?w=Little%20Remedies%20Gas%20Relief%20Drops",
+     "canada": "https://www.amazon.ca/s?k=Little%20Remedies%20Gas%20Relief%20Drops"
+    }
+   }
+  ]
+ },
+ "27": {
+  "ts": "2026-06-24",
+  "seen": [
+   "MAM Easy Start Anti-Colic Bottle",
+   "Comotomo Baby Bottle",
+   "Medela Breast Milk Bottle"
+  ],
+  "list": [
+   {
+    "name": "MAM Easy Start Anti-Colic Bottle",
+    "why": "Features a unique vented base that regulates pressure to reduce colic and gas, perfect for newborns.",
+    "pros": [
+     "Self-sterilizing function in microwave",
+     "Skin-soft silicone teat feels natural"
+    ],
+    "cons": [
+     "More parts to clean than standard bottles"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=MAM%20Easy%20Start%20Anti-Colic%20Bottle",
+     "uk": "https://www.next.co.uk/search?w=MAM%20Easy%20Start%20Anti-Colic%20Bottle",
+     "canada": "https://www.amazon.ca/s?k=MAM%20Easy%20Start%20Anti-Colic%20Bottle"
+    }
+   },
+   {
+    "name": "Comotomo Baby Bottle",
+    "why": "Designed with a soft, squeezable silicone body that mimics the feel of skin to prevent nipple confusion.",
+    "pros": [
+     "Wide-neck design for easy hand cleaning",
+     "Dual anti-colic vents"
+    ],
+    "cons": [
+     "Can be difficult to read measurement markings"
+    ],
+    "price": 2400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Comotomo%20Baby%20Bottle",
+     "uk": "https://www.next.co.uk/search?w=Comotomo%20Baby%20Bottle",
+     "canada": "https://www.amazon.ca/s?k=Comotomo%20Baby%20Bottle"
+    }
+   },
+   {
+    "name": "Medela Breast Milk Bottle",
+    "why": "Excellent for breastfed babies as it is designed to maintain breastfeeding behavior and latch.",
+    "pros": [
+     "Compatible with all Medela breast pumps",
+     "Durable, lightweight medical-grade plastic"
+    ],
+    "cons": [
+     "Teat flow rate is quite specific"
+    ],
+    "price": 950,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Medela%20Breast%20Milk%20Bottle",
+     "uk": "https://www.next.co.uk/search?w=Medela%20Breast%20Milk%20Bottle",
+     "canada": "https://www.amazon.ca/s?k=Medela%20Breast%20Milk%20Bottle"
+    }
+   }
+  ]
+ },
+ "28": {
+  "ts": "2026-06-24",
+  "seen": [
+   "BIBS Colour Pacifier",
+   "NUK Space Silicone Pacifier",
+   "Nanobebe Flexy Pacifier"
+  ],
+  "list": [
+   {
+    "name": "BIBS Colour Pacifier",
+    "why": "A classic, round-nipple pacifier that mimics the shape of a mother's breast, very popular for breastfed babies.",
+    "pros": [
+     "Lightweight shield curves away from the face to prevent skin irritation",
+     "Features a 100% natural rubber latex nipple"
+    ],
+    "cons": [
+     "Natural rubber requires more frequent replacement than silicone"
+    ],
+    "price": 600,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=BIBS%20Colour%20Pacifier",
+     "uk": "https://www.next.co.uk/search?w=BIBS%20Colour%20Pacifier",
+     "canada": "https://www.amazon.ca/s?k=BIBS%20Colour%20Pacifier"
+    }
+   },
+   {
+    "name": "NUK Space Silicone Pacifier",
+    "why": "Engineered with an extra-large ventilation system to allow maximum airflow for sensitive newborn skin during winter mont",
+    "pros": [
+     "Orthodontic shape supports healthy oral development",
+     "Includes a reusable, travel-friendly storage case"
+    ],
+    "cons": [
+     "The large shield design may look bulky on very small newborn faces"
+    ],
+    "price": 850,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=NUK%20Space%20Silicone%20Pacifier",
+     "uk": "https://www.next.co.uk/search?w=NUK%20Space%20Silicone%20Pacifier",
+     "canada": "https://www.amazon.ca/s?k=NUK%20Space%20Silicone%20Pacifier"
+    }
+   },
+   {
+    "name": "Nanobebe Flexy Pacifier",
+    "why": "An ultra-soft, one-piece silicone construction that is lightweight and specifically designed to stay in a newborn's mout",
+    "pros": [
+     "Seamless design is extremely hygienic and easy to clean",
+     "Ergonomic shape contours to the baby's nose and chin"
+    ],
+    "cons": [
+     "The soft material can attract lint or dust more easily than harder plastics"
+    ],
+    "price": 1100,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Nanobebe%20Flexy%20Pacifier",
+     "uk": "https://www.next.co.uk/search?w=Nanobebe%20Flexy%20Pacifier",
+     "canada": "https://www.amazon.ca/s?k=Nanobebe%20Flexy%20Pacifier"
+    }
+   }
+  ]
+ },
+ "29": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Freshly Picked Classic Diaper Bag",
+   "JuJuBe Be Prepared Diaper Bag",
+   "Dagne Dover Indi Diaper Backpack"
+  ],
+  "list": [
+   {
+    "name": "Freshly Picked Classic Diaper Bag",
+    "why": "A premium, stylish vegan leather option that transitions perfectly from baby gear to a chic everyday handbag.",
+    "pros": [
+     "Wipeable interior and exterior",
+     "Includes a matching changing pad"
+    ],
+    "cons": [
+     "Higher price point due to luxury aesthetic"
+    ],
+    "price": 15000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Freshly%20Picked%20Classic%20Diaper%20Bag",
+     "uk": "https://www.next.co.uk/search?w=Freshly%20Picked%20Classic%20Diaper%20Bag",
+     "canada": "https://www.amazon.ca/s?k=Freshly%20Picked%20Classic%20Diaper%20Bag"
+    }
+   },
+   {
+    "name": "JuJuBe Be Prepared Diaper Bag",
+    "why": "The gold standard for parents with multiple children or those who prefer heavy-duty organization for long winter outings",
+    "pros": [
+     "Machine washable fabric",
+     "Extremely spacious with 17 pockets"
+    ],
+    "cons": [
+     "Quite large and bulky for quick trips"
+    ],
+    "price": 16500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=JuJuBe%20Be%20Prepared%20Diaper%20Bag",
+     "uk": "https://www.next.co.uk/search?w=JuJuBe%20Be%20Prepared%20Diaper%20Bag",
+     "canada": "https://www.amazon.ca/s?k=JuJuBe%20Be%20Prepared%20Diaper%20Bag"
+    }
+   },
+   {
+    "name": "Dagne Dover Indi Diaper Backpack",
+    "why": "A modern, neoprene-based backpack that offers superior comfort and a sleek, gender-neutral design.",
+    "pros": [
+     "Lightweight and water-resistant material",
+     "Excellent internal organization system"
+    ],
+    "cons": [
+     "Neoprene fabric can be prone to snagging"
+    ],
+    "price": 18000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Dagne%20Dover%20Indi%20Diaper%20Backpack",
+     "uk": "https://www.next.co.uk/search?w=Dagne%20Dover%20Indi%20Diaper%20Backpack",
+     "canada": "https://www.amazon.ca/s?k=Dagne%20Dover%20Indi%20Diaper%20Backpack"
+    }
+   }
+  ]
+ },
+ "30": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Manhattan Toy Winkel Rattle and Sensory Teether",
+   "Sassy Developmental Bumpy Ball",
+   "Hape Shake and Match Shape Sorter"
+  ],
+  "list": [
+   {
+    "name": "Manhattan Toy Winkel Rattle and Sensory Teether",
+    "why": "A classic, award-winning design that is perfect for small hands to grasp and serves double-duty as a teether.",
+    "pros": [
+     "Easy for newborns to grip",
+     "BPA-free and safe for teething"
+    ],
+    "cons": [
+     "Hard to clean inside the loops"
+    ],
+    "price": 1400,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Manhattan%20Toy%20Winkel%20Rattle%20and%20Sensory%20Teether",
+     "uk": "https://www.next.co.uk/search?w=Manhattan%20Toy%20Winkel%20Rattle%20and%20Sensory%20Teether",
+     "canada": "https://www.amazon.ca/s?k=Manhattan%20Toy%20Winkel%20Rattle%20and%20Sensory%20Teether"
+    }
+   },
+   {
+    "name": "Sassy Developmental Bumpy Ball",
+    "why": "Combines a rattle with varied textures to encourage tactile development and auditory tracking during the first few month",
+    "pros": [
+     "High-contrast colors for visual stimulation",
+     "Lightweight and easy to handle"
+    ],
+    "cons": [
+     "Cannot be submerged in water to clean"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Sassy%20Developmental%20Bumpy%20Ball",
+     "uk": "https://www.next.co.uk/search?w=Sassy%20Developmental%20Bumpy%20Ball",
+     "canada": "https://www.amazon.ca/s?k=Sassy%20Developmental%20Bumpy%20Ball"
+    }
+   },
+   {
+    "name": "Hape Shake and Match Shape Sorter",
+    "why": "A high-quality wooden option that introduces sound exploration early and transitions into a shape-sorting toy as the bab",
+    "pros": [
+     "Durable, sustainable wooden construction",
+     "Soft, pleasant chiming sounds"
+    ],
+    "cons": [
+     "Heavier than plastic alternatives"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Hape%20Shake%20and%20Match%20Shape%20Sorter",
+     "uk": "https://www.next.co.uk/search?w=Hape%20Shake%20and%20Match%20Shape%20Sorter",
+     "canada": "https://www.amazon.ca/s?k=Hape%20Shake%20and%20Match%20Shape%20Sorter"
+    }
+   }
+  ]
+ },
+ "31": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Uppababy Vista V2",
+   "Bugaboo Butterfly",
+   "Babyzen YOYO2"
+  ],
+  "list": [
+   {
+    "name": "Uppababy Vista V2",
+    "why": "A premium, versatile modular stroller that easily converts from single to double, making it a long-term investment for g",
+    "pros": [
+     "Excellent suspension for smooth rides",
+     "Large, easily accessible storage basket"
+    ],
+    "cons": [
+     "Heavy and bulky when folded"
+    ],
+    "price": 95000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Uppababy%20Vista%20V2",
+     "uk": "https://www.next.co.uk/search?w=Uppababy%20Vista%20V2",
+     "canada": "https://www.amazon.ca/s?k=Uppababy%20Vista%20V2"
+    }
+   },
+   {
+    "name": "Bugaboo Butterfly",
+    "why": "The ultimate ultra-compact travel stroller that fits into overhead bins, perfect for families who travel frequently betw",
+    "pros": [
+     "One-second quick-fold mechanism",
+     "Very lightweight and portable"
+    ],
+    "cons": [
+     "Small wheels struggle on uneven terrain"
+    ],
+    "price": 42000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Bugaboo%20Butterfly",
+     "uk": "https://www.next.co.uk/search?w=Bugaboo%20Butterfly",
+     "canada": "https://www.amazon.ca/s?k=Bugaboo%20Butterfly"
+    }
+   },
+   {
+    "name": "Babyzen YOYO2",
+    "why": "Highly maneuverable and world-renowned for its durability, it is ideal for navigating busy urban environments in India.",
+    "pros": [
+     "Extremely compact and airline-friendly",
+     "Highly customizable with many accessories"
+    ],
+    "cons": [
+     "Expensive price point for a travel stroller"
+    ],
+    "price": 48000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Babyzen%20YOYO2",
+     "uk": "https://www.next.co.uk/search?w=Babyzen%20YOYO2",
+     "canada": "https://www.amazon.ca/s?k=Babyzen%20YOYO2"
+    }
+   }
+  ]
+ },
+ "32": {
+  "ts": "2026-06-24",
+  "seen": [
+   "BabyBjörn Travel Crib Light",
+   "Bugaboo Stardust",
+   "Lotus Travel Crib (Guava Family)"
+  ],
+  "list": [
+   {
+    "name": "BabyBjörn Travel Crib Light",
+    "why": "Extremely lightweight and sets up in one motion, making it ideal for travel.",
+    "pros": [
+     "Ultra-lightweight for easy transport",
+     "Breathable mesh sides for airflow"
+    ],
+    "cons": [
+     "Higher price point compared to standard playards"
+    ],
+    "price": 32000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=BabyBj%C3%B6rn%20Travel%20Crib%20Light",
+     "uk": "https://www.next.co.uk/search?w=BabyBj%C3%B6rn%20Travel%20Crib%20Light",
+     "canada": "https://www.amazon.ca/s?k=BabyBj%C3%B6rn%20Travel%20Crib%20Light"
+    }
+   },
+   {
+    "name": "Bugaboo Stardust",
+    "why": "Features a unique pop-up design that unfolds in one second for instant use.",
+    "pros": [
+     "All-in-one fold without removing the mattress",
+     "Built-in height-adjustable bassinet for newborns"
+    ],
+    "cons": [
+     "Proprietary mattress size makes finding fitted sheets harder"
+    ],
+    "price": 28000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Bugaboo%20Stardust",
+     "uk": "https://www.next.co.uk/search?w=Bugaboo%20Stardust",
+     "canada": "https://www.amazon.ca/s?k=Bugaboo%20Stardust"
+    }
+   },
+   {
+    "name": "Lotus Travel Crib (Guava Family)",
+    "why": "Known for its 'backpack' carry style and ability to convert into a play space.",
+    "pros": [
+     "Side zipper door allows for easier access and play",
+     "Greenguard Gold certified for safety"
+    ],
+    "cons": [
+     "The floor-level mattress can be tricky for adults to reach into"
+    ],
+    "price": 25000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Lotus%20Travel%20Crib%20(Guava%20Family)",
+     "uk": "https://www.next.co.uk/search?w=Lotus%20Travel%20Crib%20(Guava%20Family)",
+     "canada": "https://www.amazon.ca/s?k=Lotus%20Travel%20Crib%20(Guava%20Family)"
+    }
+   }
+  ]
+ },
+ "33": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Bambo Nature Premium Baby Diapers",
+   "Merries Pants/Tape Diapers",
+   "Rascal + Friends Premium Diapers"
+  ],
+  "list": [
+   {
+    "name": "Bambo Nature Premium Baby Diapers",
+    "why": "Eco-friendly, highly absorbent, and certified skin-safe for newborns with sensitive skin.",
+    "pros": [
+     "Free from harmful chemicals and perfumes",
+     "Excellent leak protection with breathable back sheet"
+    ],
+    "cons": [
+     "Can be difficult to source consistently in India"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Bambo%20Nature%20Premium%20Baby%20Diapers",
+     "uk": "https://www.next.co.uk/search?w=Bambo%20Nature%20Premium%20Baby%20Diapers",
+     "canada": "https://www.amazon.ca/s?k=Bambo%20Nature%20Premium%20Baby%20Diapers"
+    }
+   },
+   {
+    "name": "Merries Pants/Tape Diapers",
+    "why": "A premium Japanese brand renowned for exceptional softness and superior breathability.",
+    "pros": [
+     "Unmatched softness prevents diaper rash",
+     "Highly absorbent core keeps baby dry for long durations"
+    ],
+    "cons": [
+     "Higher price point compared to standard market options"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Merries%20Pants%2FTape%20Diapers",
+     "uk": "https://www.next.co.uk/search?w=Merries%20Pants%2FTape%20Diapers",
+     "canada": "https://www.amazon.ca/s?k=Merries%20Pants%2FTape%20Diapers"
+    }
+   },
+   {
+    "name": "Rascal + Friends Premium Diapers",
+    "why": "Widely acclaimed in the UK and Canada for a high-back waistband and deep pocket to prevent blowouts.",
+    "pros": [
+     "3D core design prevents sagging",
+     "Superior leak-guard protection"
+    ],
+    "cons": [
+     "Bulkier feel due to high absorbency padding"
+    ],
+    "price": 1500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Rascal%20%2B%20Friends%20Premium%20Diapers",
+     "uk": "https://www.next.co.uk/search?w=Rascal%20%2B%20Friends%20Premium%20Diapers",
+     "canada": "https://www.amazon.ca/s?k=Rascal%20%2B%20Friends%20Premium%20Diapers"
+    }
+   }
+  ]
+ },
+ "34": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Dr. Brown's Bottle Brush",
+   "Munchkin Bristle Bottle Brush",
+   "Philips Avent Bottle Brush"
+  ],
+  "list": [
+   {
+    "name": "Dr. Brown's Bottle Brush",
+    "why": "Features a unique combination of bristles and a nipple cleaner for comprehensive scrubbing.",
+    "pros": [
+     "Suction cup base for hygienic storage",
+     "Durable, non-scratch bristles"
+    ],
+    "cons": [
+     "Bristles can get slightly stiff over time"
+    ],
+    "price": 650,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Dr.%20Brown's%20Bottle%20Brush",
+     "uk": "https://www.next.co.uk/search?w=Dr.%20Brown's%20Bottle%20Brush",
+     "canada": "https://www.amazon.ca/s?k=Dr.%20Brown's%20Bottle%20Brush"
+    }
+   },
+   {
+    "name": "Munchkin Bristle Bottle Brush",
+    "why": "A highly-rated, budget-friendly option with a dedicated nipple brush stored in the handle.",
+    "pros": [
+     "Non-slip handle grip",
+     "Integrated nipple cleaner included"
+    ],
+    "cons": [
+     "Suction cup is not very strong"
+    ],
+    "price": 500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Munchkin%20Bristle%20Bottle%20Brush",
+     "uk": "https://www.next.co.uk/search?w=Munchkin%20Bristle%20Bottle%20Brush",
+     "canada": "https://www.amazon.ca/s?k=Munchkin%20Bristle%20Bottle%20Brush"
+    }
+   },
+   {
+    "name": "Philips Avent Bottle Brush",
+    "why": "Designed specifically for wide-neck bottles with a curved head for reaching all corners.",
+    "pros": [
+     "Durable design that doesn't scratch plastic",
+     "Ergonomic handle for easy maneuvering"
+    ],
+    "cons": [
+     "Does not stand upright on its own"
+    ],
+    "price": 750,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Philips%20Avent%20Bottle%20Brush",
+     "uk": "https://www.next.co.uk/search?w=Philips%20Avent%20Bottle%20Brush",
+     "canada": "https://www.amazon.ca/s?k=Philips%20Avent%20Bottle%20Brush"
+    }
+   }
+  ]
+ },
+ "35": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Dr. Brown's Deluxe Bottle Sterilizer",
+   "Tommee Tippee Advanced Steam Sterilizer",
+   "Munchkin Steam Guard Electric Sterilizer"
+  ],
+  "list": [
+   {
+    "name": "Dr. Brown's Deluxe Bottle Sterilizer",
+    "why": "Uses powerful steam to eliminate 99.9% of bacteria and fits up to six bottles of any size.",
+    "pros": [
+     "Large capacity for multiple bottles",
+     "Includes a removable tray for small parts"
+    ],
+    "cons": [
+     "Requires frequent descaling to prevent mineral buildup"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Dr.%20Brown's%20Deluxe%20Bottle%20Sterilizer",
+     "uk": "https://www.next.co.uk/search?w=Dr.%20Brown's%20Deluxe%20Bottle%20Sterilizer",
+     "canada": "https://www.amazon.ca/s?k=Dr.%20Brown's%20Deluxe%20Bottle%20Sterilizer"
+    }
+   },
+   {
+    "name": "Tommee Tippee Advanced Steam Sterilizer",
+    "why": "A sleek, fast-acting unit that keeps items sterile for 24 hours if the lid remains closed.",
+    "pros": [
+     "Extremely fast 5-minute cycle",
+     "Sterile environment maintenance"
+    ],
+    "cons": [
+     "Takes up significant counter space"
+    ],
+    "price": 7200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Tommee%20Tippee%20Advanced%20Steam%20Sterilizer",
+     "uk": "https://www.next.co.uk/search?w=Tommee%20Tippee%20Advanced%20Steam%20Sterilizer",
+     "canada": "https://www.amazon.ca/s?k=Tommee%20Tippee%20Advanced%20Steam%20Sterilizer"
+    }
+   },
+   {
+    "name": "Munchkin Steam Guard Electric Sterilizer",
+    "why": "A highly practical, intuitive design that effectively sanitizes bottles and pacifiers in under 7 minutes.",
+    "pros": [
+     "Heat-resistant handle for safety",
+     "Simple one-button operation"
+    ],
+    "cons": [
+     "Lid can be slightly difficult to latch properly"
+    ],
+    "price": 6800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Munchkin%20Steam%20Guard%20Electric%20Sterilizer",
+     "uk": "https://www.next.co.uk/search?w=Munchkin%20Steam%20Guard%20Electric%20Sterilizer",
+     "canada": "https://www.amazon.ca/s?k=Munchkin%20Steam%20Guard%20Electric%20Sterilizer"
+    }
+   }
+  ]
+ },
+ "36": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Medela Nursing Comfort Bra",
+   "H&M MAMA Nursing Bra 2-Pack",
+   "Cake Maternity Cotton Candy Seamless Nursing Bra"
+  ],
+  "list": [
+   {
+    "name": "Medela Nursing Comfort Bra",
+    "why": "A trusted medical-grade option that provides excellent support and fits seamlessly under clothing.",
+    "pros": [
+     "Excellent breathability for all-day wear",
+     "Soft, non-irritating fabric"
+    ],
+    "cons": [
+     "Sizing can run slightly small"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Medela%20Nursing%20Comfort%20Bra",
+     "uk": "https://www.next.co.uk/search?w=Medela%20Nursing%20Comfort%20Bra",
+     "canada": "https://www.amazon.ca/s?k=Medela%20Nursing%20Comfort%20Bra"
+    }
+   },
+   {
+    "name": "H&M MAMA Nursing Bra 2-Pack",
+    "why": "Offers an accessible, affordable, and stylish option for everyday use without compromising on functionality.",
+    "pros": [
+     "Great value for money",
+     "Easy one-handed drop-down clips"
+    ],
+    "cons": [
+     "Less long-term durability compared to premium brands"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=H%26M%20MAMA%20Nursing%20Bra%202-Pack",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20MAMA%20Nursing%20Bra%202-Pack",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20MAMA%20Nursing%20Bra%202-Pack"
+    }
+   },
+   {
+    "name": "Cake Maternity Cotton Candy Seamless Nursing Bra",
+    "why": "A premium, award-winning choice known for its superior comfort and lack of uncomfortable underwires.",
+    "pros": [
+     "Exceptional shape retention",
+     "Wide, supportive straps"
+    ],
+    "cons": [
+     "Higher price point compared to standard high-street brands"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Cake%20Maternity%20Cotton%20Candy%20Seamless%20Nursing%20Bra",
+     "uk": "https://www.next.co.uk/search?w=Cake%20Maternity%20Cotton%20Candy%20Seamless%20Nursing%20Bra",
+     "canada": "https://www.amazon.ca/s?k=Cake%20Maternity%20Cotton%20Candy%20Seamless%20Nursing%20Bra"
+    }
+   }
+  ]
+ },
+ "37": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Burts Bees Baby Organic Cotton Crib Sheet",
+   "Pottery Barn Kids Organic Muslin Crib Fitted Sheet",
+   "Masilo Organic Cotton Crib Sheet"
+  ],
+  "list": [
+   {
+    "name": "Burts Bees Baby Organic Cotton Crib Sheet",
+    "why": "Renowned globally for GOTS-certified organic cotton that is exceptionally soft and gentle on a newborn's sensitive skin.",
+    "pros": [
+     "Breathable organic material",
+     "Excellent durability after multiple washes"
+    ],
+    "cons": [
+     "Often requires international shipping to India"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burts%20Bees%20Baby%20Organic%20Cotton%20Crib%20Sheet",
+     "uk": "https://www.next.co.uk/search?w=Burts%20Bees%20Baby%20Organic%20Cotton%20Crib%20Sheet",
+     "canada": "https://www.amazon.ca/s?k=Burts%20Bees%20Baby%20Organic%20Cotton%20Crib%20Sheet"
+    }
+   },
+   {
+    "name": "Pottery Barn Kids Organic Muslin Crib Fitted Sheet",
+    "why": "High-quality, breathable muslin fabric that provides a cozy, temperature-regulating surface perfect for winter newborns.",
+    "pros": [
+     "Premium soft texture",
+     "Stylish, timeless designs"
+    ],
+    "cons": [
+     "Higher price point compared to standard cotton"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Pottery%20Barn%20Kids%20Organic%20Muslin%20Crib%20Fitted%20Sheet",
+     "uk": "https://www.next.co.uk/search?w=Pottery%20Barn%20Kids%20Organic%20Muslin%20Crib%20Fitted%20Sheet",
+     "canada": "https://www.amazon.ca/s?k=Pottery%20Barn%20Kids%20Organic%20Muslin%20Crib%20Fitted%20Sheet"
+    }
+   },
+   {
+    "name": "Masilo Organic Cotton Crib Sheet",
+    "why": "A premium Indian brand that meets international safety standards with non-toxic dyes and high-quality organic weave.",
+    "pros": [
+     "Locally available with fast shipping",
+     "Hypoallergenic and chemical-free"
+    ],
+    "cons": [
+     "Limited pattern availability"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Masilo%20Organic%20Cotton%20Crib%20Sheet",
+     "uk": "https://www.next.co.uk/search?w=Masilo%20Organic%20Cotton%20Crib%20Sheet",
+     "canada": "https://www.amazon.ca/s?k=Masilo%20Organic%20Cotton%20Crib%20Sheet"
+    }
+   }
+  ]
+ },
+ "38": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Boody Organic Bamboo Lounge Pants",
+   "Kindred Bravely Sublime Hands-Free Nursing & Pumping Bra",
+   "Mothers en Vogue Bamboo Nursing Tunic"
+  ],
+  "list": [
+   {
+    "name": "Boody Organic Bamboo Lounge Pants",
+    "why": "Ultra-soft, breathable bamboo fabric that accommodates postpartum body changes while being gentle for skin-to-skin conta",
+    "pros": [
+     "Hypoallergenic and temperature-regulating",
+     "Stretchy waistband fits comfortably over C-section scars"
+    ],
+    "cons": [
+     "Pills slightly if not washed on delicate cycle"
+    ],
+    "price": 3500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Boody%20Organic%20Bamboo%20Lounge%20Pants",
+     "uk": "https://www.next.co.uk/search?w=Boody%20Organic%20Bamboo%20Lounge%20Pants",
+     "canada": "https://www.amazon.ca/s?k=Boody%20Organic%20Bamboo%20Lounge%20Pants"
+    }
+   },
+   {
+    "name": "Kindred Bravely Sublime Hands-Free Nursing & Pumping Bra",
+    "why": "A dual-purpose essential that provides superior support and allows for hands-free pumping, perfect for winter layering.",
+    "pros": [
+     "Extremely soft fabric with no uncomfortable wires",
+     "Compatible with all major breast pump flanges"
+    ],
+    "cons": [
+     "Higher price point compared to standard nursing bras"
+    ],
+    "price": 4200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Kindred%20Bravely%20Sublime%20Hands-Free%20Nursing%20%26%20Pumping%20Bra",
+     "uk": "https://www.next.co.uk/search?w=Kindred%20Bravely%20Sublime%20Hands-Free%20Nursing%20%26%20Pumping%20Bra",
+     "canada": "https://www.amazon.ca/s?k=Kindred%20Bravely%20Sublime%20Hands-Free%20Nursing%20%26%20Pumping%20Bra"
+    }
+   },
+   {
+    "name": "Mothers en Vogue Bamboo Nursing Tunic",
+    "why": "Designed specifically for the Indian climate with thoughtful nursing access that doesn't look like typical maternity wea",
+    "pros": [
+     "Discreet side-access panels for easy breastfeeding",
+     "High-quality fabric that retains shape after multiple washes"
+    ],
+    "cons": [
+     "Limited color palette available in local stock"
+    ],
+    "price": 2800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mothers%20en%20Vogue%20Bamboo%20Nursing%20Tunic",
+     "uk": "https://www.next.co.uk/search?w=Mothers%20en%20Vogue%20Bamboo%20Nursing%20Tunic",
+     "canada": "https://www.amazon.ca/s?k=Mothers%20en%20Vogue%20Bamboo%20Nursing%20Tunic"
+    }
+   }
+  ]
+ },
+ "39": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Kotex Overnight Extra Heavy Flow Pads",
+   "Natracare Maternity Pads",
+   "Stayfree Secure Night XL"
+  ],
+  "list": [
+   {
+    "name": "Kotex Overnight Extra Heavy Flow Pads",
+    "why": "Known for superior absorbency and a wider back design ideal for post-delivery recovery.",
+    "pros": [
+     "Excellent leak protection",
+     "Wide coverage area"
+    ],
+    "cons": [
+     "Can feel bulky"
+    ],
+    "price": 350,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Kotex%20Overnight%20Extra%20Heavy%20Flow%20Pads",
+     "uk": "https://www.next.co.uk/search?w=Kotex%20Overnight%20Extra%20Heavy%20Flow%20Pads",
+     "canada": "https://www.amazon.ca/s?k=Kotex%20Overnight%20Extra%20Heavy%20Flow%20Pads"
+    }
+   },
+   {
+    "name": "Natracare Maternity Pads",
+    "why": "A premium, organic cotton choice for mothers with sensitive skin or stitches after birth.",
+    "pros": [
+     "Plastic-free and breathable",
+     "Chemical-free materials"
+    ],
+    "cons": [
+     "Higher price point"
+    ],
+    "price": 850,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Natracare%20Maternity%20Pads",
+     "uk": "https://www.next.co.uk/search?w=Natracare%20Maternity%20Pads",
+     "canada": "https://www.amazon.ca/s?k=Natracare%20Maternity%20Pads"
+    }
+   },
+   {
+    "name": "Stayfree Secure Night XL",
+    "why": "Widely available across India and provides reliable length and width for heavy postpartum flow.",
+    "pros": [
+     "Very easy to source locally",
+     "Good adhesive strength"
+    ],
+    "cons": [
+     "Not as soft as organic options"
+    ],
+    "price": 280,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Stayfree%20Secure%20Night%20XL",
+     "uk": "https://www.next.co.uk/search?w=Stayfree%20Secure%20Night%20XL",
+     "canada": "https://www.amazon.ca/s?k=Stayfree%20Secure%20Night%20XL"
+    }
+   }
+  ]
+ },
+ "40": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Nook Sleep Niche Organic Nursing Pillow",
+   "Snuggle Me Organic Feeding Support",
+   "Dr. Brown's Gia Nursing Pillow"
+  ],
+  "list": [
+   {
+    "name": "Nook Sleep Niche Organic Nursing Pillow",
+    "why": "Features a breathable, non-toxic organic cover that prevents overheating, ideal for a newborn's delicate skin.",
+    "pros": [
+     "Breathable organic materials",
+     "Ergonomic U-shape for back support"
+    ],
+    "cons": [
+     "Higher price point due to import"
+    ],
+    "price": 12500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Nook%20Sleep%20Niche%20Organic%20Nursing%20Pillow",
+     "uk": "https://www.next.co.uk/search?w=Nook%20Sleep%20Niche%20Organic%20Nursing%20Pillow",
+     "canada": "https://www.amazon.ca/s?k=Nook%20Sleep%20Niche%20Organic%20Nursing%20Pillow"
+    }
+   },
+   {
+    "name": "Snuggle Me Organic Feeding Support",
+    "why": "A minimalist, high-quality design that contours to the body without unnecessary bulk, highly popular for comfort.",
+    "pros": [
+     "Organic cotton fabric",
+     "Easy to machine wash"
+    ],
+    "cons": [
+     "Less firm than traditional foam pillows"
+    ],
+    "price": 9800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Snuggle%20Me%20Organic%20Feeding%20Support",
+     "uk": "https://www.next.co.uk/search?w=Snuggle%20Me%20Organic%20Feeding%20Support",
+     "canada": "https://www.amazon.ca/s?k=Snuggle%20Me%20Organic%20Feeding%20Support"
+    }
+   },
+   {
+    "name": "Dr. Brown's Gia Nursing Pillow",
+    "why": "Designed by lactation consultants with a unique angled shape that helps position the baby for better latching.",
+    "pros": [
+     "Angled design reduces neck strain",
+     "Firm support that doesn't collapse"
+    ],
+    "cons": [
+     "Not as soft or plush as others"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Dr.%20Brown's%20Gia%20Nursing%20Pillow",
+     "uk": "https://www.next.co.uk/search?w=Dr.%20Brown's%20Gia%20Nursing%20Pillow",
+     "canada": "https://www.amazon.ca/s?k=Dr.%20Brown's%20Gia%20Nursing%20Pillow"
+    }
+   }
+  ]
+ },
+ "41": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Nanit Pro Smart Baby Monitor",
+   "Eufy SpaceView Pro Baby Monitor",
+   "Miku Pro Smart Baby Monitor"
+  ],
+  "list": [
+   {
+    "name": "Nanit Pro Smart Baby Monitor",
+    "why": "Offers advanced sleep tracking analytics and high-definition video quality for peace of mind.",
+    "pros": [
+     "Superior video clarity",
+     "Detailed sleep data insights"
+    ],
+    "cons": [
+     "Requires a paid subscription for full data features"
+    ],
+    "price": 28000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Nanit%20Pro%20Smart%20Baby%20Monitor",
+     "uk": "https://www.next.co.uk/search?w=Nanit%20Pro%20Smart%20Baby%20Monitor",
+     "canada": "https://www.amazon.ca/s?k=Nanit%20Pro%20Smart%20Baby%20Monitor"
+    }
+   },
+   {
+    "name": "Eufy SpaceView Pro Baby Monitor",
+    "why": "A non-Wi-Fi dedicated monitor that ensures privacy and eliminates lag.",
+    "pros": [
+     "No internet required for security",
+     "Large, high-resolution handheld display"
+    ],
+    "cons": [
+     "Limited range through thick concrete walls"
+    ],
+    "price": 18000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Eufy%20SpaceView%20Pro%20Baby%20Monitor",
+     "uk": "https://www.next.co.uk/search?w=Eufy%20SpaceView%20Pro%20Baby%20Monitor",
+     "canada": "https://www.amazon.ca/s?k=Eufy%20SpaceView%20Pro%20Baby%20Monitor"
+    }
+   },
+   {
+    "name": "Miku Pro Smart Baby Monitor",
+    "why": "Uses proprietary sensor technology to track breathing and movement without any wearables.",
+    "pros": [
+     "No-contact breathing monitoring",
+     "Encrypted data security"
+    ],
+    "cons": [
+     "Premium price point"
+    ],
+    "price": 35000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Miku%20Pro%20Smart%20Baby%20Monitor",
+     "uk": "https://www.next.co.uk/search?w=Miku%20Pro%20Smart%20Baby%20Monitor",
+     "canada": "https://www.amazon.ca/s?k=Miku%20Pro%20Smart%20Baby%20Monitor"
+    }
+   }
+  ]
+ },
+ "42": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Philips Avent Comfort Single Electric Breast Pump",
+   "Momcozy S12 Pro Wearable Breast Pump",
+   "Elvie Stride Breast Pump"
+  ],
+  "list": [
+   {
+    "name": "Philips Avent Comfort Single Electric Breast Pump",
+    "why": "A reliable, widely available option in India known for its ergonomic design that allows you to sit comfortably while pum",
+    "pros": [
+     "Soft massage cushion stimulates milk flow",
+     "Compatible with the entire Avent feeding range"
+    ],
+    "cons": [
+     "Can be slightly noisy during operation"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Philips%20Avent%20Comfort%20Single%20Electric%20Breast%20Pump",
+     "uk": "https://www.next.co.uk/search?w=Philips%20Avent%20Comfort%20Single%20Electric%20Breast%20Pump",
+     "canada": "https://www.amazon.ca/s?k=Philips%20Avent%20Comfort%20Single%20Electric%20Breast%20Pump"
+    }
+   },
+   {
+    "name": "Momcozy S12 Pro Wearable Breast Pump",
+    "why": "A top-rated hands-free, wearable pump perfect for busy parents who need to move around while expressing milk.",
+    "pros": [
+     "Completely hands-free and cord-free",
+     "Excellent battery life for multiple sessions"
+    ],
+    "cons": [
+     "Less efficient at emptying the breast than hospital-grade models"
+    ],
+    "price": 12000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Momcozy%20S12%20Pro%20Wearable%20Breast%20Pump",
+     "uk": "https://www.next.co.uk/search?w=Momcozy%20S12%20Pro%20Wearable%20Breast%20Pump",
+     "canada": "https://www.amazon.ca/s?k=Momcozy%20S12%20Pro%20Wearable%20Breast%20Pump"
+    }
+   },
+   {
+    "name": "Elvie Stride Breast Pump",
+    "why": "A high-end, discreet wearable pump designed for comfort and silence, popular in the UK and Canadian markets.",
+    "pros": [
+     "Extremely quiet for public use",
+     "App connectivity for tracking pumping history"
+    ],
+    "cons": [
+     "High price point compared to standard electric pumps"
+    ],
+    "price": 28000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Elvie%20Stride%20Breast%20Pump",
+     "uk": "https://www.next.co.uk/search?w=Elvie%20Stride%20Breast%20Pump",
+     "canada": "https://www.amazon.ca/s?k=Elvie%20Stride%20Breast%20Pump"
+    }
+   }
+  ]
+ },
+ "43": {
+  "ts": "2026-06-24",
+  "seen": [
+   "4moms MamaRoo Multi-Motion Baby Swing",
+   "Nuna LEAF Grow",
+   "Joie Serina 2-in-1 Swing"
+  ],
+  "list": [
+   {
+    "name": "4moms MamaRoo Multi-Motion Baby Swing",
+    "why": "It mimics natural human movements like swaying and bouncing rather than just a simple pendulum swing.",
+    "pros": [
+     "Compact footprint",
+     "Bluetooth enabled for movement and sound control"
+    ],
+    "cons": [
+     "High price point"
+    ],
+    "price": 32000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=4moms%20MamaRoo%20Multi-Motion%20Baby%20Swing",
+     "uk": "https://www.next.co.uk/search?w=4moms%20MamaRoo%20Multi-Motion%20Baby%20Swing",
+     "canada": "https://www.amazon.ca/s?k=4moms%20MamaRoo%20Multi-Motion%20Baby%20Swing"
+    }
+   },
+   {
+    "name": "Nuna LEAF Grow",
+    "why": "It is a sleek, non-electric swing that uses gentle momentum to sway for up to two minutes with a single push.",
+    "pros": [
+     "No batteries or cords required",
+     "High weight capacity for long-term use"
+    ],
+    "cons": [
+     "Does not have built-in music or automated motion"
+    ],
+    "price": 28000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Nuna%20LEAF%20Grow",
+     "uk": "https://www.next.co.uk/search?w=Nuna%20LEAF%20Grow",
+     "canada": "https://www.amazon.ca/s?k=Nuna%20LEAF%20Grow"
+    }
+   },
+   {
+    "name": "Joie Serina 2-in-1 Swing",
+    "why": "A versatile option that features a lift-off seat which doubles as a portable rocker.",
+    "pros": [
+     "Two-way seat rotation for different swinging directions",
+     "Built-in wheels for easy room-to-room mobility"
+    ],
+    "cons": [
+     "Requires a power outlet or D-cell batteries"
+    ],
+    "price": 18000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Joie%20Serina%202-in-1%20Swing",
+     "uk": "https://www.next.co.uk/search?w=Joie%20Serina%202-in-1%20Swing",
+     "canada": "https://www.amazon.ca/s?k=Joie%20Serina%202-in-1%20Swing"
+    }
+   }
+  ]
+ },
+ "44": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Fisher-Price Soothe & Glow Seahorse",
+   "MyHummy Sleep Sensor Bear",
+   "Baby Shusher Sleep Miracle Soother"
+  ],
+  "list": [
+   {
+    "name": "Fisher-Price Soothe & Glow Seahorse",
+    "why": "A classic, soft, and huggable companion that plays gentle lullabies and ocean sounds to soothe a newborn.",
+    "pros": [
+     "Soft texture is comforting for babies",
+     "Auto-shutoff feature saves battery life"
+    ],
+    "cons": [
+     "Sound quality is basic compared to high-end white noise machines"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse",
+     "uk": "https://www.next.co.uk/search?w=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse",
+     "canada": "https://www.amazon.ca/s?k=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse"
+    }
+   },
+   {
+    "name": "MyHummy Sleep Sensor Bear",
+    "why": "Uses advanced sensors to automatically reactivate the sound if the baby starts crying or becomes restless.",
+    "pros": [
+     "Smart sensor detects baby's cry",
+     "Multiple sound variations including womb noises"
+    ],
+    "cons": [
+     "Higher price point compared to standard plush soothers"
+    ],
+    "price": 6500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=MyHummy%20Sleep%20Sensor%20Bear",
+     "uk": "https://www.next.co.uk/search?w=MyHummy%20Sleep%20Sensor%20Bear",
+     "canada": "https://www.amazon.ca/s?k=MyHummy%20Sleep%20Sensor%20Bear"
+    }
+   },
+   {
+    "name": "Baby Shusher Sleep Miracle Soother",
+    "why": "Employs a rhythmic human 'shush' sound, which is clinically proven to engage a baby's natural calming reflex.",
+    "pros": [
+     "Mimics real human voice patterns",
+     "Portable and easy to use on the go"
+    ],
+    "cons": [
+     "The rhythmic sound can be repetitive for parents"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Baby%20Shusher%20Sleep%20Miracle%20Soother",
+     "uk": "https://www.next.co.uk/search?w=Baby%20Shusher%20Sleep%20Miracle%20Soother",
+     "canada": "https://www.amazon.ca/s?k=Baby%20Shusher%20Sleep%20Miracle%20Soother"
+    }
+   }
+  ]
+ },
+ "45": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Storksak Hero Backpack + Matching Accessories",
+   "Skip Hop Mainframe Wide Open Diaper Backpack + Matching Clutch",
+   "JuJuBe Be Prepared Set + Matching Pacifier Pod"
+  ],
+  "list": [
+   {
+    "name": "Storksak Hero Backpack + Matching Accessories",
+    "why": "A premium, highly durable option that includes a matching insulated food bag and changing mat, ideal for the versatile n",
+    "pros": [
+     "Water-resistant fabric suitable for winter weather",
+     "Spacious interior with multiple dedicated pockets"
+    ],
+    "cons": [
+     "Higher price point compared to standard bags"
+    ],
+    "price": 16500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Storksak%20Hero%20Backpack%20%2B%20Matching%20Accessories",
+     "uk": "https://www.next.co.uk/search?w=Storksak%20Hero%20Backpack%20%2B%20Matching%20Accessories",
+     "canada": "https://www.amazon.ca/s?k=Storksak%20Hero%20Backpack%20%2B%20Matching%20Accessories"
+    }
+   },
+   {
+    "name": "Skip Hop Mainframe Wide Open Diaper Backpack + Matching Clutch",
+    "why": "Known for its practical wide-opening frame, this set simplifies diaper changes on the go during colder months.",
+    "pros": [
+     "Wide-open design for quick access in cold weather",
+     "Comes with a convenient matching portable changing station"
+    ],
+    "cons": [
+     "Backpack straps can feel bulky for smaller frames"
+    ],
+    "price": 9500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Skip%20Hop%20Mainframe%20Wide%20Open%20Diaper%20Backpack%20%2B%20Matching%20Clutch",
+     "uk": "https://www.next.co.uk/search?w=Skip%20Hop%20Mainframe%20Wide%20Open%20Diaper%20Backpack%20%2B%20Matching%20Clutch",
+     "canada": "https://www.amazon.ca/s?k=Skip%20Hop%20Mainframe%20Wide%20Open%20Diaper%20Backpack%20%2B%20Matching%20Clutch"
+    }
+   },
+   {
+    "name": "JuJuBe Be Prepared Set + Matching Pacifier Pod",
+    "why": "Offers an extensive capacity for winter layers and supplies, paired with a matching pod to keep small essentials accessi",
+    "pros": [
+     "Machine washable and easy to sanitize",
+     "Excellent organization for multiple baby items"
+    ],
+    "cons": [
+     "Can become quite heavy when fully packed"
+    ],
+    "price": 14000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=JuJuBe%20Be%20Prepared%20Set%20%2B%20Matching%20Pacifier%20Pod",
+     "uk": "https://www.next.co.uk/search?w=JuJuBe%20Be%20Prepared%20Set%20%2B%20Matching%20Pacifier%20Pod",
+     "canada": "https://www.amazon.ca/s?k=JuJuBe%20Be%20Prepared%20Set%20%2B%20Matching%20Pacifier%20Pod"
+    }
+   }
+  ]
+ },
+ "46": {
+  "ts": "2026-06-24",
+  "seen": [
+   "The Children's Place Matching Family Holiday Pajamas",
+   "H&M Conscious Cotton Matching Family Loungewear",
+   "Burt's Bees Baby Matching Family Organic Pajamas"
+  ],
+  "list": [
+   {
+    "name": "The Children's Place Matching Family Holiday Pajamas",
+    "why": "A classic, high-quality option perfect for newborn winter photos in India's cooler months.",
+    "pros": [
+     "Extensive size range for all family members",
+     "Soft, durable cotton fabric"
+    ],
+    "cons": [
+     "International shipping can be expensive to India"
+    ],
+    "price": 3500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=The%20Children's%20Place%20Matching%20Family%20Holiday%20Pajamas",
+     "uk": "https://www.next.co.uk/search?w=The%20Children's%20Place%20Matching%20Family%20Holiday%20Pajamas",
+     "canada": "https://www.amazon.ca/s?k=The%20Children's%20Place%20Matching%20Family%20Holiday%20Pajamas"
+    }
+   },
+   {
+    "name": "H&M Conscious Cotton Matching Family Loungewear",
+    "why": "Widely available in India with a focus on sustainable, breathable organic cotton suitable for sensitive newborn skin.",
+    "pros": [
+     "Easy to purchase in-store or online in India",
+     "Minimalist, timeless designs"
+    ],
+    "cons": [
+     "Limited seasonal stock rotation"
+    ],
+    "price": 2800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=H%26M%20Conscious%20Cotton%20Matching%20Family%20Loungewear",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20Conscious%20Cotton%20Matching%20Family%20Loungewear",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20Conscious%20Cotton%20Matching%20Family%20Loungewear"
+    }
+   },
+   {
+    "name": "Burt's Bees Baby Matching Family Organic Pajamas",
+    "why": "Highly rated globally for premium organic materials and thermal comfort for winter arrivals.",
+    "pros": [
+     "GOTS certified organic cotton",
+     "Excellent durability through multiple washes"
+    ],
+    "cons": [
+     "Requires import via third-party courier services"
+    ],
+    "price": 4200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Burt's%20Bees%20Baby%20Matching%20Family%20Organic%20Pajamas",
+     "uk": "https://www.next.co.uk/search?w=Burt's%20Bees%20Baby%20Matching%20Family%20Organic%20Pajamas",
+     "canada": "https://www.amazon.ca/s?k=Burt's%20Bees%20Baby%20Matching%20Family%20Organic%20Pajamas"
+    }
+   }
+  ]
+ },
+ "47": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Honeywell HCM350W Germ Free Cool Mist Humidifier",
+   "Vicks Warm Mist Humidifier (V750)",
+   "Pure Enrichment MistAire Ultrasonic Cool Mist Humidifier"
+  ],
+  "list": [
+   {
+    "name": "Honeywell HCM350W Germ Free Cool Mist Humidifier",
+    "why": "A gold standard for hygiene, utilizing UV technology to kill 99.9% of bacteria in the water before misting.",
+    "pros": [
+     "Extremely quiet operation",
+     "Easy to clean, dishwasher-safe parts"
+    ],
+    "cons": [
+     "Requires periodic filter replacements"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Honeywell%20HCM350W%20Germ%20Free%20Cool%20Mist%20Humidifier",
+     "uk": "https://www.next.co.uk/search?w=Honeywell%20HCM350W%20Germ%20Free%20Cool%20Mist%20Humidifier",
+     "canada": "https://www.amazon.ca/s?k=Honeywell%20HCM350W%20Germ%20Free%20Cool%20Mist%20Humidifier"
+    }
+   },
+   {
+    "name": "Vicks Warm Mist Humidifier (V750)",
+    "why": "Ideal for winter months in India as it releases warm, soothing mist which helps clear congestion and keeps the room cozy",
+    "pros": [
+     "Features a medicine cup for VapoSteam",
+     "Boils water to ensure it is bacteria-free"
+    ],
+    "cons": [
+     "Heating element poses a minor burn risk if touched"
+    ],
+    "price": 6200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Vicks%20Warm%20Mist%20Humidifier%20(V750)",
+     "uk": "https://www.next.co.uk/search?w=Vicks%20Warm%20Mist%20Humidifier%20(V750)",
+     "canada": "https://www.amazon.ca/s?k=Vicks%20Warm%20Mist%20Humidifier%20(V750)"
+    }
+   },
+   {
+    "name": "Pure Enrichment MistAire Ultrasonic Cool Mist Humidifier",
+    "why": "A highly-rated, compact option perfect for a nursery that offers precise humidity control and an optional night light.",
+    "pros": [
+     "Very intuitive controls",
+     "Large tank capacity for overnight use"
+    ],
+    "cons": [
+     "Can be difficult to clean the internal tank corners"
+    ],
+    "price": 5500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Pure%20Enrichment%20MistAire%20Ultrasonic%20Cool%20Mist%20Humidifier",
+     "uk": "https://www.next.co.uk/search?w=Pure%20Enrichment%20MistAire%20Ultrasonic%20Cool%20Mist%20Humidifier",
+     "canada": "https://www.amazon.ca/s?k=Pure%20Enrichment%20MistAire%20Ultrasonic%20Cool%20Mist%20Humidifier"
+    }
+   }
+  ]
+ },
+ "48": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Fisher-Price Soothe & Glow Seahorse",
+   "Hatch Rest Baby Sound Machine",
+   "Baby Einstein Sea Dreams Soother"
+  ],
+  "list": [
+   {
+    "name": "Fisher-Price Soothe & Glow Seahorse",
+    "why": "A classic sensory plush toy that plays gentle lullabies and ocean sounds to help newborns settle in winter nights.",
+    "pros": [
+     "Soft, comforting glow",
+     "Auto-shutoff feature"
+    ],
+    "cons": [
+     "Requires frequent battery changes"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse",
+     "uk": "https://www.next.co.uk/search?w=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse",
+     "canada": "https://www.amazon.ca/s?k=Fisher-Price%20Soothe%20%26%20Glow%20Seahorse"
+    }
+   },
+   {
+    "name": "Hatch Rest Baby Sound Machine",
+    "why": "A versatile sound machine and night light that helps establish a consistent sleep environment for a newborn.",
+    "pros": [
+     "App-controlled settings",
+     "Programmable light/sound schedules"
+    ],
+    "cons": [
+     "Requires a stable Wi-Fi connection"
+    ],
+    "price": 6500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Hatch%20Rest%20Baby%20Sound%20Machine",
+     "uk": "https://www.next.co.uk/search?w=Hatch%20Rest%20Baby%20Sound%20Machine",
+     "canada": "https://www.amazon.ca/s?k=Hatch%20Rest%20Baby%20Sound%20Machine"
+    }
+   },
+   {
+    "name": "Baby Einstein Sea Dreams Soother",
+    "why": "Creates a mesmerizing visual and auditory experience in the crib to soothe babies during diaper changes or bedtime.",
+    "pros": [
+     "Drift-off dimming feature",
+     "High-quality classical music"
+    ],
+    "cons": [
+     "Bulky unit takes up crib space"
+    ],
+    "price": 4200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Baby%20Einstein%20Sea%20Dreams%20Soother",
+     "uk": "https://www.next.co.uk/search?w=Baby%20Einstein%20Sea%20Dreams%20Soother",
+     "canada": "https://www.amazon.ca/s?k=Baby%20Einstein%20Sea%20Dreams%20Soother"
+    }
+   }
+  ]
+ },
+ "49": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Skip Hop Vibrant Village Smart Play Foam Floor Tiles",
+   "Lollaland Lollamat",
+   "Fisher-Price Deluxe Kick & Play Piano Gym"
+  ],
+  "list": [
+   {
+    "name": "Skip Hop Vibrant Village Smart Play Foam Floor Tiles",
+    "why": "A modular, stylish, and durable foam mat that can be customized to fit any room size or shape.",
+    "pros": [
+     "Modular design allows for custom layouts",
+     "Easy to wipe clean and waterproof"
+    ],
+    "cons": [
+     "Small debris can get caught between tile seams"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Skip%20Hop%20Vibrant%20Village%20Smart%20Play%20Foam%20Floor%20Tiles",
+     "uk": "https://www.next.co.uk/search?w=Skip%20Hop%20Vibrant%20Village%20Smart%20Play%20Foam%20Floor%20Tiles",
+     "canada": "https://www.amazon.ca/s?k=Skip%20Hop%20Vibrant%20Village%20Smart%20Play%20Foam%20Floor%20Tiles"
+    }
+   },
+   {
+    "name": "Lollaland Lollamat",
+    "why": "A high-quality, non-toxic, and extra-cushioned playmat that provides excellent support for newborns during tummy time.",
+    "pros": [
+     "Extra thick for safety and comfort",
+     "Free from PVC, BPA, and phthalates"
+    ],
+    "cons": [
+     "Requires a larger dedicated floor space"
+    ],
+    "price": 12000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Lollaland%20Lollamat",
+     "uk": "https://www.next.co.uk/search?w=Lollaland%20Lollamat",
+     "canada": "https://www.amazon.ca/s?k=Lollaland%20Lollamat"
+    }
+   },
+   {
+    "name": "Fisher-Price Deluxe Kick & Play Piano Gym",
+    "why": "An interactive, multi-sensory playmat that is a gold standard for newborn development and engagement.",
+    "pros": [
+     "Includes music and lights for stimulation",
+     "Machine-washable soft play mat"
+    ],
+    "cons": [
+     "Requires frequent battery replacements"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Fisher-Price%20Deluxe%20Kick%20%26%20Play%20Piano%20Gym",
+     "uk": "https://www.next.co.uk/search?w=Fisher-Price%20Deluxe%20Kick%20%26%20Play%20Piano%20Gym",
+     "canada": "https://www.amazon.ca/s?k=Fisher-Price%20Deluxe%20Kick%20%26%20Play%20Piano%20Gym"
+    }
+   }
+  ]
+ },
+ "50": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Stokke Tripp Trapp",
+   "IKEA Antilop High Chair",
+   "Joie Mimzy Snacker"
+  ],
+  "list": [
+   {
+    "name": "Stokke Tripp Trapp",
+    "why": "An iconic, ergonomic wooden chair designed to grow with your child from infancy to adulthood.",
+    "pros": [
+     "Extremely durable and long-lasting",
+     "Excellent ergonomic posture support"
+    ],
+    "cons": [
+     "High initial investment cost"
+    ],
+    "price": 28000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Stokke%20Tripp%20Trapp",
+     "uk": "https://www.next.co.uk/search?w=Stokke%20Tripp%20Trapp",
+     "canada": "https://www.amazon.ca/s?k=Stokke%20Tripp%20Trapp"
+    }
+   },
+   {
+    "name": "IKEA Antilop High Chair",
+    "why": "A minimalist, ultra-practical choice that is incredibly easy to clean and store.",
+    "pros": [
+     "Very affordable and lightweight",
+     "Simple to disassemble for travel"
+    ],
+    "cons": [
+     "Lacks adjustable footrest for comfort"
+    ],
+    "price": 2500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=IKEA%20Antilop%20High%20Chair",
+     "uk": "https://www.next.co.uk/search?w=IKEA%20Antilop%20High%20Chair",
+     "canada": "https://www.amazon.ca/s?k=IKEA%20Antilop%20High%20Chair"
+    }
+   },
+   {
+    "name": "Joie Mimzy Snacker",
+    "why": "A feature-rich, fold-away high chair perfect for families with limited living space.",
+    "pros": [
+     "One-hand quick compact fold",
+     "Adjustable seat recline and tray"
+    ],
+    "cons": [
+     "Fabric seat cover can be tricky to deep clean"
+    ],
+    "price": 9500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Joie%20Mimzy%20Snacker",
+     "uk": "https://www.next.co.uk/search?w=Joie%20Mimzy%20Snacker",
+     "canada": "https://www.amazon.ca/s?k=Joie%20Mimzy%20Snacker"
+    }
+   }
+  ]
+ },
+ "51": {
+  "ts": "2026-06-24",
+  "seen": [
+   "BabyBjorn Carrier One Air",
+   "Lillebaby Complete All Seasons",
+   "Boba Wrap Classic"
+  ],
+  "list": [
+   {
+    "name": "BabyBjorn Carrier One Air",
+    "why": "A highly versatile, ergonomic carrier with excellent back support that transitions well from newborn to toddler.",
+    "pros": [
+     "Breathable mesh fabric ideal for varying climates",
+     "Easy front-loading design for solo parents"
+    ],
+    "cons": [
+     "Bulky to pack in a diaper bag"
+    ],
+    "price": 16000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=BabyBjorn%20Carrier%20One%20Air",
+     "uk": "https://www.next.co.uk/search?w=BabyBjorn%20Carrier%20One%20Air",
+     "canada": "https://www.amazon.ca/s?k=BabyBjorn%20Carrier%20One%20Air"
+    }
+   },
+   {
+    "name": "Lillebaby Complete All Seasons",
+    "why": "Offers six carrying positions and a temperature-control panel to keep the baby cozy during the Indian winter.",
+    "pros": [
+     "Includes adjustable lumbar support for parents",
+     "Does not require an infant insert for newborns"
+    ],
+    "cons": [
+     "Learning curve for adjusting all straps"
+    ],
+    "price": 14500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Lillebaby%20Complete%20All%20Seasons",
+     "uk": "https://www.next.co.uk/search?w=Lillebaby%20Complete%20All%20Seasons",
+     "canada": "https://www.amazon.ca/s?k=Lillebaby%20Complete%20All%20Seasons"
+    }
+   },
+   {
+    "name": "Boba Wrap Classic",
+    "why": "The soft, stretchy fabric provides the 'womb-like' snugness that newborns crave during their first few months.",
+    "pros": [
+     "Distributes weight evenly across the entire torso",
+     "Machine washable and very compact"
+    ],
+    "cons": [
+     "Takes time to master the wrapping technique"
+    ],
+    "price": 5500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Boba%20Wrap%20Classic",
+     "uk": "https://www.next.co.uk/search?w=Boba%20Wrap%20Classic",
+     "canada": "https://www.amazon.ca/s?k=Boba%20Wrap%20Classic"
+    }
+   }
+  ]
+ },
+ "52": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Hatch Rest+ Baby Sound Machine & Night Light",
+   "Pottery Barn Kids Organic Cotton Nursery Quilt",
+   "Jellycat Bashful Bunny Plush Toy"
+  ],
+  "list": [
+   {
+    "name": "Hatch Rest+ Baby Sound Machine & Night Light",
+    "why": "It serves as a functional decor piece that helps with sleep training and nighttime nursery navigation.",
+    "pros": [
+     "Customizable colors and soundscapes",
+     "Controllable via smartphone app"
+    ],
+    "cons": [
+     "Requires a constant power source"
+    ],
+    "price": 8500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Hatch%20Rest%2B%20Baby%20Sound%20Machine%20%26%20Night%20Light",
+     "uk": "https://www.next.co.uk/search?w=Hatch%20Rest%2B%20Baby%20Sound%20Machine%20%26%20Night%20Light",
+     "canada": "https://www.amazon.ca/s?k=Hatch%20Rest%2B%20Baby%20Sound%20Machine%20%26%20Night%20Light"
+    }
+   },
+   {
+    "name": "Pottery Barn Kids Organic Cotton Nursery Quilt",
+    "why": "High-quality textiles add warmth and texture to the room, essential for a winter-born baby.",
+    "pros": [
+     "Hypoallergenic organic material",
+     "Durable heirloom quality"
+    ],
+    "cons": [
+     "Higher price point due to import"
+    ],
+    "price": 12000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Nursery%20Quilt",
+     "uk": "https://www.next.co.uk/search?w=Pottery%20Barn%20Kids%20Organic%20Cotton%20Nursery%20Quilt",
+     "canada": "https://www.amazon.ca/s?k=Pottery%20Barn%20Kids%20Organic%20Cotton%20Nursery%20Quilt"
+    }
+   },
+   {
+    "name": "Jellycat Bashful Bunny Plush Toy",
+    "why": "A classic, aesthetically pleasing soft toy that doubles as nursery shelf decor.",
+    "pros": [
+     "Extremely soft and baby-safe",
+     "Timeless design looks great on display"
+    ],
+    "cons": [
+     "Hand wash only"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Jellycat%20Bashful%20Bunny%20Plush%20Toy",
+     "uk": "https://www.next.co.uk/search?w=Jellycat%20Bashful%20Bunny%20Plush%20Toy",
+     "canada": "https://www.amazon.ca/s?k=Jellycat%20Bashful%20Bunny%20Plush%20Toy"
+    }
+   }
+  ]
+ },
+ "53": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Fabindia Baby Embroidered Cotton Kurta Set",
+   "Mama & Peaches Festive Velvet Nehru Jacket Set",
+   "Biba Girls/Boys Festive Silk Blend Ethnic Romper"
+  ],
+  "list": [
+   {
+    "name": "Fabindia Baby Embroidered Cotton Kurta Set",
+    "why": "A classic, breathable ethnic choice perfect for mild Indian winter festive evenings.",
+    "pros": [
+     "Soft breathable cotton fabric",
+     "Traditional aesthetic"
+    ],
+    "cons": [
+     "Needs gentle hand washing"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Fabindia%20Baby%20Embroidered%20Cotton%20Kurta%20Set",
+     "uk": "https://www.next.co.uk/search?w=Fabindia%20Baby%20Embroidered%20Cotton%20Kurta%20Set",
+     "canada": "https://www.amazon.ca/s?k=Fabindia%20Baby%20Embroidered%20Cotton%20Kurta%20Set"
+    }
+   },
+   {
+    "name": "Mama & Peaches Festive Velvet Nehru Jacket Set",
+    "why": "Velvet provides necessary warmth for late-year festivities while looking elegant.",
+    "pros": [
+     "Adds extra warmth layer",
+     "Premium texture"
+    ],
+    "cons": [
+     "Can be bulky for a newborn"
+    ],
+    "price": 2500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mama%20%26%20Peaches%20Festive%20Velvet%20Nehru%20Jacket%20Set",
+     "uk": "https://www.next.co.uk/search?w=Mama%20%26%20Peaches%20Festive%20Velvet%20Nehru%20Jacket%20Set",
+     "canada": "https://www.amazon.ca/s?k=Mama%20%26%20Peaches%20Festive%20Velvet%20Nehru%20Jacket%20Set"
+    }
+   },
+   {
+    "name": "Biba Girls/Boys Festive Silk Blend Ethnic Romper",
+    "why": "Combines the ease of a diaper-friendly romper with the festive look of traditional silk.",
+    "pros": [
+     "Easy diaper access",
+     "Looks formal but feels like sleepwear"
+    ],
+    "cons": [
+     "Limited re-wearability due to fast growth"
+    ],
+    "price": 2200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Biba%20Girls%2FBoys%20Festive%20Silk%20Blend%20Ethnic%20Romper",
+     "uk": "https://www.next.co.uk/search?w=Biba%20Girls%2FBoys%20Festive%20Silk%20Blend%20Ethnic%20Romper",
+     "canada": "https://www.amazon.ca/s?k=Biba%20Girls%2FBoys%20Festive%20Silk%20Blend%20Ethnic%20Romper"
+    }
+   }
+  ]
+ },
+ "54": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Nuna PIPA urbn",
+   "Maxi-Cosi Pebble 360 Pro",
+   "Britax Römer Baby-Safe 5Z2"
+  ],
+  "list": [
+   {
+    "name": "Nuna PIPA urbn",
+    "why": "Features a unique baseless installation system that uses integrated anchor points, making it incredibly practical for fa",
+    "pros": [
+     "Rigid latch installation is extremely fast and safe",
+     "Very lightweight for a carrier"
+    ],
+    "cons": [
+     "Only compatible with vehicles equipped with ISOFIX"
+    ],
+    "price": 38000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Nuna%20PIPA%20urbn",
+     "uk": "https://www.next.co.uk/search?w=Nuna%20PIPA%20urbn",
+     "canada": "https://www.amazon.ca/s?k=Nuna%20PIPA%20urbn"
+    }
+   },
+   {
+    "name": "Maxi-Cosi Pebble 360 Pro",
+    "why": "Offers a unique slide-out technology that allows the seat to rotate and glide toward the parent, significantly reducing ",
+    "pros": [
+     "Full 360-degree rotation functionality",
+     "Excellent lie-flat recline for newborn comfort"
+    ],
+    "cons": [
+     "Requires the specific FamilyFix 360 Pro base for full features"
+    ],
+    "price": 42000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Maxi-Cosi%20Pebble%20360%20Pro",
+     "uk": "https://www.next.co.uk/search?w=Maxi-Cosi%20Pebble%20360%20Pro",
+     "canada": "https://www.amazon.ca/s?k=Maxi-Cosi%20Pebble%20360%20Pro"
+    }
+   },
+   {
+    "name": "Britax Römer Baby-Safe 5Z2",
+    "why": "Renowned for high safety standards and an ERGO Recline feature that creates a flatter, healthier position for newborns d",
+    "pros": [
+     "Superior side-impact protection technology",
+     "Very intuitive harness adjustment"
+    ],
+    "cons": [
+     "Heavier than other infant carriers in its class"
+    ],
+    "price": 35000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Britax%20R%C3%B6mer%20Baby-Safe%205Z2",
+     "uk": "https://www.next.co.uk/search?w=Britax%20R%C3%B6mer%20Baby-Safe%205Z2",
+     "canada": "https://www.amazon.ca/s?k=Britax%20R%C3%B6mer%20Baby-Safe%205Z2"
+    }
+   }
+  ]
+ },
+ "100": {
+  "ts": "2026-06-24",
+  "seen": [
+   "IKEA FLISAT Children's Table",
+   "Step2 Rain Showers Splash Pond Water Table",
+   "Learning Resources Sand and Water Activity Table"
+  ],
+  "list": [
+   {
+    "name": "IKEA FLISAT Children's Table",
+    "why": "A minimalist, versatile wooden table that integrates seamlessly with Trofast storage bins for messy play.",
+    "pros": [
+     "Sturdy solid wood construction",
+     "Compatible with interchangeable storage bins"
+    ],
+    "cons": [
+     "Requires separate purchase of bins and covers"
+    ],
+    "price": 7500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=IKEA%20FLISAT%20Children's%20Table",
+     "uk": "https://www.next.co.uk/search?w=IKEA%20FLISAT%20Children's%20Table",
+     "canada": "https://www.amazon.ca/s?k=IKEA%20FLISAT%20Children's%20Table"
+    }
+   },
+   {
+    "name": "Step2 Rain Showers Splash Pond Water Table",
+    "why": "An excellent outdoor sensory table that introduces cause-and-effect through water movement.",
+    "pros": [
+     "Encourages interactive group play",
+     "Includes extensive accessory kit"
+    ],
+    "cons": [
+     "Bulky and takes up significant floor space"
+    ],
+    "price": 14000,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Step2%20Rain%20Showers%20Splash%20Pond%20Water%20Table",
+     "uk": "https://www.next.co.uk/search?w=Step2%20Rain%20Showers%20Splash%20Pond%20Water%20Table",
+     "canada": "https://www.amazon.ca/s?k=Step2%20Rain%20Showers%20Splash%20Pond%20Water%20Table"
+    }
+   },
+   {
+    "name": "Learning Resources Sand and Water Activity Table",
+    "why": "A highly durable, compact option perfect for smaller spaces or indoor use with kinetic sand.",
+    "pros": [
+     "Easy to clean and drain",
+     "Includes a secure lid for storage"
+    ],
+    "cons": [
+     "The legs can be slightly wobbly on uneven surfaces"
+    ],
+    "price": 9500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Learning%20Resources%20Sand%20and%20Water%20Activity%20Table",
+     "uk": "https://www.next.co.uk/search?w=Learning%20Resources%20Sand%20and%20Water%20Activity%20Table",
+     "canada": "https://www.amazon.ca/s?k=Learning%20Resources%20Sand%20and%20Water%20Activity%20Table"
+    }
+   }
+  ]
+ },
+ "101": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Joovy Spoon Walker",
+   "Fisher-Price Learn with Me Zebra Walker",
+   "VTech Sit-to-Stand Learning Walker"
+  ],
+  "list": [
+   {
+    "name": "Joovy Spoon Walker",
+    "why": "Known for its ultra-wide base for stability and a minimalist, modern design that is easy to clean.",
+    "pros": [
+     "Extra-large tray for snacks or toys",
+     "Folds completely flat for easy storage"
+    ],
+    "cons": [
+     "Can be bulky to maneuver in smaller rooms"
+    ],
+    "price": 14500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Joovy%20Spoon%20Walker",
+     "uk": "https://www.next.co.uk/search?w=Joovy%20Spoon%20Walker",
+     "canada": "https://www.amazon.ca/s?k=Joovy%20Spoon%20Walker"
+    }
+   },
+   {
+    "name": "Fisher-Price Learn with Me Zebra Walker",
+    "why": "A sit-to-stand walker that helps develop motor skills through interactive lights and sounds.",
+    "pros": [
+     "Versatile as both a sit-in and push-behind toy",
+     "Excellent for early development and balance"
+    ],
+    "cons": [
+     "Does not have a seat, only for toddlers already pulling to stand"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Fisher-Price%20Learn%20with%20Me%20Zebra%20Walker",
+     "uk": "https://www.next.co.uk/search?w=Fisher-Price%20Learn%20with%20Me%20Zebra%20Walker",
+     "canada": "https://www.amazon.ca/s?k=Fisher-Price%20Learn%20with%20Me%20Zebra%20Walker"
+    }
+   },
+   {
+    "name": "VTech Sit-to-Stand Learning Walker",
+    "why": "An award-winning, highly-rated walker that features a removable activity panel for floor play.",
+    "pros": [
+     "Engaging educational features and music",
+     "Durable design that lasts through toddlerhood"
+    ],
+    "cons": [
+     "Wheels can move too fast on hardwood floors"
+    ],
+    "price": 4500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=VTech%20Sit-to-Stand%20Learning%20Walker",
+     "uk": "https://www.next.co.uk/search?w=VTech%20Sit-to-Stand%20Learning%20Walker",
+     "canada": "https://www.amazon.ca/s?k=VTech%20Sit-to-Stand%20Learning%20Walker"
+    }
+   }
+  ]
+ },
+ "102": {
+  "ts": "2026-06-24",
+  "seen": [
+   "H&M Baby 2-piece Cotton Set",
+   "Mamas & Papas Welcome to the World Pramsuit",
+   "Carter's Baby Fleece Sleep & Play"
+  ],
+  "list": [
+   {
+    "name": "H&M Baby 2-piece Cotton Set",
+    "why": "Soft, breathable organic cotton layers are essential for Indian winters where heavy wool can be too itchy for newborns.",
+    "pros": [
+     "Soft organic material",
+     "Easy snap-button closures"
+    ],
+    "cons": [
+     "Not suitable for extreme cold"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=H%26M%20Baby%202-piece%20Cotton%20Set",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20Baby%202-piece%20Cotton%20Set",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20Baby%202-piece%20Cotton%20Set"
+    }
+   },
+   {
+    "name": "Mamas & Papas Welcome to the World Pramsuit",
+    "why": "A high-quality, fleece-lined suit ideal for travel or outdoor outings during colder months in the UK or North India.",
+    "pros": [
+     "Excellent thermal insulation",
+     "Integrated hood and mitts"
+    ],
+    "cons": [
+     "Bulky to store"
+    ],
+    "price": 3500,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Pramsuit",
+     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Pramsuit",
+     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Welcome%20to%20the%20World%20Pramsuit"
+    }
+   },
+   {
+    "name": "Carter's Baby Fleece Sleep & Play",
+    "why": "A versatile zip-up piece that keeps the baby warm during nighttime and naps without needing separate blankets.",
+    "pros": [
+     "Durable zipper design",
+     "Machine washable"
+    ],
+    "cons": [
+     "Fleece can pill after many washes"
+    ],
+    "price": 1800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Carter's%20Baby%20Fleece%20Sleep%20%26%20Play",
+     "uk": "https://www.next.co.uk/search?w=Carter's%20Baby%20Fleece%20Sleep%20%26%20Play",
+     "canada": "https://www.amazon.ca/s?k=Carter's%20Baby%20Fleece%20Sleep%20%26%20Play"
+    }
+   }
+  ]
+ },
+ "u1782064579653": {
+  "ts": "2026-06-24",
+  "seen": [
+   "H&M Newborn 3-piece Cotton Set",
+   "Mamas & Papas Newborn Essentials Starter Set",
+   "Carter's Baby 4-Piece Take-Me-Home Set"
+  ],
+  "list": [
+   {
+    "name": "H&M Newborn 3-piece Cotton Set",
+    "why": "A staple for winter layering in India, offering soft organic cotton that is gentle on newborn skin.",
+    "pros": [
+     "Breathable organic cotton",
+     "Easy-snap buttons for quick changes"
+    ],
+    "cons": [
+     "Sizes can run slightly small"
+    ],
+    "price": 1499,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=H%26M%20Newborn%203-piece%20Cotton%20Set",
+     "uk": "https://www.next.co.uk/search?w=H%26M%20Newborn%203-piece%20Cotton%20Set",
+     "canada": "https://www.amazon.ca/s?k=H%26M%20Newborn%203-piece%20Cotton%20Set"
+    }
+   },
+   {
+    "name": "Mamas & Papas Newborn Essentials Starter Set",
+    "why": "A premium UK-imported option that provides high-quality, durable basics perfect for cooler weather.",
+    "pros": [
+     "Exceptional fabric softness",
+     "Holds shape well after multiple washes"
+    ],
+    "cons": [
+     "Higher price point due to import"
+    ],
+    "price": 3200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Mamas%20%26%20Papas%20Newborn%20Essentials%20Starter%20Set",
+     "uk": "https://www.next.co.uk/search?w=Mamas%20%26%20Papas%20Newborn%20Essentials%20Starter%20Set",
+     "canada": "https://www.amazon.ca/s?k=Mamas%20%26%20Papas%20Newborn%20Essentials%20Starter%20Set"
+    }
+   },
+   {
+    "name": "Carter's Baby 4-Piece Take-Me-Home Set",
+    "why": "Widely regarded as the gold standard for newborn comfort and practicality in North America.",
+    "pros": [
+     "Includes a coordinating hat and mittens",
+     "Very soft, medium-weight interlock knit"
+    ],
+    "cons": [
+     "Limited availability in local Indian retail stores"
+    ],
+    "price": 2800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Carter's%20Baby%204-Piece%20Take-Me-Home%20Set",
+     "uk": "https://www.next.co.uk/search?w=Carter's%20Baby%204-Piece%20Take-Me-Home%20Set",
+     "canada": "https://www.amazon.ca/s?k=Carter's%20Baby%204-Piece%20Take-Me-Home%20Set"
+    }
+   }
+  ]
+ },
+ "ucbf0ed93-a659-4ca1-a96d-e9e0fc1dbb16": {
+  "ts": "2026-06-24",
+  "seen": [
+   "Sassy Developmental Bumpy Ball",
+   "Baby Einstein Bendy Ball",
+   "Tiny Love Meadow Days Sunny Stroll Arch"
+  ],
+  "list": [
+   {
+    "name": "Sassy Developmental Bumpy Ball",
+    "why": "An iconic, easy-to-grasp toy that encourages tactile exploration and motor skills during the first few months.",
+    "pros": [
+     "High-contrast colors for visual stimulation",
+     "Multiple textures for teething relief"
+    ],
+    "cons": [
+     "Can be difficult to clean inside the ball"
+    ],
+    "price": 1200,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Sassy%20Developmental%20Bumpy%20Ball",
+     "uk": "https://www.next.co.uk/search?w=Sassy%20Developmental%20Bumpy%20Ball",
+     "canada": "https://www.amazon.ca/s?k=Sassy%20Developmental%20Bumpy%20Ball"
+    }
+   },
+   {
+    "name": "Baby Einstein Bendy Ball",
+    "why": "The flexible, soft design makes it perfect for newborns learning to reach, grasp, and pass objects between hands.",
+    "pros": [
+     "Extremely durable and soft material",
+     "Easy for small fingers to grip"
+    ],
+    "cons": [
+     "The inner rattle sound is quite loud"
+    ],
+    "price": 950,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Baby%20Einstein%20Bendy%20Ball",
+     "uk": "https://www.next.co.uk/search?w=Baby%20Einstein%20Bendy%20Ball",
+     "canada": "https://www.amazon.ca/s?k=Baby%20Einstein%20Bendy%20Ball"
+    }
+   },
+   {
+    "name": "Tiny Love Meadow Days Sunny Stroll Arch",
+    "why": "A versatile travel arch that attaches easily to strollers or car seats to keep the baby entertained while out in the win",
+    "pros": [
+     "Adjustable angle for reaching",
+     "Variety of textures and sounds"
+    ],
+    "cons": [
+     "Clips may not fit all stroller models perfectly"
+    ],
+    "price": 2800,
+    "currency": "INR",
+    "links": {
+     "india": "https://www.amazon.in/s?k=Tiny%20Love%20Meadow%20Days%20Sunny%20Stroll%20Arch",
+     "uk": "https://www.next.co.uk/search?w=Tiny%20Love%20Meadow%20Days%20Sunny%20Stroll%20Arch",
+     "canada": "https://www.amazon.ca/s?k=Tiny%20Love%20Meadow%20Days%20Sunny%20Stroll%20Arch"
     }
    }
   ]
