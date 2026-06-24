@@ -1415,5 +1415,16 @@
         "May include items you won't use"
       ]
     }
+  },
+  "ucbf0ed93-a659-4ca1-a96d-e9e0fc1dbb16": {
+    "Toys infant": {
+      "pros": [
+        "Stimulates sensory development and motor skills",
+        "Provides safe entertainment and engagement"
+      ],
+      "cons": [
+        "Can quickly clutter living spaces"
+      ]
+    }
   }
 }
