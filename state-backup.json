@@ -1,5 +1,5 @@
 {
-  "ts": 1782234944004,
+  "ts": 1782493139594,
   "pins": {
     "1": [
       "u:o12ebe457-b781-4449-96d7-ec135616bfa0",
@@ -101,6 +101,62 @@
           "canada": "https://www.amazon.ca/s?k=Pipette%20Hand%20Sanitizer"
         },
         "price": 1200,
+        "currency": "INR"
+      }
+    ],
+    "u95ae5625-7cec-4685-b434-94786ee3b163": [
+      {
+        "why": "A premium, foldable tub that saves space and is built with high-quality, non-toxic materials.",
+        "cons": [
+          "Newborn support insert sold separately"
+        ],
+        "name": "Stokke Flexi Bath",
+        "pros": [
+          "Space-saving foldable design",
+          "Heat-sensitive plug for safety"
+        ],
+        "links": {
+          "uk": "https://www.next.co.uk/search?w=Stokke%20Flexi%20Bath",
+          "india": "https://www.amazon.in/s?k=Stokke%20Flexi%20Bath",
+          "canada": "https://www.amazon.ca/s?k=Stokke%20Flexi%20Bath"
+        },
+        "price": 5500,
+        "currency": "INR"
+      },
+      {
+        "why": "A versatile tub that grows with your baby from newborn to toddler stages, featuring a dual-position mesh sling.",
+        "cons": [
+          "Occupies significant storage space"
+        ],
+        "name": "Skip Hop Moby Smart Sling 3-Stage Tub",
+        "pros": [
+          "Adjustable sling for newborns",
+          "Quick-dry material"
+        ],
+        "links": {
+          "uk": "https://www.next.co.uk/search?w=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub",
+          "india": "https://www.amazon.in/s?k=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub",
+          "canada": "https://www.amazon.ca/s?k=Skip%20Hop%20Moby%20Smart%20Sling%203-Stage%20Tub"
+        },
+        "price": 4200,
+        "currency": "INR"
+      },
+      {
+        "why": "An ergonomic bath seat that allows you to bathe the baby directly in the main tub or kitchen sink comfortably.",
+        "cons": [
+          "Requires use of a larger basin or tub"
+        ],
+        "name": "Angelcare Baby Bath Support",
+        "pros": [
+          "Ergonomic design for baby's comfort",
+          "Fast-draining and hygienic mold-resistant mesh"
+        ],
+        "links": {
+          "uk": "https://www.next.co.uk/search?w=Angelcare%20Baby%20Bath%20Support",
+          "india": "https://www.amazon.in/s?k=Angelcare%20Baby%20Bath%20Support",
+          "canada": "https://www.amazon.ca/s?k=Angelcare%20Baby%20Bath%20Support"
+        },
+        "price": 3800,
         "currency": "INR"
       }
     ],
@@ -371,31 +427,6 @@
           "why": "",
           "name": "Kit Set",
           "india": "https://www.myntra.com/baby-utilities/mothercare/mothercare-infants-kids-pack-of-12-printed-pure-cotton-baby-apparel-gift-set/38536622/buy?utm_source=social_share_pdp&utm_medium=deeplink&utm_campaign=social_share_pdp_deeplink",
-          "canada": ""
-        }
-      ],
-      "category": "CLOTHING",
-      "priority": "Later",
-      "bestRegion": "india"
-    },
-    {
-      "id": "ucbf0ed93-a659-4ca1-a96d-e9e0fc1dbb16",
-      "img": "",
-      "qty": "5",
-      "best": "-",
-      "item": "Toys infant",
-      "notes": "Added by you.",
-      "owned": "",
-      "status": "Buy",
-      "options": [
-        {
-          "uk": "",
-          "img": "",
-          "why": "",
-          "name": "Toys infant",
-          "india": "https://www.amazon.in/s?k=Toys%20infant",
-          "price": "",
-          "units": "",
           "canada": ""
         }
       ],
